@@ -100,6 +100,10 @@ export class KernelSmartWallet extends SmartWallet {
     return this.#client.extend(publicActions);
   }
 
+  public get vendor(): string {
+    return 'ZeroDev Kernel';
+  }
+
   public async getVersion(): Promise<string | null> {
     try {
       const contract = getContract({

@@ -51,6 +51,11 @@ export abstract class SmartWallet extends Wallet {
   public abstract getVersion(): Promise<string | null>;
 
   /**
+   * Gets the smart wallet vendor
+   */
+  public abstract get vendor(): string;
+
+  /**
    * Creates a call data for UserOperation
    */
   public abstract createCallData(input: {
