@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[src/Chain.ts:15](https://github.com/kriptonio/js-sdk/blob/1c33c1b/src/Chain.ts#L15)
+[src/Chain.ts:15](https://github.com/kriptonio/sdk/blob/81ecf53/src/Chain.ts#L15)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:16](https://github.com/kriptonio/js-sdk/blob/1c33c1b/src/Chain.ts#L16)
+[src/Chain.ts:16](https://github.com/kriptonio/sdk/blob/81ecf53/src/Chain.ts#L16)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:11](https://github.com/kriptonio/js-sdk/blob/1c33c1b/src/Chain.ts#L11)
+[src/Chain.ts:11](https://github.com/kriptonio/sdk/blob/81ecf53/src/Chain.ts#L11)
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:12](https://github.com/kriptonio/js-sdk/blob/1c33c1b/src/Chain.ts#L12)
+[src/Chain.ts:12](https://github.com/kriptonio/sdk/blob/81ecf53/src/Chain.ts#L12)
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:13](https://github.com/kriptonio/js-sdk/blob/1c33c1b/src/Chain.ts#L13)
+[src/Chain.ts:13](https://github.com/kriptonio/sdk/blob/81ecf53/src/Chain.ts#L13)
 
 ___
 
@@ -71,4 +71,4 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:14](https://github.com/kriptonio/js-sdk/blob/1c33c1b/src/Chain.ts#L14)
+[src/Chain.ts:14](https://github.com/kriptonio/sdk/blob/81ecf53/src/Chain.ts#L14)

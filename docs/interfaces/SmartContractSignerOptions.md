@@ -17,7 +17,7 @@
 
 #### Defined in
 
-[src/service/SmartContractService.ts:8](https://github.com/kriptonio/js-sdk/blob/1c33c1b/src/service/SmartContractService.ts#L8)
+[src/service/SmartContractService.ts:8](https://github.com/kriptonio/sdk/blob/81ecf53/src/service/SmartContractService.ts#L8)
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 #### Defined in
 
-[src/service/SmartContractService.ts:7](https://github.com/kriptonio/js-sdk/blob/1c33c1b/src/service/SmartContractService.ts#L7)
+[src/service/SmartContractService.ts:7](https://github.com/kriptonio/sdk/blob/81ecf53/src/service/SmartContractService.ts#L7)
