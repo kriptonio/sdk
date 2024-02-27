@@ -27,6 +27,7 @@
 - [entryPoint](KernelSmartWallet.md#entrypoint)
 - [publicClient](KernelSmartWallet.md#publicclient)
 - [rpcUrl](KernelSmartWallet.md#rpcurl)
+- [vendor](KernelSmartWallet.md#vendor)
 
 ### Methods
 
@@ -99,7 +100,7 @@ SmartWallet.constructor
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:77](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L77)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:77](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L77)
 
 ## Properties
 
@@ -136,7 +137,7 @@ SmartWallet.constructor
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:75](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L75)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:75](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L75)
 
 ___
 
@@ -146,7 +147,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:74](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L74)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:74](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L74)
 
 ___
 
@@ -160,7 +161,7 @@ SmartWallet.chain
 
 #### Defined in
 
-[src/wallet/Wallet.ts:43](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/Wallet.ts#L43)
+[src/wallet/Wallet.ts:43](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/Wallet.ts#L43)
 
 ## Accessors
 
@@ -178,7 +179,7 @@ SmartWallet.address
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:91](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L91)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:91](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L91)
 
 ___
 
@@ -217,7 +218,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:83](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L83)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:83](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L83)
 
 ___
 
@@ -235,7 +236,7 @@ SmartWallet.entryPoint
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:95](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L95)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:95](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L95)
 
 ___
 
@@ -249,7 +250,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:99](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L99)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:99](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L99)
 
 ___
 
@@ -267,7 +268,25 @@ SmartWallet.rpcUrl
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:87](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L87)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:87](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L87)
+
+___
+
+### vendor
+
+• `get` **vendor**(): `string`
+
+#### Returns
+
+`string`
+
+#### Overrides
+
+SmartWallet.vendor
+
+#### Defined in
+
+[src/wallet/smart-wallet/KernelSmartWallet.ts:103](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L103)
 
 ## Methods
 
@@ -290,7 +309,7 @@ SmartWallet.rpcUrl
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:370](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L370)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:374](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L374)
 
 ___
 
@@ -311,7 +330,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:414](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L414)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:418](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L418)
 
 ___
 
@@ -333,7 +352,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:385](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L385)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:389](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L389)
 
 ___
 
@@ -357,7 +376,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:396](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L396)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:400](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L400)
 
 ___
 
@@ -385,7 +404,7 @@ SmartWallet.createCallData
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:242](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L242)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:246](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L246)
 
 ___
 
@@ -409,7 +428,7 @@ SmartWallet.deploy
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:142](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L142)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:146](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L146)
 
 ___
 
@@ -434,7 +453,7 @@ SmartWallet.deployContract
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:282](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L282)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:286](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L286)
 
 ___
 
@@ -458,7 +477,7 @@ SmartWallet.estimateGas
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:160](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L160)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:164](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L164)
 
 ___
 
@@ -482,7 +501,7 @@ SmartWallet.estimateUserOperationGas
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:256](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L256)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:260](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L260)
 
 ___
 
@@ -500,7 +519,7 @@ SmartWallet.export
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:273](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L273)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:277](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L277)
 
 ___
 
@@ -520,7 +539,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:422](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L422)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:426](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L426)
 
 ___
 
@@ -538,7 +557,7 @@ SmartWallet.getNonce
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:123](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L123)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:127](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L127)
 
 ___
 
@@ -556,7 +575,7 @@ SmartWallet.getVersion
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:103](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L103)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:107](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L107)
 
 ___
 
@@ -574,7 +593,7 @@ SmartWallet.isDeployed
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:156](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L156)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:160](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L160)
 
 ___
 
@@ -599,7 +618,7 @@ SmartWallet.sendTransaction
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:190](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L190)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:194](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L194)
 
 ___
 
@@ -623,7 +642,7 @@ SmartWallet.sendUserOperation
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:265](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L265)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:269](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L269)
 
 ___
 
@@ -647,7 +666,7 @@ SmartWallet.signMessage
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:127](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L127)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:131](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L131)
 
 ___
 
@@ -671,7 +690,7 @@ SmartWallet.signTransaction
 
 #### Defined in
 
-[src/wallet/smart-wallet/SmartWallet.ts:35](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/SmartWallet.ts#L35)
+[src/wallet/smart-wallet/SmartWallet.ts:35](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/SmartWallet.ts#L35)
 
 ___
 
@@ -695,7 +714,7 @@ SmartWallet.signTypedData
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:133](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L133)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:137](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L137)
 
 ___
 
@@ -720,7 +739,7 @@ SmartWallet.waitForUserOperation
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:321](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L321)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:325](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L325)
 
 ___
 
@@ -741,7 +760,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:521](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L521)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:525](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L525)
 
 ___
 
@@ -761,7 +780,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:453](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L453)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:457](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L457)
 
 ___
 
@@ -782,4 +801,4 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:473](https://github.com/kriptonio/sdk/blob/81ecf53/src/wallet/smart-wallet/KernelSmartWallet.ts#L473)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:477](https://github.com/kriptonio/sdk/blob/5181831/src/wallet/smart-wallet/KernelSmartWallet.ts#L477)

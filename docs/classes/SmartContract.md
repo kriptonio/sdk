@@ -63,7 +63,7 @@
 
 #### Defined in
 
-[src/model/SmartContract.ts:35](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L35)
+[src/model/SmartContract.ts:35](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L35)
 
 ## Properties
 
@@ -73,7 +73,7 @@
 
 #### Defined in
 
-[src/model/SmartContract.ts:33](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L33)
+[src/model/SmartContract.ts:33](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L33)
 
 ___
 
@@ -83,7 +83,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:38](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L38)
+[src/model/SmartContract.ts:38](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L38)
 
 ___
 
@@ -93,7 +93,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:39](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L39)
+[src/model/SmartContract.ts:39](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L39)
 
 ___
 
@@ -103,7 +103,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:40](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L40)
+[src/model/SmartContract.ts:40](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L40)
 
 ___
 
@@ -113,7 +113,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:42](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L42)
+[src/model/SmartContract.ts:42](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L42)
 
 ___
 
@@ -123,7 +123,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:41](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L41)
+[src/model/SmartContract.ts:41](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L41)
 
 ___
 
@@ -133,7 +133,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:36](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L36)
+[src/model/SmartContract.ts:36](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L36)
 
 ___
 
@@ -143,7 +143,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:43](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L43)
+[src/model/SmartContract.ts:43](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L43)
 
 ___
 
@@ -153,7 +153,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:37](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L37)
+[src/model/SmartContract.ts:37](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L37)
 
 ___
 
@@ -163,7 +163,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:44](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L44)
+[src/model/SmartContract.ts:44](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L44)
 
 ## Accessors
 
@@ -239,7 +239,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:239](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L239)
+[src/model/SmartContract.ts:239](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L239)
 
 ___
 
@@ -265,7 +265,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:247](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L247)
+[src/model/SmartContract.ts:247](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L247)
 
 ## Methods
 
@@ -286,7 +286,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:144](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L144)
+[src/model/SmartContract.ts:144](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L144)
 
 ___
 
@@ -306,7 +306,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:189](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L189)
+[src/model/SmartContract.ts:189](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L189)
 
 ___
 
@@ -327,7 +327,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:93](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L93)
+[src/model/SmartContract.ts:93](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L93)
 
 ___
 
@@ -347,7 +347,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:123](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L123)
+[src/model/SmartContract.ts:123](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L123)
 
 ___
 
@@ -368,7 +368,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:85](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L85)
+[src/model/SmartContract.ts:85](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L85)
 
 ___
 
@@ -389,7 +389,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:49](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L49)
+[src/model/SmartContract.ts:49](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L49)
 
 ___
 
@@ -409,7 +409,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:273](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L273)
+[src/model/SmartContract.ts:273](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L273)
 
 ___
 
@@ -431,4 +431,4 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:255](https://github.com/kriptonio/sdk/blob/81ecf53/src/model/SmartContract.ts#L255)
+[src/model/SmartContract.ts:255](https://github.com/kriptonio/sdk/blob/5181831/src/model/SmartContract.ts#L255)
