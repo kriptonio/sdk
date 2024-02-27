@@ -112,7 +112,6 @@ export class WalletService {
 
     return WalletFactory.from({
       kernel: {
-        version: exportedWallet.kernel.version,
         rpcUrl: walletRpc.url,
         paymasterUrl,
         ...exportSource(exportedWallet.kernel),

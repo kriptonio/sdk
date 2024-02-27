@@ -23,7 +23,6 @@ export type KernelWalletWrapperConfig = {
 };
 
 export type KernelWalletConfig = {
-  version?: '2.3';
   rpcUrl: string;
   bundlerUrl?: string;
   paymasterUrl?: string;

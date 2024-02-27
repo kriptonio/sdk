@@ -1,5 +1,9 @@
 import { signerToEcdsaValidator } from '@zerodev/ecdsa-validator';
-import { createKernelAccount, createKernelAccountClient } from '@zerodev/sdk';
+import {
+  KernelAccountAbi,
+  createKernelAccount,
+  createKernelAccountClient,
+} from '@zerodev/sdk';
 import { CallType } from '@zerodev/sdk/types';
 import {
   EstimateUserOperationGasReturnType,
@@ -10,7 +14,7 @@ import {
 } from 'permissionless';
 import {
   Account,
-  Address,
+  BaseError,
   Chain,
   EstimateGasParameters,
   Hex,
@@ -21,6 +25,7 @@ import {
   SignableMessage as ViemSignableMessage,
   createPublicClient,
   encodeFunctionData,
+  getContract,
   http,
   parseAbi,
   parseEventLogs,
@@ -43,7 +48,6 @@ import {
 } from '../Wallet';
 import {
   ExportedKernelWallet,
-  KernelWalletConfig,
   KernelWalletWrapperConfig,
 } from '../WalletConfig';
 import {
@@ -51,6 +55,7 @@ import {
   SmartWallet,
   UserOperationInfo,
 } from './SmartWallet';
+import { UserOperationEventAbi } from './abi/UserOperationEventAbi';
 
 export type KernelClient = Awaited<
   ReturnType<typeof KernelSmartWallet.createKernelClient>
@@ -91,6 +96,30 @@ export class KernelSmartWallet extends SmartWallet {
     return this.#client.account.entryPoint;
   }
 
+  private get publicClient() {
+    return this.#client.extend(publicActions);
+  }
+
+  public async getVersion(): Promise<string | null> {
+    try {
+      const contract = getContract({
+        abi: KernelAccountAbi,
+        address: this.address,
+        client: this.publicClient,
+      });
+
+      return await contract.read.version();
+    } catch (e) {
+      if (e instanceof BaseError) {
+        return null;
+      }
+
+      throw new KriptonioError({
+        message: 'error while getting smart wallet version',
+      });
+    }
+  }
+
   public override getNonce(): Promise<bigint> {
     return this.#client.account.getNonce();
   }
@@ -125,10 +154,7 @@ export class KernelSmartWallet extends SmartWallet {
   };
 
   public isDeployed = (): Promise<boolean> => {
-    return isSmartAccountDeployed(
-      this.#client.extend(publicActions),
-      this.address
-    );
+    return isSmartAccountDeployed(this.publicClient, this.address);
   };
 
   public override async estimateGas(
@@ -248,7 +274,6 @@ export class KernelSmartWallet extends SmartWallet {
     return {
       version: '1.0',
       kernel: {
-        version: this.#config.kernel.version,
         ...exportSource(this.#config.kernel),
       },
     };
@@ -297,8 +322,7 @@ export class KernelSmartWallet extends SmartWallet {
     userOpHash: Hex,
     timeout = 60_000
   ): Promise<UserOperationInfo | null> => {
-    const publicClient = this.#client.extend(publicActions);
-
+    const publicClient = this.publicClient;
     const currentBlock = await publicClient.getBlockNumber();
     let elapsed = 0;
     const stepWaitTime = 1000; // 1 sec
@@ -309,7 +333,7 @@ export class KernelSmartWallet extends SmartWallet {
       try {
         const logs = await publicClient.getLogs({
           address: this.entryPoint,
-          event: userOperationEventAbi,
+          event: UserOperationEventAbi,
           args: {
             userOpHash,
           },
@@ -396,7 +420,7 @@ export class KernelSmartWallet extends SmartWallet {
   };
 
   private async getContractAddress(transactionHash: Hex): Promise<Hex> {
-    const publicClient = this.#client.extend(publicActions);
+    const publicClient = this.publicClient;
     const receipt = await publicClient.waitForTransactionReceipt({
       hash: transactionHash,
     });
@@ -435,8 +459,6 @@ export class KernelSmartWallet extends SmartWallet {
       });
     }
 
-    config.kernel.version = config.kernel.version ?? '2.3';
-
     const publicClient = createPublicClient({
       transport: http(config.kernel.rpcUrl),
     });
@@ -462,7 +484,8 @@ export class KernelSmartWallet extends SmartWallet {
     });
 
     const account = await createKernelAccount(publicClient, {
-      accountLogicAddress: this.getAccountLogicAddress(config.kernel),
+      // will use kernel 2.3 when creating the account
+      accountLogicAddress: '0xD3F582F6B4814E989Ee8E96bc3175320B5A540ab',
       plugins: {
         sudo: ecdsaValidator,
       },
@@ -495,18 +518,6 @@ export class KernelSmartWallet extends SmartWallet {
     return client;
   }
 
-  private static getAccountLogicAddress = (
-    config: KernelWalletConfig
-  ): Address => {
-    if (config.version === '2.3') {
-      return '0xD3F582F6B4814E989Ee8E96bc3175320B5A540ab';
-    }
-
-    throw new KriptonioError({
-      message: `unsupported kernel wallet version ${config.version}`,
-    });
-  };
-
   public static async computeAddress(
     config: ExportedKernelWallet,
     rpcUrl: string
@@ -521,53 +532,3 @@ export class KernelSmartWallet extends SmartWallet {
     return wallet.address;
   }
 }
-
-const userOperationEventAbi = {
-  anonymous: false,
-  inputs: [
-    {
-      indexed: true,
-      internalType: 'bytes32',
-      name: 'userOpHash',
-      type: 'bytes32',
-    },
-    {
-      indexed: true,
-      internalType: 'address',
-      name: 'sender',
-      type: 'address',
-    },
-    {
-      indexed: true,
-      internalType: 'address',
-      name: 'paymaster',
-      type: 'address',
-    },
-    {
-      indexed: false,
-      internalType: 'uint256',
-      name: 'nonce',
-      type: 'uint256',
-    },
-    {
-      indexed: false,
-      internalType: 'bool',
-      name: 'success',
-      type: 'bool',
-    },
-    {
-      indexed: false,
-      internalType: 'uint256',
-      name: 'actualGasCost',
-      type: 'uint256',
-    },
-    {
-      indexed: false,
-      internalType: 'uint256',
-      name: 'actualGasUsed',
-      type: 'uint256',
-    },
-  ],
-  name: 'UserOperationEvent',
-  type: 'event',
-} as const;

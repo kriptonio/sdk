@@ -45,6 +45,12 @@ export abstract class SmartWallet extends Wallet {
   public abstract get entryPoint(): Hex;
 
   /**
+   * Gets the smart wallet version
+   * @returns smart wallet version if deployed, null if not deployed
+   */
+  public abstract getVersion(): Promise<string | null>;
+
+  /**
    * Creates a call data for UserOperation
    */
   public abstract createCallData(input: {

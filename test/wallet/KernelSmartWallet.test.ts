@@ -71,26 +71,10 @@ describe('KernelSmartWallet', () => {
 
     const exported = wallet.export();
 
-    expect(Object.keys(exported.kernel).length).toBe(2);
+    expect(Object.keys(exported.kernel).length).toBe(1);
     expect('privateKey' in exported.kernel && exported.kernel.privateKey).toBe(
       testEnv.kernel.privateKey
     );
-    expect(exported.kernel.version).toBe('2.3');
-  });
-
-  it('throws an error when unsupported version provided', async () => {
-    await expect(async () => {
-      const sdk = createSdk();
-      await sdk.wallet.from(
-        {
-          kernel: {
-            privateKey: testEnv.kernel.privateKey,
-            version: '2.2' as never,
-          },
-        },
-        { chainId: testEnv.kernel.chainId }
-      );
-    }).rejects.toThrow('unsupported kernel wallet version 2.2');
   });
 
   it('can export when created with mnemonic', async () => {
@@ -105,11 +89,10 @@ describe('KernelSmartWallet', () => {
     );
 
     const exported = wallet.export();
-    expect(Object.keys(exported.kernel).length).toBe(2);
+    expect(Object.keys(exported.kernel).length).toBe(1);
     expect('mnemonic' in exported.kernel && exported.kernel.mnemonic).toBe(
       testEnv.kernel.mnemonic
     );
-    expect(exported.kernel.version).toBe('2.3');
   });
 
   it('can get nonce', async () => {
@@ -259,6 +242,38 @@ describe('KernelSmartWallet', () => {
     });
 
     expect(isValidSig).toBe(true);
+  });
+
+  it('can get wallet version when deployed', async () => {
+    const sdk = createSdk();
+    const wallet = await sdk.wallet.from(
+      {
+        kernel: {
+          mnemonic: testEnv.kernel.mnemonic,
+        },
+      },
+      { chainId: testEnv.kernel.chainId }
+    );
+
+    await wallet.deploy();
+
+    const version = await wallet.getVersion();
+    expect(version).toBe('0.2.3');
+  });
+
+  it('returns null version when wallet not deployed', async () => {
+    const sdk = createSdk();
+    const wallet = await sdk.wallet.from(
+      {
+        kernel: {
+          privateKey: generatePrivateKey(),
+        },
+      },
+      { chainId: testEnv.kernel.chainId }
+    );
+
+    const version = await wallet.getVersion();
+    expect(version).toBe(null);
   });
 
   it('throws error when invalid paymaster url is provided', async () => {
