@@ -18,7 +18,7 @@ import {
   Chain,
   EstimateGasParameters,
   Hex,
-  HttpTransport,
+  PublicClient,
   RpcError,
   SendTransactionParameters,
   TimeoutError,
@@ -29,7 +29,6 @@ import {
   http,
   parseAbi,
   parseEventLogs,
-  publicActions,
   toHex,
 } from 'viem';
 import { KriptonioError } from '../../Error';
@@ -73,10 +72,16 @@ const createCallAbi = parseAbi([
 export class KernelSmartWallet extends SmartWallet {
   #config: KernelWalletWrapperConfig;
   #client: KernelClient;
+  #publicClient: PublicClient;
 
-  constructor(config: KernelWalletWrapperConfig, client: KernelClient) {
+  constructor(
+    config: KernelWalletWrapperConfig,
+    client: KernelClient,
+    publicClient: PublicClient
+  ) {
     super(client.chain);
     this.#client = client;
+    this.#publicClient = publicClient;
     this.#config = config;
   }
 
@@ -96,10 +101,6 @@ export class KernelSmartWallet extends SmartWallet {
     return this.#client.account.entryPoint;
   }
 
-  private get publicClient() {
-    return this.#client.extend(publicActions);
-  }
-
   public get vendor(): string {
     return 'ZeroDev Kernel';
   }
@@ -109,7 +110,7 @@ export class KernelSmartWallet extends SmartWallet {
       const contract = getContract({
         abi: KernelAccountAbi,
         address: this.address,
-        client: this.publicClient,
+        client: this.#publicClient,
       });
 
       return await contract.read.version();
@@ -158,7 +159,7 @@ export class KernelSmartWallet extends SmartWallet {
   };
 
   public isDeployed = (): Promise<boolean> => {
-    return isSmartAccountDeployed(this.publicClient, this.address);
+    return isSmartAccountDeployed(this.#publicClient, this.address);
   };
 
   public override async estimateGas(
@@ -326,7 +327,7 @@ export class KernelSmartWallet extends SmartWallet {
     userOpHash: Hex,
     timeout = 60_000
   ): Promise<UserOperationInfo | null> => {
-    const publicClient = this.publicClient;
+    const publicClient = this.#publicClient;
     const currentBlock = await publicClient.getBlockNumber();
     let elapsed = 0;
     const stepWaitTime = 1000; // 1 sec
@@ -424,7 +425,7 @@ export class KernelSmartWallet extends SmartWallet {
   };
 
   private async getContractAddress(transactionHash: Hex): Promise<Hex> {
-    const publicClient = this.publicClient;
+    const publicClient = this.#publicClient;
     const receipt = await publicClient.waitForTransactionReceipt({
       hash: transactionHash,
     });
@@ -470,19 +471,15 @@ export class KernelSmartWallet extends SmartWallet {
     const chainId = await publicClient.getChainId();
     const chain = getChain(chainId);
 
-    const client = await this.createKernelClient(config, chain);
-    return new KernelSmartWallet(config, client);
+    const client = await this.createKernelClient(config, chain, publicClient);
+    return new KernelSmartWallet(config, client, publicClient);
   }
 
   public static async createKernelClient(
     config: KernelWalletWrapperConfig,
-    chain: Chain
+    chain: Chain,
+    publicClient: PublicClient
   ) {
-    const publicClient = createPublicClient<HttpTransport, Chain>({
-      transport: http(config.kernel.rpcUrl),
-      chain,
-    });
-
     const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
       signer: sourceToAccount(config.kernel),
     });

@@ -240,7 +240,7 @@ export class SmartContract {
     const chain = getChain(this.chainId);
 
     return createPublicClient({
-      transport: http(chain.rpcUrls.default.http[0]),
+      transport: http(chain.rpcUrls.default.http[0], { batch: true }),
     });
   }
 

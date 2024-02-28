@@ -138,7 +138,7 @@ export class EoaWallet extends Wallet {
     }
 
     const publicClient = createPublicClient({
-      transport: http(config.eoa.rpcUrl),
+      transport: http(config.eoa.rpcUrl, { batch: true }),
     });
 
     const chainId = await publicClient.getChainId();
@@ -152,7 +152,7 @@ export class EoaWallet extends Wallet {
     return createWalletClient({
       chain,
       account: sourceToAccount(config.eoa),
-      transport: http(config.eoa.rpcUrl),
+      transport: http(config.eoa.rpcUrl, { batch: true }),
     });
   }
 
