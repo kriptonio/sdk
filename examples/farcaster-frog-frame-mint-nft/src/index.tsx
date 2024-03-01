@@ -8,7 +8,6 @@ const privateKey = process.env.PRIVATE_KEY!;
 const accessToken = process.env.ACCESS_TOKEN!;
 
 export const app = new Frog();
-
 const sdk = new KriptonioSdk({ accessToken });
 
 const wallet = await sdk.wallet.from({
@@ -31,17 +30,16 @@ if (!await smartContract.deployed()) {
 }
 
 app.frame('/', async (c) => {
-  const { buttonValue, frameData } = c;
-  const isMint = buttonValue === 'mint';
-  let account: Account | null = null;
   let alreadyMinted = false;
+  let account: Account | null = null;
+  const isMint = c.buttonValue === 'mint';
 
-  if (frameData && isMint) {
+  if (c.frameData && isMint) {
     account = await fetch(`https://fnames.farcaster.xyz/transfers?fid=${c.frameData.fid}`)
       .then((r) => r.json())
       .then((r) => r.transfers[0]);
 
-    const tokenId = frameData.timestamp;
+    const tokenId = c.frameData.timestamp;
     const balance = await smartContract.read<bigint>('balanceOf', {
       params: [account?.owner]
     });
@@ -60,7 +58,7 @@ app.frame('/', async (c) => {
 
   return c.res({
     image: (
-      <div style={{ display: 'flex', flex: 1, width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', background: 'linear-gradient(to right, #432889, #17101F)' }}>
+      <div style={{ display: 'flex', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', background: 'linear-gradient(to right, #432889, #17101F)' }}>
         <span style={{ color: 'white', fontSize: '50px' }}>
           {alreadyMinted ? 'NFT Already Minted' : isMint ? `NFT Minted to ${account?.username} 🏆` : 'Click Mint to mint a free NFT 🖼'}
         </span>
