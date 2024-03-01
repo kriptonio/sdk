@@ -8,6 +8,7 @@ const privateKey = process.env.PRIVATE_KEY!;
 const accessToken = process.env.ACCESS_TOKEN!;
 
 export const app = new Frog();
+
 const sdk = new KriptonioSdk({ accessToken });
 
 const wallet = await sdk.wallet.from({
@@ -35,7 +36,7 @@ app.frame('/', async (c) => {
   let account: Account | null = null;
   let alreadyMinted = false;
 
-  if (frameData) {
+  if (frameData && isMint) {
     account = await fetch(`https://fnames.farcaster.xyz/transfers?fid=${c.frameData.fid}`)
       .then((r) => r.json())
       .then((r) => r.transfers[0]);
@@ -46,7 +47,7 @@ app.frame('/', async (c) => {
     });
     alreadyMinted = balance > 0;
 
-    if (account && isMint && !alreadyMinted) {
+    if (!alreadyMinted) {
       console.log('minting nft...');
 
       smartContract.write('safeMint', {
@@ -65,7 +66,7 @@ app.frame('/', async (c) => {
         </span>
       </div>
     ),
-    intents: isMint || alreadyMinted ? [
+    intents: isMint ? [
       <Button.Redirect location={`${baseUrl}/show-article`}>Learn How To Create This</Button.Redirect>,
     ] : [
       <Button value="mint">Mint</Button>,
