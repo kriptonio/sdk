@@ -37,7 +37,7 @@
 
 #### Defined in
 
-src/service/PaymasterService.ts:9
+[src/service/PaymasterService.ts:13](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/service/PaymasterService.ts#L13)
 
 ## Properties
 
@@ -47,7 +47,7 @@ src/service/PaymasterService.ts:9
 
 #### Defined in
 
-src/service/PaymasterService.ts:6
+[src/service/PaymasterService.ts:10](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/service/PaymasterService.ts#L10)
 
 ___
 
@@ -57,7 +57,7 @@ ___
 
 #### Defined in
 
-src/service/PaymasterService.ts:7
+[src/service/PaymasterService.ts:11](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/service/PaymasterService.ts#L11)
 
 ## Methods
 
@@ -77,19 +77,19 @@ src/service/PaymasterService.ts:7
 
 #### Defined in
 
-src/service/PaymasterService.ts:14
+[src/service/PaymasterService.ts:18](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/service/PaymasterService.ts#L18)
 
 ___
 
 ### get
 
-▸ **get**(`id`): `Promise`\<`PaymasterDto`\>
+▸ **get**(`props`): `Promise`\<`PaymasterDto`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `id` | `string` |
+| `props` | [`GetPaymasterProps`](../README.md#getpaymasterprops) |
 
 #### Returns
 
@@ -97,19 +97,19 @@ ___
 
 #### Defined in
 
-src/service/PaymasterService.ts:18
+[src/service/PaymasterService.ts:22](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/service/PaymasterService.ts#L22)
 
 ___
 
 ### getOrCreate
 
-▸ **getOrCreate**(`params`): `Promise`\<`PaymasterDto`\>
+▸ **getOrCreate**(`props`): `Promise`\<`PaymasterDto`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `params` | `Omit`\<[`GetOrCreateParams`](../README.md#getorcreateparams), ``"organizationId"``\> |
+| `props` | `Omit`\<[`GetOrCreatePaymasterProps`](../README.md#getorcreatepaymasterprops), ``"organizationId"``\> |
 
 #### Returns
 
@@ -117,4 +117,4 @@ ___
 
 #### Defined in
 
-src/service/PaymasterService.ts:22
+[src/service/PaymasterService.ts:26](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/service/PaymasterService.ts#L26)

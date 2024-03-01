@@ -1,5 +1,9 @@
 import { ApiClient } from '../api/ApiClient';
-import { GetOrCreateParams, PaymasterApi } from '../api/PaymasterApi';
+import {
+  GetOrCreatePaymasterProps,
+  GetPaymasterProps,
+  PaymasterApi,
+} from '../api/PaymasterApi';
 import { CreatePaymasterEndpointRequest } from '../types/paymaster/createPaymasterEndpointRequest';
 
 export class PaymasterService {
@@ -15,17 +19,17 @@ export class PaymasterService {
     return this.#paymasterApi.create(body);
   };
 
-  public get = (id: string) => {
-    return this.#paymasterApi.get(id);
+  public get = (props: GetPaymasterProps) => {
+    return this.#paymasterApi.get(props);
   };
 
   public getOrCreate = async (
-    params: Omit<GetOrCreateParams, 'organizationId'>
+    props: Omit<GetOrCreatePaymasterProps, 'organizationId'>
   ) => {
     const organizationId = await this.#apiClient.currentOrganization();
     return this.#paymasterApi.getOrCreate({
       organizationId,
-      ...params,
+      ...props,
     });
   };
 }

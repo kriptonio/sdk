@@ -13,7 +13,11 @@ import { SponsorTransactionBody } from '../types/paymaster/sponsorTransactionBod
 import { SponsorTransactionResponse } from '../types/paymaster/sponsorTransactionResponse';
 import { ApiClient } from './ApiClient';
 
-export type GetOrCreateParams = {
+export type GetPaymasterProps = {
+  id: string;
+};
+
+export type GetOrCreatePaymasterProps = {
   organizationId: string;
   chainId: number;
   entryPoint: string;
@@ -45,9 +49,9 @@ export class PaymasterApi {
     });
   };
 
-  public get = async (id: string): Promise<PaymasterDto> => {
+  public get = async (props: GetPaymasterProps): Promise<PaymasterDto> => {
     const response = await this.#apiClient.get<PaymasterEndpointDetailResponse>(
-      `/v1/endpoints/${id}`,
+      `/v1/endpoints/${props.id}`,
       { baseURL: Configuration.paymasterApiUrl }
     );
 
@@ -61,10 +65,10 @@ export class PaymasterApi {
   };
 
   public getOrCreate = async (
-    params: GetOrCreateParams
+    props: GetOrCreatePaymasterProps
   ): Promise<PaymasterDto> => {
     const response = await this.#apiClient.get<PaymasterEndpointResponse>(
-      `/v1/organizations/${params.organizationId}/endpoints/chains/${params.chainId}?entryPoint=${params.entryPoint}&${params.wallet ? `wallet=${params.wallet}` : ''}`,
+      `/v1/organizations/${props.organizationId}/endpoints/chains/${props.chainId}?entryPoint=${props.entryPoint}&${props.wallet ? `wallet=${props.wallet}` : ''}`,
       { baseURL: Configuration.paymasterApiUrl }
     );
 

@@ -38,7 +38,7 @@
 
 #### Defined in
 
-src/Sdk.ts:26
+[src/Sdk.ts:26](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/Sdk.ts#L26)
 
 ## Properties
 
@@ -48,7 +48,7 @@ src/Sdk.ts:26
 
 #### Defined in
 
-src/Sdk.ts:20
+[src/Sdk.ts:20](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/Sdk.ts#L20)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-src/Sdk.ts:24
+[src/Sdk.ts:24](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/Sdk.ts#L24)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-src/Sdk.ts:23
+[src/Sdk.ts:23](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/Sdk.ts#L23)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-src/Sdk.ts:22
+[src/Sdk.ts:22](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/Sdk.ts#L22)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-src/Sdk.ts:21
+[src/Sdk.ts:21](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/Sdk.ts#L21)
 
 ## Methods
 
@@ -108,4 +108,4 @@ src/Sdk.ts:21
 
 #### Defined in
 
-src/Sdk.ts:34
+[src/Sdk.ts:34](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/Sdk.ts#L34)

@@ -18,7 +18,16 @@ import { assertHex, parseError } from '../utils/error';
 import { sleep } from '../utils/time';
 import { OperationOptions, Wallet } from '../wallet/Wallet';
 
-export type SmartContractCall = {
+export type EstimateDeployProps = {
+  params: unknown[];
+};
+
+export type DeployProps = {
+  params: unknown[];
+  options?: OperationOptions;
+};
+
+export type SmartContractCallProps = {
   params?: unknown[];
   value?: bigint;
   options?: OperationOptions;
@@ -48,7 +57,7 @@ export class SmartContract {
 
   public write = async (
     functionName: string,
-    opts?: SmartContractCall
+    props?: SmartContractCallProps
   ): Promise<Hex> => {
     if (!this.wallet) {
       throw new KriptonioError({
@@ -66,25 +75,28 @@ export class SmartContract {
       const data = encodeFunctionData({
         abi: this.abi as Abi,
         functionName,
-        args: opts?.params ?? [],
+        args: props?.params ?? [],
       });
 
       return await this.wallet.sendTransaction(
         {
           to: this.deployment.address,
           data,
-          value: opts?.value,
+          value: props?.value,
         },
-        opts?.options
+        props?.options
       );
     } catch (e) {
       throw parseError(e);
     }
   };
 
-  public read = async (functionName: string, opts?: SmartContractCall) => {
+  public read = async (
+    functionName: string,
+    props?: SmartContractCallProps
+  ) => {
     try {
-      return await this.readContract.read[functionName](opts?.params ?? []);
+      return await this.readContract.read[functionName](props?.params ?? []);
     } catch (e) {
       throw parseError(e);
     }
@@ -92,7 +104,7 @@ export class SmartContract {
 
   public estimate = async (
     functionName: string,
-    opts?: SmartContractCall
+    props?: SmartContractCallProps
   ): Promise<bigint> => {
     try {
       if (!this.wallet) {
@@ -112,7 +124,7 @@ export class SmartContract {
         data: encodeFunctionData({
           abi: this.abi as Abi,
           functionName,
-          args: opts?.params ?? [],
+          args: props?.params ?? [],
         }),
       });
     } catch (e) {
@@ -120,7 +132,7 @@ export class SmartContract {
     }
   };
 
-  public estimateDeploy = async (params: unknown[] = []) => {
+  public estimateDeploy = async (props?: EstimateDeployProps) => {
     if (!this.wallet) {
       throw new KriptonioError({
         message: 'please attach a wallet to estimate the deployment gas',
@@ -133,7 +145,7 @@ export class SmartContract {
         data: encodeDeployData({
           abi: this.abi as Abi,
           bytecode: assertHex(this.bin, 'bin'),
-          args: params,
+          args: props?.params ?? [],
         }),
       });
     } catch (e) {
@@ -142,8 +154,7 @@ export class SmartContract {
   };
 
   public deploy = async (
-    params: unknown[] = [],
-    options?: OperationOptions
+    props?: DeployProps
   ): Promise<SmartContractDeployment> => {
     if (!this.wallet) {
       throw new KriptonioError({
@@ -155,22 +166,25 @@ export class SmartContract {
       const deploymentData = encodeDeployData({
         abi: this.abi,
         bytecode: assertHex(this.bin, 'bin'),
-        args: params as unknown[],
+        args: props?.params ?? [],
       });
 
       const deployment = await this.wallet?.deployContract(
         {
           bytecode: deploymentData,
         },
-        options
+        props?.options
       );
 
       try {
         this.deployment = SmartContract.fromDeployment(
-          await this.#smartContractApi.createDeployment(this.id, {
-            address: deployment.address,
-            deployer: this.wallet.address,
-            transactionHash: deployment.hash,
+          await this.#smartContractApi.createDeployment({
+            id: this.id,
+            data: {
+              address: deployment.address,
+              deployer: this.wallet.address,
+              transactionHash: deployment.hash,
+            },
           })
         );
       } catch (e) {
@@ -188,10 +202,7 @@ export class SmartContract {
 
   public deployed = async (timeoutMs: number = 60000): Promise<boolean> => {
     if (!this.deployment?.transaction?.hash) {
-      throw new KriptonioError({
-        message:
-          'cannot call deployed() function before smart contract is deployed',
-      });
+      return false;
     }
 
     if (this.deployment.transaction.status === TransactionStatus.Success) {

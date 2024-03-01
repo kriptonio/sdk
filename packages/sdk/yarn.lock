@@ -1289,10 +1289,10 @@
   resolved "https://registry.yarnpkg.com/@zerodev/ecdsa-validator/-/ecdsa-validator-5.1.0.tgz#74bd4f6f2df9ff32560ed70109ece24b08d8492f"
   integrity sha512-mjoRXn/XuKEeyXXjapZMnExNeNnqbRbEHJA/wMhY1pHb+p+29E9oY3JSTgsOKF9ICLsAzD9ZxQTAQJLtrfP2fQ==
 
-"@zerodev/sdk@5.1.6":
-  version "5.1.6"
-  resolved "https://registry.yarnpkg.com/@zerodev/sdk/-/sdk-5.1.6.tgz#995437fd5a8b824665836ad301a7b959d68d0bc1"
-  integrity sha512-cnGK0vJ2cWE9d5AzIEJFD7aWouNleFN21It+eEsBl9UMO4NnVny8dK+vdbIQksVY4wcBVYDV1XVy2BjYRnllyA==
+"@zerodev/sdk@5.1.7":
+  version "5.1.7"
+  resolved "https://registry.yarnpkg.com/@zerodev/sdk/-/sdk-5.1.7.tgz#022c886a45c67ca0078e9929677f51bfa41f9913"
+  integrity sha512-FWH88PwRMDD2N6XneYYWhfFV6x8Q3OB197UQ9UXPCWp+gfjQ64FNG5ScnC5Habyo7vr4+0vY//3eQWDcQ2381A==
 
 abitype@1.0.0:
   version "1.0.0"
@@ -4446,10 +4446,10 @@ v8-to-istanbul@^9.0.1:
     "@types/istanbul-lib-coverage" "^2.0.1"
     convert-source-map "^2.0.0"
 
-viem@2.7.15:
-  version "2.7.15"
-  resolved "https://registry.yarnpkg.com/viem/-/viem-2.7.15.tgz#0dfdcb75be196c85839950b0ccb88be0b377609c"
-  integrity sha512-I2RMQpg1/MC7fXVjHxeXRPU9k/WEOvZajK/KZSr7DChS0AaZ7uovsQWppwBn2wvZWguTCIRAHqzMwIEGku95yQ==
+viem@2.7.16:
+  version "2.7.16"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-2.7.16.tgz#99e66bbec661b2284bc32061474f20a90381bdcb"
+  integrity sha512-yOPa9yaoJUm44m0Qe3ugHnkHol3QQlFxN3jT+bq+lQip7X7cWdPfmguyfLWX2viCXcmYZUDiQdeFbkPW9lw11Q==
   dependencies:
     "@adraffy/ens-normalize" "1.10.0"
     "@noble/curves" "1.2.0"

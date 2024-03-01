@@ -37,7 +37,7 @@
 
 #### Defined in
 
-src/service/RpcService.ts:9
+[src/service/RpcService.ts:9](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/service/RpcService.ts#L9)
 
 ## Properties
 
@@ -47,7 +47,7 @@ src/service/RpcService.ts:9
 
 #### Defined in
 
-src/service/RpcService.ts:6
+[src/service/RpcService.ts:6](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/service/RpcService.ts#L6)
 
 ___
 
@@ -57,7 +57,7 @@ ___
 
 #### Defined in
 
-src/service/RpcService.ts:7
+[src/service/RpcService.ts:7](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/service/RpcService.ts#L7)
 
 ## Methods
 
@@ -77,19 +77,19 @@ src/service/RpcService.ts:7
 
 #### Defined in
 
-src/service/RpcService.ts:14
+[src/service/RpcService.ts:14](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/service/RpcService.ts#L14)
 
 ___
 
 ### get
 
-▸ **get**(`id`): `Promise`\<`RpcDto`\>
+▸ **get**(`props`): `Promise`\<`RpcDto`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `id` | `string` |
+| `props` | `GetRpcProps` |
 
 #### Returns
 
@@ -97,19 +97,19 @@ ___
 
 #### Defined in
 
-src/service/RpcService.ts:18
+[src/service/RpcService.ts:18](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/service/RpcService.ts#L18)
 
 ___
 
 ### getOrCreate
 
-▸ **getOrCreate**(`params`): `Promise`\<`RpcDto`\>
+▸ **getOrCreate**(`props`): `Promise`\<`RpcDto`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `params` | `Omit`\<`GetOrCreateParams`, ``"organizationId"``\> |
+| `props` | `Omit`\<`GetOrCreateRpcProps`, ``"organizationId"``\> |
 
 #### Returns
 
@@ -117,4 +117,4 @@ ___
 
 #### Defined in
 
-src/service/RpcService.ts:22
+[src/service/RpcService.ts:22](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/service/RpcService.ts#L22)

@@ -37,7 +37,7 @@
 
 #### Defined in
 
-src/api/PaymasterApi.ts:26
+[src/api/PaymasterApi.ts:30](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/api/PaymasterApi.ts#L30)
 
 ## Properties
 
@@ -47,7 +47,7 @@ src/api/PaymasterApi.ts:26
 
 #### Defined in
 
-src/api/PaymasterApi.ts:24
+[src/api/PaymasterApi.ts:28](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/api/PaymasterApi.ts#L28)
 
 ## Methods
 
@@ -67,7 +67,7 @@ src/api/PaymasterApi.ts:24
 
 #### Defined in
 
-src/api/PaymasterApi.ts:30
+[src/api/PaymasterApi.ts:34](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/api/PaymasterApi.ts#L34)
 
 ___
 
@@ -87,19 +87,19 @@ ___
 
 #### Defined in
 
-src/api/PaymasterApi.ts:80
+[src/api/PaymasterApi.ts:84](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/api/PaymasterApi.ts#L84)
 
 ___
 
 ### get
 
-▸ **get**(`id`): `Promise`\<`PaymasterDto`\>
+▸ **get**(`props`): `Promise`\<`PaymasterDto`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `id` | `string` |
+| `props` | [`GetPaymasterProps`](../README.md#getpaymasterprops) |
 
 #### Returns
 
@@ -107,19 +107,19 @@ ___
 
 #### Defined in
 
-src/api/PaymasterApi.ts:48
+[src/api/PaymasterApi.ts:52](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/api/PaymasterApi.ts#L52)
 
 ___
 
 ### getOrCreate
 
-▸ **getOrCreate**(`params`): `Promise`\<`PaymasterDto`\>
+▸ **getOrCreate**(`props`): `Promise`\<`PaymasterDto`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `params` | [`GetOrCreateParams`](../README.md#getorcreateparams) |
+| `props` | [`GetOrCreatePaymasterProps`](../README.md#getorcreatepaymasterprops) |
 
 #### Returns
 
@@ -127,4 +127,4 @@ ___
 
 #### Defined in
 
-src/api/PaymasterApi.ts:63
+[src/api/PaymasterApi.ts:67](https://github.com/kriptonio/sdk/blob/82939f6/packages/sdk/src/api/PaymasterApi.ts#L67)

@@ -9,6 +9,21 @@ import { UpdateDeploymentTransactionBody } from '../types/api/updateDeploymentTr
 import { Wallet } from '../wallet/Wallet';
 import { ApiClient } from './ApiClient';
 
+export type GetSmartContractProps = {
+  id: string;
+  wallet?: Wallet;
+};
+
+export type CreateFromStandardJsonProps = {
+  data: CreateSmartContractFromStandardJsonBody;
+  wallet?: Wallet;
+};
+
+export type CreateDeploymentProps = {
+  id: string;
+  data: CreateSmartContractDeploymentBody;
+};
+
 export class SmartContractApi {
   #apiClient: ApiClient;
 
@@ -16,31 +31,30 @@ export class SmartContractApi {
     this.#apiClient = apiClient;
   }
 
-  public get = async (id: string, wallet?: Wallet): Promise<SmartContract> => {
+  public get = async (props: GetSmartContractProps): Promise<SmartContract> => {
     const result = await this.#apiClient.get<SmartContractDetailResponse>(
-      `/v1/smart-contracts/${id}`
+      `/v1/smart-contracts/${props.id}`
     );
 
     if (result.ok) {
-      return SmartContract.fromDto(result.data, this, wallet);
+      return SmartContract.fromDto(result.data, this, props.wallet);
     }
 
     throw new KriptonioError({
-      message: `error while fetching smart contract with id ${id}. ${result.error.stringify()}`,
+      message: `error while fetching smart contract with id ${props.id}. ${result.error.stringify()}`,
     });
   };
 
   public createFromStandardJson = async (
-    data: CreateSmartContractFromStandardJsonBody,
-    wallet?: Wallet
+    props: CreateFromStandardJsonProps
   ) => {
     const result = await this.#apiClient.post<CreateSmartContractResponse>(
       '/v1/smart-contracts/standard-json',
-      { data }
+      { data: props.data }
     );
 
     if (result.ok) {
-      return this.get(result.data.id, wallet);
+      return this.get({ id: result.data.id, wallet: props.wallet });
     }
 
     throw new KriptonioError({
@@ -48,13 +62,10 @@ export class SmartContractApi {
     });
   };
 
-  public createDeployment = async (
-    id: string,
-    data: CreateSmartContractDeploymentBody
-  ) => {
+  public createDeployment = async (props: CreateDeploymentProps) => {
     const result = await this.#apiClient.post<SmartContractDeploymentResponse>(
-      `/v1/smart-contracts/${id}/deployment`,
-      { data }
+      `/v1/smart-contracts/${props.id}/deployment`,
+      { data: props.data }
     );
 
     if (result.ok) {
