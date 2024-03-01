@@ -52,7 +52,7 @@
 
 #### Defined in
 
-src/wallet/Wallet.ts:43
+[src/wallet/Wallet.ts:43](https://github.com/kriptonio/sdk/blob/631b409/packages/sdk/src/wallet/Wallet.ts#L43)
 
 ## Properties
 
@@ -62,7 +62,7 @@ src/wallet/Wallet.ts:43
 
 #### Defined in
 
-src/wallet/Wallet.ts:43
+[src/wallet/Wallet.ts:43](https://github.com/kriptonio/sdk/blob/631b409/packages/sdk/src/wallet/Wallet.ts#L43)
 
 ## Accessors
 
@@ -76,7 +76,7 @@ src/wallet/Wallet.ts:43
 
 #### Defined in
 
-src/wallet/Wallet.ts:47
+[src/wallet/Wallet.ts:47](https://github.com/kriptonio/sdk/blob/631b409/packages/sdk/src/wallet/Wallet.ts#L47)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-src/wallet/Wallet.ts:45
+[src/wallet/Wallet.ts:45](https://github.com/kriptonio/sdk/blob/631b409/packages/sdk/src/wallet/Wallet.ts#L45)
 
 ## Methods
 
@@ -111,7 +111,7 @@ src/wallet/Wallet.ts:45
 
 #### Defined in
 
-src/wallet/Wallet.ts:68
+[src/wallet/Wallet.ts:68](https://github.com/kriptonio/sdk/blob/631b409/packages/sdk/src/wallet/Wallet.ts#L68)
 
 ___
 
@@ -131,7 +131,7 @@ ___
 
 #### Defined in
 
-src/wallet/Wallet.ts:59
+[src/wallet/Wallet.ts:59](https://github.com/kriptonio/sdk/blob/631b409/packages/sdk/src/wallet/Wallet.ts#L59)
 
 ___
 
@@ -145,7 +145,7 @@ ___
 
 #### Defined in
 
-src/wallet/Wallet.ts:55
+[src/wallet/Wallet.ts:55](https://github.com/kriptonio/sdk/blob/631b409/packages/sdk/src/wallet/Wallet.ts#L55)
 
 ___
 
@@ -159,7 +159,7 @@ ___
 
 #### Defined in
 
-src/wallet/Wallet.ts:49
+[src/wallet/Wallet.ts:49](https://github.com/kriptonio/sdk/blob/631b409/packages/sdk/src/wallet/Wallet.ts#L49)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-src/wallet/Wallet.ts:63
+[src/wallet/Wallet.ts:63](https://github.com/kriptonio/sdk/blob/631b409/packages/sdk/src/wallet/Wallet.ts#L63)
 
 ___
 
@@ -200,7 +200,7 @@ ___
 
 #### Defined in
 
-src/wallet/Wallet.ts:53
+[src/wallet/Wallet.ts:53](https://github.com/kriptonio/sdk/blob/631b409/packages/sdk/src/wallet/Wallet.ts#L53)
 
 ___
 
@@ -220,7 +220,7 @@ ___
 
 #### Defined in
 
-src/wallet/Wallet.ts:51
+[src/wallet/Wallet.ts:51](https://github.com/kriptonio/sdk/blob/631b409/packages/sdk/src/wallet/Wallet.ts#L51)
 
 ___
 
@@ -240,4 +240,4 @@ ___
 
 #### Defined in
 
-src/wallet/Wallet.ts:57
+[src/wallet/Wallet.ts:57](https://github.com/kriptonio/sdk/blob/631b409/packages/sdk/src/wallet/Wallet.ts#L57)

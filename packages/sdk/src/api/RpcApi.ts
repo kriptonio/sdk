@@ -5,7 +5,11 @@ import { BlockchainEndpointResponse } from '../types/rpc/blockchainEndpointRespo
 import { CreateBlockchainEndpointBody } from '../types/rpc/createBlockchainEndpointBody';
 import { ApiClient } from './ApiClient';
 
-export type GetOrCreateParams = {
+export type GetRpcProps = {
+  id: string;
+};
+
+export type GetOrCreateRpcProps = {
   organizationId: string;
   chainId: number;
   wallet?: string;
@@ -36,9 +40,9 @@ export class RpcApi {
     });
   };
 
-  public get = async (id: string): Promise<RpcDto> => {
+  public get = async (props: GetRpcProps): Promise<RpcDto> => {
     const response = await this.#apiClient.get<BlockchainEndpointResponse>(
-      `/v1/endpoints/${id}`,
+      `/v1/endpoints/${props.id}`,
       { baseURL: Configuration.rpcApiUrl }
     );
 
@@ -51,8 +55,8 @@ export class RpcApi {
     });
   };
 
-  public getOrCreate = async (params: GetOrCreateParams): Promise<RpcDto> => {
-    const options: { [key: string]: unknown } = { wallet: params.wallet };
+  public getOrCreate = async (props: GetOrCreateRpcProps): Promise<RpcDto> => {
+    const options: { [key: string]: unknown } = { wallet: props.wallet };
 
     const populatedOptions = Object.keys(options).reduce((acc, key) => {
       if (options[key] != null) {
@@ -63,7 +67,7 @@ export class RpcApi {
     }, [] as string[]);
 
     const response = await this.#apiClient.get<BlockchainEndpointResponse>(
-      `/v1/organizations/${params.organizationId}/endpoints/chains/${params.chainId}?${populatedOptions.join('&')}`,
+      `/v1/organizations/${props.organizationId}/endpoints/chains/${props.chainId}?${populatedOptions.join('&')}`,
       { baseURL: Configuration.rpcApiUrl }
     );
 

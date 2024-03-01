@@ -16,16 +16,16 @@ describe('SmartContract', () => {
       { chainId: ChainId.PolygonMumbai }
     );
 
-    const smartContract = await sdk.smartContract.createFromStandardJson(
-      {
+    const smartContract = await sdk.smartContract.createFromStandardJson({
+      data: {
         title: 'test',
         chainId: wallet.chain.id,
         contractFile: 'Contract.sol',
         contractName: 'Counter',
         contractStandardJson: JSON.stringify(standardJson),
       },
-      wallet
-    );
+      wallet,
+    });
 
     const estimation = await smartContract.estimateDeploy();
     expect(estimation).toBeGreaterThan(100_000n);
@@ -51,16 +51,16 @@ describe('SmartContract', () => {
       { chainId: ChainId.PolygonMumbai }
     );
 
-    const smartContract = await sdk.smartContract.createFromStandardJson(
-      {
+    const smartContract = await sdk.smartContract.createFromStandardJson({
+      data: {
         title: 'test',
         chainId: wallet.chain.id,
         contractFile: 'Contract.sol',
         contractName: 'Counter',
         contractStandardJson: JSON.stringify(standardJson),
       },
-      wallet
-    );
+      wallet,
+    });
 
     const deployEstimation = await smartContract.estimateDeploy();
     expect(deployEstimation).toBeGreaterThan(100_000n);

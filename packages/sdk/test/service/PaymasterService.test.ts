@@ -23,7 +23,7 @@ describe('PaymasterService', () => {
       wallet: '0x123',
     });
 
-    const retrievedPaymaster = await sdk.paymaster.get(paymaster.id);
+    const retrievedPaymaster = await sdk.paymaster.get({ id: paymaster.id });
     expect(retrievedPaymaster.id).toBeDefined();
     expect(retrievedPaymaster.id).toBe(paymaster.id);
   });

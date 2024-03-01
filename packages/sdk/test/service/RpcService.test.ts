@@ -20,7 +20,7 @@ describe('RpcService', () => {
       chainId: ChainId.PolygonMumbai,
     });
 
-    const retrievedRpc = await sdk.rpc.get(rpc.id);
+    const retrievedRpc = await sdk.rpc.get({ id: rpc.id });
     expect(retrievedRpc.id).toBeDefined();
     expect(retrievedRpc.id).toBe(rpc.id);
   });

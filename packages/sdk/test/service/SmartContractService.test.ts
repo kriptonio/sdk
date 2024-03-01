@@ -5,11 +5,13 @@ describe('SmartContractService', () => {
   it('can create a smart contract from standard json', async () => {
     const sdk = createSdk();
     const smartContract = await sdk.smartContract.createFromStandardJson({
-      title: 'test',
-      chainId: testEnv.kernel.chainId,
-      contractFile: 'Contract.sol',
-      contractName: 'ExampleContract',
-      contractStandardJson: JSON.stringify(standardJson),
+      data: {
+        title: 'test',
+        chainId: testEnv.kernel.chainId,
+        contractFile: 'Contract.sol',
+        contractName: 'ExampleContract',
+        contractStandardJson: JSON.stringify(standardJson),
+      },
     });
 
     expect(smartContract.title).toBe('test');
@@ -18,14 +20,18 @@ describe('SmartContractService', () => {
   it('can get smart contract by id', async () => {
     const sdk = createSdk();
     const newSmartContract = await sdk.smartContract.createFromStandardJson({
-      title: 'test',
-      chainId: testEnv.kernel.chainId,
-      contractFile: 'Contract.sol',
-      contractName: 'ExampleContract',
-      contractStandardJson: JSON.stringify(standardJson),
+      data: {
+        title: 'test',
+        chainId: testEnv.kernel.chainId,
+        contractFile: 'Contract.sol',
+        contractName: 'ExampleContract',
+        contractStandardJson: JSON.stringify(standardJson),
+      },
     });
 
-    const smartContract = await sdk.smartContract.get(newSmartContract.id);
+    const smartContract = await sdk.smartContract.get({
+      id: newSmartContract.id,
+    });
     expect(smartContract.id).toBeDefined();
     expect(smartContract.id).toBe(newSmartContract.id);
   });

@@ -1,5 +1,5 @@
 import { ApiClient } from '../api/ApiClient';
-import { GetOrCreateParams, RpcApi } from '../api/RpcApi';
+import { GetOrCreateRpcProps, GetRpcProps, RpcApi } from '../api/RpcApi';
 import { CreateBlockchainEndpointBody } from '../types/rpc/createBlockchainEndpointBody';
 
 export class RpcService {
@@ -15,17 +15,17 @@ export class RpcService {
     return this.#rpcApi.create(data);
   };
 
-  public get = (id: string) => {
-    return this.#rpcApi.get(id);
+  public get = (props: GetRpcProps) => {
+    return this.#rpcApi.get(props);
   };
 
   public getOrCreate = async (
-    params: Omit<GetOrCreateParams, 'organizationId'>
+    props: Omit<GetOrCreateRpcProps, 'organizationId'>
   ) => {
     const organizationId = await this.#apiClient.currentOrganization();
     return this.#rpcApi.getOrCreate({
       organizationId,
-      ...params,
+      ...props,
     });
   };
 }

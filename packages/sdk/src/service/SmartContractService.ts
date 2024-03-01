@@ -1,12 +1,9 @@
 import { ApiClient } from '../api/ApiClient';
-import { SmartContractApi } from '../api/SmartContractApi';
-import { CreateSmartContractFromStandardJsonBody } from '../types/api/createSmartContractFromStandardJsonBody';
-import { Wallet } from '../wallet/Wallet';
-
-export interface SmartContractSignerOptions {
-  walletPassword?: string;
-  smartContractId: string;
-}
+import {
+  CreateFromStandardJsonProps,
+  GetSmartContractProps,
+  SmartContractApi,
+} from '../api/SmartContractApi';
 
 export class SmartContractService {
   #smartContractApi: SmartContractApi;
@@ -15,14 +12,11 @@ export class SmartContractService {
     this.#smartContractApi = new SmartContractApi(apiClient);
   }
 
-  public get = (id: string, wallet?: Wallet) => {
-    return this.#smartContractApi.get(id, wallet);
+  public get = (props: GetSmartContractProps) => {
+    return this.#smartContractApi.get(props);
   };
 
-  public createFromStandardJson = (
-    data: CreateSmartContractFromStandardJsonBody,
-    wallet?: Wallet
-  ) => {
-    return this.#smartContractApi.createFromStandardJson(data, wallet);
+  public createFromStandardJson = (props: CreateFromStandardJsonProps) => {
+    return this.#smartContractApi.createFromStandardJson(props);
   };
 }
