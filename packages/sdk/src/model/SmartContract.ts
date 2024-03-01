@@ -1,6 +1,9 @@
 import {
   Abi,
+  Account,
+  Chain,
   Hex,
+  SendTransactionParameters,
   createPublicClient,
   encodeDeployData,
   encodeFunctionData,
@@ -30,6 +33,8 @@ export type DeployProps = {
 export type SmartContractCallProps = {
   params?: unknown[];
   value?: bigint;
+  maxFeePerGas?: bigint;
+  maxPriorityFeePerGas?: bigint;
   options?: OperationOptions;
 };
 
@@ -49,8 +54,9 @@ export class SmartContract {
     public readonly chainId: number,
     public deployment: DeploymentDto | undefined,
     public readonly createdAt: Date,
-    readonly smartContractApi: SmartContractApi,
-    readonly wallet?: Wallet
+    private readonly smartContractApi: SmartContractApi,
+    private readonly rpcUrl: string,
+    private readonly wallet?: Wallet
   ) {
     this.#smartContractApi = smartContractApi;
   }
@@ -78,25 +84,28 @@ export class SmartContract {
         args: props?.params ?? [],
       });
 
-      return await this.wallet.sendTransaction(
-        {
-          to: this.deployment.address,
-          data,
-          value: props?.value,
-        },
-        props?.options
-      );
+      const tx: SendTransactionParameters<Chain, Account> = {
+        to: this.deployment.address,
+        data,
+        value: props?.value,
+        maxFeePerGas: props?.maxFeePerGas,
+        maxPriorityFeePerGas: props?.maxPriorityFeePerGas,
+      };
+
+      return await this.wallet!.sendTransaction(tx, props?.options);
     } catch (e) {
       throw parseError(e);
     }
   };
 
-  public read = async (
+  public read = async <TResult = unknown>(
     functionName: string,
     props?: SmartContractCallProps
-  ) => {
+  ): Promise<TResult> => {
     try {
-      return await this.readContract.read[functionName](props?.params ?? []);
+      return (await this.readContract.read[functionName](
+        props?.params ?? []
+      )) as Promise<TResult>;
     } catch (e) {
       throw parseError(e);
     }
@@ -248,10 +257,12 @@ export class SmartContract {
   };
 
   private get publicClient() {
-    const chain = getChain(this.chainId);
-
     return createPublicClient({
-      transport: http(chain.rpcUrls.default.http[0], { batch: true }),
+      transport: http(this.rpcUrl, { batch: true }),
+      chain: getChain(this.chainId),
+      batch: {
+        multicall: true,
+      },
     });
   }
 
@@ -266,6 +277,7 @@ export class SmartContract {
   public static fromDto = (
     dto: SmartContractDetailResponse,
     smartContractApi: SmartContractApi,
+    rpcUrl: string,
     wallet?: Wallet
   ) => {
     return new SmartContract(
@@ -277,6 +289,7 @@ export class SmartContract {
       dto.deployment ? this.fromDeployment(dto.deployment) : undefined,
       new Date(dto.createdAt),
       smartContractApi,
+      rpcUrl,
       wallet
     );
   };

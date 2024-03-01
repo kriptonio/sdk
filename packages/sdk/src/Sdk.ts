@@ -25,10 +25,10 @@ export class KriptonioSdk {
 
   constructor(config: SdkConfiguration) {
     this.#apiClient = new ApiClient({ accessToken: config.accessToken });
-    this.smartContract = new SmartContractService(this.#apiClient);
     this.rpc = new RpcService(this.#apiClient);
     this.paymaster = new PaymasterService(this.#apiClient);
     this.wallet = new WalletService(this.rpc, this.paymaster);
+    this.smartContract = new SmartContractService(this.#apiClient);
   }
 
   public configure = (config: SdkReconfiguration) => {

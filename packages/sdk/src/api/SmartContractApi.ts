@@ -8,6 +8,7 @@ import { SmartContractDetailResponse } from '../types/api/smartContractDetailRes
 import { UpdateDeploymentTransactionBody } from '../types/api/updateDeploymentTransactionBody';
 import { Wallet } from '../wallet/Wallet';
 import { ApiClient } from './ApiClient';
+import { RpcApi } from './RpcApi';
 
 export type GetSmartContractProps = {
   id: string;
@@ -26,9 +27,11 @@ export type CreateDeploymentProps = {
 
 export class SmartContractApi {
   #apiClient: ApiClient;
+  #rpcApi: RpcApi;
 
   constructor(apiClient: ApiClient) {
     this.#apiClient = apiClient;
+    this.#rpcApi = new RpcApi(apiClient);
   }
 
   public get = async (props: GetSmartContractProps): Promise<SmartContract> => {
@@ -37,7 +40,13 @@ export class SmartContractApi {
     );
 
     if (result.ok) {
-      return SmartContract.fromDto(result.data, this, props.wallet);
+      const rpc = await this.#rpcApi.getOrCreate({
+        organizationId: result.data.organizationId,
+        chainId: result.data.chainId,
+        wallet: props.wallet?.address,
+      });
+
+      return SmartContract.fromDto(result.data, this, rpc.url, props.wallet);
     }
 
     throw new KriptonioError({
