@@ -1,6 +1,8 @@
 import { signerToEcdsaValidator } from '@zerodev/ecdsa-validator';
 import {
   KernelAccountAbi,
+  KernelAccountClient,
+  KernelSmartAccount,
   createKernelAccount,
   createKernelAccountClient,
 } from '@zerodev/sdk';
@@ -18,6 +20,8 @@ import {
   Chain,
   EstimateGasParameters,
   Hex,
+  HttpTransport,
+  ParseAccount,
   PublicClient,
   RpcError,
   SendTransactionParameters,
@@ -56,8 +60,10 @@ import {
 } from './SmartWallet';
 import { UserOperationEventAbi } from './abi/UserOperationEventAbi';
 
-export type KernelClient = Awaited<
-  ReturnType<typeof KernelSmartWallet.createKernelClient>
+export type KernelClient = KernelAccountClient<
+  HttpTransport,
+  Chain,
+  ParseAccount<KernelSmartAccount>
 >;
 
 // source-code https://github.com/safe-global/safe-contracts/blob/0acdd35a203299585438f53885df630f9d486a86/contracts/libraries/CreateCall.sol
@@ -449,7 +455,9 @@ export class KernelSmartWallet extends SmartWallet {
     });
 
     if (!logs.length) {
-      return '0x';
+      throw new KriptonioError({
+        message: 'deployment failed. cannot find contract creation event',
+      });
     }
 
     return logs[0].args.newContract;
@@ -479,7 +487,7 @@ export class KernelSmartWallet extends SmartWallet {
     config: KernelWalletWrapperConfig,
     chain: Chain,
     publicClient: PublicClient
-  ) {
+  ): Promise<KernelClient> {
     const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
       signer: sourceToAccount(config.kernel),
     });
@@ -516,7 +524,7 @@ export class KernelSmartWallet extends SmartWallet {
         : undefined,
     });
 
-    return client;
+    return client as KernelClient;
   }
 
   public static async computeAddress(
