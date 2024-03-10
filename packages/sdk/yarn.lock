@@ -1289,10 +1289,10 @@
   resolved "https://registry.yarnpkg.com/@zerodev/ecdsa-validator/-/ecdsa-validator-5.1.0.tgz#74bd4f6f2df9ff32560ed70109ece24b08d8492f"
   integrity sha512-mjoRXn/XuKEeyXXjapZMnExNeNnqbRbEHJA/wMhY1pHb+p+29E9oY3JSTgsOKF9ICLsAzD9ZxQTAQJLtrfP2fQ==
 
-"@zerodev/sdk@5.1.8":
-  version "5.1.8"
-  resolved "https://registry.yarnpkg.com/@zerodev/sdk/-/sdk-5.1.8.tgz#662b240659676e73cb4a1d75d780362f0ea41516"
-  integrity sha512-36/mqN2YEYyfCnYWvxqmo8/8HIhFVsn0Jy6ifAqPQ3abvhYO4iOAlNjHhJ/+ddL2peJFLergrISPVxB/R4g+vQ==
+"@zerodev/sdk@5.1.11":
+  version "5.1.11"
+  resolved "https://registry.yarnpkg.com/@zerodev/sdk/-/sdk-5.1.11.tgz#24b278dea4b1deb05727e79cd3029d9452229a08"
+  integrity sha512-Wr1qK4Udr00GeEpIm+9Amn6pBFR7xM0iPwiEQ2lYFwHdRi/765tBBFgrKNxz105SKrJ8bZofo0hgiY0FDMt+bA==
   dependencies:
     permissionless "^0.0.34"
 
@@ -4377,17 +4377,17 @@ typed-array-length@^1.0.5:
     is-typed-array "^1.1.13"
     possible-typed-array-names "^1.0.0"
 
-typedoc-plugin-markdown@^3.17.1:
+typedoc-plugin-markdown@3.17.1:
   version "3.17.1"
   resolved "https://registry.yarnpkg.com/typedoc-plugin-markdown/-/typedoc-plugin-markdown-3.17.1.tgz#c33f42363c185adf842f4699166015f7fe0ed02b"
   integrity sha512-QzdU3fj0Kzw2XSdoL15ExLASt2WPqD7FbLeaqwT70+XjKyTshBnUlQA5nNREO1C2P8Uen0CDjsBLMsCQ+zd0lw==
   dependencies:
     handlebars "^4.7.7"
 
-typedoc@0.25.10:
-  version "0.25.10"
-  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.25.10.tgz#572f566498e4752fdbc793ccc14b8eb517944770"
-  integrity sha512-v10rtOFojrjW9og3T+6wAKeJaGMuojU87DXGZ33sfs+554wgPTRG+s07Ag1BjPZI85Y5QPVouPI63JQ6fcQM5w==
+typedoc@0.25.12:
+  version "0.25.12"
+  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.25.12.tgz#f73f0a8d3731d418cc604d4230f95a857799e27a"
+  integrity sha512-F+qhkK2VoTweDXd1c42GS/By2DvI2uDF4/EpG424dTexSHdtCH52C6IcAvMA6jR3DzAWZjHpUOW+E02kyPNUNw==
   dependencies:
     lunr "^2.3.9"
     marked "^4.3.0"
@@ -4453,10 +4453,10 @@ v8-to-istanbul@^9.0.1:
     "@types/istanbul-lib-coverage" "^2.0.1"
     convert-source-map "^2.0.0"
 
-viem@2.7.19:
-  version "2.7.19"
-  resolved "https://registry.yarnpkg.com/viem/-/viem-2.7.19.tgz#fa6bd8f46df2f0332e5ca6d116772dff6f161a72"
-  integrity sha512-UOMeqy+8p2709ra2j9HEOL1NfjsXZzlJ8gwR6YO/zXH8KIZvyzW07t4iQARF5+ShVZ/7+/1ec8oPjVi1M//33A==
+viem@2.7.22:
+  version "2.7.22"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-2.7.22.tgz#b6991b73f348d8e3a151f4acea08fddfdc449805"
+  integrity sha512-R/d9AkWXkhiNF4Gk4/A389LSO5PGDdHUBFDKIUkhrdLTDpOhKzbNln6qDry3kYUcmH7lErx3C2eA6rajnc0s9A==
   dependencies:
     "@adraffy/ens-normalize" "1.10.0"
     "@noble/curves" "1.2.0"

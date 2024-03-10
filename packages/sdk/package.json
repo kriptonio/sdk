@@ -1,6 +1,6 @@
 {
   "name": "@kriptonio/sdk",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "description": "Kriptonio JS SDK",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -35,16 +35,16 @@
     "prettier": "3.2.5",
     "ts-jest": "29.1.2",
     "ts-node": "10.9.2",
-    "typedoc": "0.25.10",
-    "typedoc-plugin-markdown": "^3.17.1",
+    "typedoc": "0.25.12",
+    "typedoc-plugin-markdown": "3.17.1",
     "typescript": "5.3.3"
   },
   "dependencies": {
     "@zerodev/ecdsa-validator": "5.1.0",
-    "@zerodev/sdk": "5.1.8",
+    "@zerodev/sdk": "5.1.11",
     "axios": "1.6.7",
     "dotenv": "16.4.5",
     "permissionless": "0.0.36",
-    "viem": "2.7.19"
+    "viem": "2.7.22"
   }
 }
