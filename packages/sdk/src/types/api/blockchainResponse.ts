@@ -15,6 +15,7 @@ import type { Feature } from './feature';
 export interface BlockchainResponse { 
     id: string;
     fqdn: string;
+    logoUrl: string;
     chainId: number;
     network: string;
     coin: string;

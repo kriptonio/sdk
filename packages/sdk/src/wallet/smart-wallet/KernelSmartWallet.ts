@@ -36,7 +36,9 @@ import {
   toHex,
 } from 'viem';
 import { KriptonioError } from '../../Error';
+import { ApiClient } from '../../api/ApiClient';
 import { sponsorUserOperation } from '../../api/PaymasterApi';
+import { RpcApi } from '../../api/RpcApi';
 import { OperationStatus } from '../../enum/OperationStatus';
 import { getChain } from '../../utils/chain';
 import { assertHex } from '../../utils/error';
@@ -45,6 +47,7 @@ import { exportSource, isValidSource, sourceToAccount } from '../Helpers';
 import {
   DeployResponse,
   DeployWallet,
+  GasData,
   OperationOptions,
   SignableMessage,
   TypedData,
@@ -135,6 +138,28 @@ export class KernelSmartWallet extends SmartWallet {
     return this.#client.account.getNonce();
   }
 
+  public getFeeData = async (): Promise<GasData> => {
+    const rpcApi = new RpcApi(new ApiClient({}));
+
+    try {
+      const bundlerFees = await rpcApi.getBundlerGasPrice({
+        chainId: this.chain.id,
+      });
+
+      if (bundlerFees) {
+        return bundlerFees;
+      }
+    } catch (e) {
+      console.error('error while getting bundler fees', e);
+    }
+
+    const result = await this.#publicClient.estimateFeesPerGas();
+    return {
+      maxFeePerGas: result.maxFeePerGas,
+      maxPriorityFeePerGas: result.maxPriorityFeePerGas,
+    };
+  };
+
   public override signMessage(message: SignableMessage): Promise<Hex> {
     return this.#client.signMessage({
       message: message as ViemSignableMessage,
@@ -173,7 +198,7 @@ export class KernelSmartWallet extends SmartWallet {
   ): Promise<bigint> {
     const isDeployment = !tx.to;
 
-    const userOperation = await this.#client.prepareUserOperationRequest(
+    const userOperation = await this.prepareUserOperation(
       isDeployment
         ? {
             userOperation: await this.buildDeployUserOperation({
@@ -223,7 +248,7 @@ export class KernelSmartWallet extends SmartWallet {
     });
 
     options?.onStatusChange?.(OperationStatus.PreparingUserOperation);
-    const userOperation = await this.#client.prepareUserOperationRequest({
+    const userOperation = await this.prepareUserOperation({
       userOperation: {
         callData,
       },
@@ -295,7 +320,7 @@ export class KernelSmartWallet extends SmartWallet {
     options?: OperationOptions
   ): Promise<DeployResponse> => {
     options?.onStatusChange?.(OperationStatus.PreparingUserOperation);
-    const userOperation = await this.#client.prepareUserOperationRequest({
+    const userOperation = await this.prepareUserOperation({
       userOperation: await this.buildDeployUserOperation({
         data: assertHex(deploy.bytecode, 'bytecode'),
         value: deploy.value ?? BigInt(0),
@@ -327,6 +352,22 @@ export class KernelSmartWallet extends SmartWallet {
       hash: userOpInfo.transactionHash,
       address,
     };
+  };
+
+  private prepareUserOperation = async (args: {
+    userOperation: PartialUserOperation;
+  }) => {
+    if (!args.userOperation.maxFeePerGas) {
+      const feeData = await this.getFeeData();
+      if (feeData) {
+        args.userOperation.maxFeePerGas = feeData.maxFeePerGas;
+        args.userOperation.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
+      }
+    }
+
+    return this.#client.prepareUserOperationRequest({
+      userOperation: args.userOperation,
+    });
   };
 
   public waitForUserOperation = async (
@@ -371,6 +412,7 @@ export class KernelSmartWallet extends SmartWallet {
           continue;
         }
 
+        console.error('unexpected error while waiting for user operation', e);
         return null;
       }
     }
@@ -493,8 +535,9 @@ export class KernelSmartWallet extends SmartWallet {
     });
 
     const account = await createKernelAccount(publicClient, {
-      // will use kernel 2.3 when creating the account
-      accountLogicAddress: '0xD3F582F6B4814E989Ee8E96bc3175320B5A540ab',
+      // will use kernel 2.4 when creating the account
+      // ref: https://github.com/zerodevapp/kernel
+      accountLogicAddress: '0xd3082872F8B06073A021b4602e022d5A070d7cfC',
       plugins: {
         sudo: ecdsaValidator,
       },

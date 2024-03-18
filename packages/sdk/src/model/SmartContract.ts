@@ -258,7 +258,12 @@ export class SmartContract {
 
   private get publicClient() {
     return createPublicClient({
-      transport: http(this.rpcUrl, { batch: true }),
+      transport: http(this.rpcUrl, {
+        batch: {
+          batchSize: 1000,
+          wait: 5,
+        },
+      }),
       chain: getChain(this.chainId),
       batch: {
         multicall: true,

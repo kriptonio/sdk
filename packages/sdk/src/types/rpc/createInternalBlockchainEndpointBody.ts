@@ -11,8 +11,9 @@
  */
 
 
-export interface CreateBlockchainEndpointBody { 
+export interface CreateInternalBlockchainEndpointBody { 
     title: string;
     chainId: number;
+    paymasterEndpointId?: string | null;
 }
 

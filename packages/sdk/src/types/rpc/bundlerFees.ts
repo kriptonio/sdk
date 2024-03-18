@@ -11,8 +11,8 @@
  */
 
 
-export interface CreateBlockchainEndpointBody { 
-    title: string;
-    chainId: number;
+export interface BundlerFees { 
+    maxFeePerGas: string;
+    maxPriorityFeePerGas: string;
 }
 

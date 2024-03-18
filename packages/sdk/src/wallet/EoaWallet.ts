@@ -10,6 +10,7 @@ import {
   createWalletClient,
   getContractAddress,
   http,
+  publicActions,
 } from 'viem';
 import { estimateGas, getTransactionCount } from 'viem/actions';
 import { KriptonioError } from '../Error';
@@ -20,6 +21,7 @@ import { exportSource, isValidSource, sourceToAccount } from './Helpers';
 import {
   DeployResponse,
   DeployWallet,
+  GasData,
   OperationOptions,
   SignableMessage,
   TypedData,
@@ -68,6 +70,18 @@ export class EoaWallet extends Wallet {
       message: message as ViemSignableMessage,
     });
   }
+
+  private get publicClient() {
+    return this.client.extend(publicActions);
+  }
+
+  public getFeeData = async (): Promise<GasData> => {
+    const result = await this.publicClient.estimateFeesPerGas();
+    return {
+      maxFeePerGas: result.maxFeePerGas,
+      maxPriorityFeePerGas: result.maxPriorityFeePerGas,
+    };
+  };
 
   public override estimateGas(
     tx: EstimateGasParameters<Chain>
@@ -138,7 +152,12 @@ export class EoaWallet extends Wallet {
     }
 
     const publicClient = createPublicClient({
-      transport: http(config.eoa.rpcUrl, { batch: true }),
+      transport: http(config.eoa.rpcUrl, {
+        batch: {
+          batchSize: 1000,
+          wait: 5,
+        },
+      }),
     });
 
     const chainId = await publicClient.getChainId();

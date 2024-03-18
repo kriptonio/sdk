@@ -11,7 +11,7 @@
  */
 
 
-export type ApiErrorCode = 10000 | 10001 | 10002 | 10003 | 10004 | 10006 | 10007 | 10008 | 10009 | 10011 | 10013 | 10015 | 10018 | 10019 | 10020 | 10021 | 10022 | 10023 | 10024 | 10026 | 10027 | 10028 | 10029 | 10030 | 10031 | 10032 | 10033 | 10034 | 10035 | 10036 | 10037 | 10038 | 10039 | 10040 | 10041 | 10042 | 10043 | 10045 | 10048 | 10049 | 10050 | 10051 | 10052 | 10053 | 10054 | 10055 | 10056 | 10057 | 10058 | 10059 | 10060 | 10061 | 10062 | 10063 | 10064 | 10065 | 10066 | 10068 | 10069 | 10070 | 10071 | 10073 | 10074 | 10076;
+export type ApiErrorCode = 10000 | 10001 | 10002 | 10003 | 10004 | 10006 | 10007 | 10008 | 10009 | 10011 | 10013 | 10015 | 10018 | 10019 | 10020 | 10021 | 10022 | 10023 | 10024 | 10026 | 10027 | 10029 | 10032 | 10033 | 10040 | 10041 | 10042 | 10043 | 10048 | 10049 | 10050 | 10051 | 10052 | 10053 | 10054 | 10055 | 10056 | 10057 | 10058 | 10059 | 10060 | 10061 | 10062 | 10064 | 10065 | 10066 | 10068 | 10069 | 10070 | 10071 | 10073 | 10074 | 10076 | 10077 | 10078 | 10079;
 
 export const ApiErrorCode = {
     Unknown: 10000 as ApiErrorCode,
@@ -35,23 +35,13 @@ export const ApiErrorCode = {
     MissingTwoFactorCode: 10024 as ApiErrorCode,
     ActivationMissing: 10026 as ApiErrorCode,
     BlockchainNotFound: 10027 as ApiErrorCode,
-    BlockchainEndpointNotFound: 10028 as ApiErrorCode,
     SubscriptionPlanNotFound: 10029 as ApiErrorCode,
-    BlockchainEndpointCreationFailed: 10030 as ApiErrorCode,
-    GetBlockchainEndpointFailed: 10031 as ApiErrorCode,
     SolCompilerTemporaryUnavailable: 10032 as ApiErrorCode,
     BlockchainEndpointServiceTemporaryUnavailable: 10033 as ApiErrorCode,
-    GetBlockchainEndpointCallsFailed: 10034 as ApiErrorCode,
-    GetBlockchainEndpointMethodUsageFailed: 10035 as ApiErrorCode,
-    GetBlockchainEndpointUsageFailed: 10036 as ApiErrorCode,
-    GetBlockchainEndpointCallStatsFailed: 10037 as ApiErrorCode,
-    DeleteBlockchainEndpointFailed: 10038 as ApiErrorCode,
-    GetBlockchainEndpointsFailed: 10039 as ApiErrorCode,
     CannotGetUserInfo: 10040 as ApiErrorCode,
     UserAuthenticatedWithDifferentMethod: 10041 as ApiErrorCode,
     InvalidAccessToken: 10042 as ApiErrorCode,
     CannotActivateAuthMethod: 10043 as ApiErrorCode,
-    RpcRequestFailed: 10045 as ApiErrorCode,
     CannotGenerateSlug: 10048 as ApiErrorCode,
     UserAlreadyInvited: 10049 as ApiErrorCode,
     InvitationNotFound: 10050 as ApiErrorCode,
@@ -67,7 +57,6 @@ export const ApiErrorCode = {
     SubscriptionNotFound: 10060 as ApiErrorCode,
     CannotFindSubscriptionLimit: 10061 as ApiErrorCode,
     SubscriptionDataMissing: 10062 as ApiErrorCode,
-    GetOrganizationEndpointConsumptionFailed: 10063 as ApiErrorCode,
     OAuthDataIncomplete: 10064 as ApiErrorCode,
     AppleVerificationFailed: 10065 as ApiErrorCode,
     OAuthEmailMissing: 10066 as ApiErrorCode,
@@ -77,6 +66,9 @@ export const ApiErrorCode = {
     TemplateInputInvalid: 10071 as ApiErrorCode,
     UserNotActive: 10073 as ApiErrorCode,
     OrganizationCacheClearFailed: 10074 as ApiErrorCode,
-    PaymasterServiceUnavailable: 10076 as ApiErrorCode
+    PaymasterServiceUnavailable: 10076 as ApiErrorCode,
+    SmartContractsExist: 10077 as ApiErrorCode,
+    TokenFetchingError: 10078 as ApiErrorCode,
+    TokenMetadataFetchingError: 10079 as ApiErrorCode
 };
 

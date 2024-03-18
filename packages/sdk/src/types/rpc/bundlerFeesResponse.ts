@@ -9,10 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import type { BundlerFees } from './bundlerFees';
 
 
-export interface CreateBlockchainEndpointBody { 
-    title: string;
-    chainId: number;
+export interface BundlerFeesResponse { 
+    fees?: BundlerFees;
 }
 

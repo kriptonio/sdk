@@ -6,13 +6,13 @@
     "dev": "frog dev"
   },
   "dependencies": {
-    "@kriptonio/sdk": "0.2.12",
-    "frog": "0.2.4",
-    "hono": "4"
+    "@kriptonio/sdk": "0.2.15",
+    "frog": "0.6.4",
+    "hono": "4.1.0"
   },
   "devDependencies": {
-    "@types/node": "20.11.24",
-    "typescript": "5.3.3",
-    "viem": "2.7.16"
+    "@types/node": "20.11.28",
+    "typescript": "5.4.2",
+    "viem": "2.8.9"
   }
 }

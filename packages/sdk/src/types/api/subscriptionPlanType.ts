@@ -11,11 +11,11 @@
  */
 
 
-export type SubscriptionPlanType = 'Free' | 'Basic' | 'Starter' | 'Growth' | 'Custom';
+export type SubscriptionPlanType = 'Free' | 'Personal' | 'Starter' | 'Growth' | 'Custom';
 
 export const SubscriptionPlanType = {
     Free: 'Free' as SubscriptionPlanType,
-    Basic: 'Basic' as SubscriptionPlanType,
+    Personal: 'Personal' as SubscriptionPlanType,
     Starter: 'Starter' as SubscriptionPlanType,
     Growth: 'Growth' as SubscriptionPlanType,
     Custom: 'Custom' as SubscriptionPlanType

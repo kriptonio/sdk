@@ -15,7 +15,7 @@ export interface SponsoredTransactionResponse {
     id: string;
     userOperationHash: string;
     transactionHash: string | null;
-    gasSponsored: string | null;
+    gasFee: string | null;
     userOpSuccess: boolean | null;
     transactionSuccess: boolean | null;
     expiresAt: string;

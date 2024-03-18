@@ -16,6 +16,7 @@ export interface StatsResponse {
     ses: boolean;
     postgres: boolean;
     usersCount: number;
+    walletsCount: number;
     smartContractCount: number;
     readonly allUp?: boolean;
 }

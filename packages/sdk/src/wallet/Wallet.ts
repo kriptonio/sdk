@@ -33,6 +33,11 @@ export type DeployWallet = {
   value?: bigint;
 };
 
+export type GasData = {
+  maxFeePerGas?: bigint;
+  maxPriorityFeePerGas?: bigint;
+};
+
 export type SignableMessage =
   | string
   | {
@@ -55,6 +60,8 @@ export abstract class Wallet {
   public abstract export(): ExportedWallet;
 
   public abstract signTypedData(typedData: TypedData): Promise<Hex>;
+
+  public abstract getFeeData(): Promise<GasData>;
 
   public abstract estimateGas(
     tx: EstimateGasParameters<Chain>

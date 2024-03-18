@@ -1,0 +1,24 @@
+{
+  "name": "simple-smart-wallet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@kriptonio/sdk": "^0.2.17"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.29",
+    "ts-node": "^10.9.2",
+    "tslib": "^2.6.2",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.2"
+  }
+}

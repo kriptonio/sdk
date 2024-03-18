@@ -1,12 +1,18 @@
 import { Configuration } from '../Configuration';
 import { KriptonioError } from '../Error';
+import { BundlerFeesDto } from '../response/BundlerFeesDto';
 import { RpcDto } from '../response/RpcDto';
 import { BlockchainEndpointResponse } from '../types/rpc/blockchainEndpointResponse';
+import { BundlerFeesResponse } from '../types/rpc/bundlerFeesResponse';
 import { CreateBlockchainEndpointBody } from '../types/rpc/createBlockchainEndpointBody';
 import { ApiClient } from './ApiClient';
 
 export type GetRpcProps = {
   id: string;
+};
+
+export type GetBundlerGasPriceProps = {
+  chainId: number;
 };
 
 export type GetOrCreateRpcProps = {
@@ -52,6 +58,30 @@ export class RpcApi {
 
     throw new KriptonioError({
       message: `error while creating rpc endpoint. ${response.error.stringify()}`,
+    });
+  };
+
+  public getBundlerGasPrice = async (
+    props: GetBundlerGasPriceProps
+  ): Promise<BundlerFeesDto | null> => {
+    const response = await this.#apiClient.get<BundlerFeesResponse>(
+      `/v1/chains/${props.chainId}/bundler-gas-price`,
+      { baseURL: Configuration.rpcApiUrl }
+    );
+
+    if (response.ok) {
+      if (response.data.fees?.maxFeePerGas) {
+        return {
+          maxFeePerGas: BigInt(response.data.fees.maxFeePerGas),
+          maxPriorityFeePerGas: BigInt(response.data.fees.maxPriorityFeePerGas),
+        };
+      }
+
+      return null;
+    }
+
+    throw new KriptonioError({
+      message: `error while getting bundler gas price. ${response.error.stringify()}`,
     });
   };
 
