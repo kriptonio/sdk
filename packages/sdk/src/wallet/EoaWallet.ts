@@ -16,7 +16,7 @@ import { estimateGas, getTransactionCount } from 'viem/actions';
 import { KriptonioError } from '../Error';
 import { OperationStatus } from '../enum/OperationStatus';
 import { getChain } from '../utils/chain';
-import { assertHex } from '../utils/error';
+import { assertHex, parseError } from '../utils/error';
 import { exportSource, isValidSource, sourceToAccount } from './Helpers';
 import {
   DeployResponse,
@@ -93,26 +93,30 @@ export class EoaWallet extends Wallet {
     deploy: DeployWallet,
     options?: OperationOptions
   ): Promise<DeployResponse> {
-    options?.onStatusChange?.(OperationStatus.PreparingTransaction);
-    const prepared = await this.#client.prepareTransactionRequest({
-      to: null,
-      data: assertHex(deploy.bytecode, 'bytecode'),
-      value: deploy.value ?? BigInt(0),
-    });
+    try {
+      options?.onStatusChange?.(OperationStatus.PreparingTransaction);
+      const prepared = await this.#client.prepareTransactionRequest({
+        to: null,
+        data: assertHex(deploy.bytecode, 'bytecode'),
+        value: deploy.value ?? BigInt(0),
+      });
 
-    options?.onStatusChange?.(OperationStatus.SendingTransaction);
-    const hash = await this.sendTransaction(prepared);
+      options?.onStatusChange?.(OperationStatus.SendingTransaction);
+      const hash = await this.sendTransaction(prepared);
 
-    options?.onStatusChange?.(OperationStatus.GettingContractAddress);
-    const address = getContractAddress({
-      from: this.address,
-      nonce: BigInt(prepared.nonce),
-    });
+      options?.onStatusChange?.(OperationStatus.GettingContractAddress);
+      const address = getContractAddress({
+        from: this.address,
+        nonce: BigInt(prepared.nonce),
+      });
 
-    return {
-      hash,
-      address,
-    };
+      return {
+        hash,
+        address,
+      };
+    } catch (e) {
+      throw parseError(e);
+    }
   }
 
   public override signTypedData(typedData: TypedData): Promise<Hex> {
@@ -128,11 +132,15 @@ export class EoaWallet extends Wallet {
     tx: SendTransactionParameters<Chain, PrivateKeyAccount>,
     options?: OperationOptions
   ): Promise<Hex> {
-    options?.onStatusChange?.(OperationStatus.PreparingTransaction);
-    const prepared = await this.#client.prepareTransactionRequest(tx);
+    try {
+      options?.onStatusChange?.(OperationStatus.PreparingTransaction);
+      const prepared = await this.#client.prepareTransactionRequest(tx);
 
-    options?.onStatusChange?.(OperationStatus.SendingTransaction);
-    return this.#client.sendTransaction(prepared);
+      options?.onStatusChange?.(OperationStatus.SendingTransaction);
+      return this.#client.sendTransaction(prepared);
+    } catch (e) {
+      throw parseError(e);
+    }
   }
 
   public override export(): ExportedEoaWallet {

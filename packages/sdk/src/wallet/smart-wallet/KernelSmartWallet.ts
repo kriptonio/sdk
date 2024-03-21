@@ -41,7 +41,7 @@ import { sponsorUserOperation } from '../../api/PaymasterApi';
 import { RpcApi } from '../../api/RpcApi';
 import { OperationStatus } from '../../enum/OperationStatus';
 import { getChain } from '../../utils/chain';
-import { assertHex } from '../../utils/error';
+import { assertHex, parseError } from '../../utils/error';
 import { sleep } from '../../utils/time';
 import { exportSource, isValidSource, sourceToAccount } from '../Helpers';
 import {
@@ -176,17 +176,21 @@ export class KernelSmartWallet extends SmartWallet {
   }
 
   public deploy = async (options?: OperationOptions): Promise<Hex | null> => {
-    const deployed = await this.isDeployed();
-    if (deployed) {
-      return null;
-    }
+    try {
+      const deployed = await this.isDeployed();
+      if (deployed) {
+        return null;
+      }
 
-    return this.sendTransaction(
-      {
-        to: this.address,
-      },
-      options
-    );
+      return this.sendTransaction(
+        {
+          to: this.address,
+        },
+        options
+      );
+    } catch (e) {
+      throw parseError(e);
+    }
   };
 
   public isDeployed = (): Promise<boolean> => {
@@ -196,83 +200,91 @@ export class KernelSmartWallet extends SmartWallet {
   public override async estimateGas(
     tx: EstimateGasParameters<Chain>
   ): Promise<bigint> {
-    const isDeployment = !tx.to;
+    try {
+      const isDeployment = !tx.to;
 
-    const userOperation = await this.prepareUserOperation(
-      isDeployment
-        ? {
-            userOperation: await this.buildDeployUserOperation({
-              data: tx.data ?? '0x',
-              value: tx.value ?? BigInt(0),
-            }),
-          }
-        : {
-            userOperation: await this.buildCallUserOperation({
-              to: tx.to ?? '0x',
-              data: tx.data ?? '0x',
-              value: tx.value ?? BigInt(0),
-            }),
-          }
-    );
+      const userOperation = await this.prepareUserOperation(
+        isDeployment
+          ? {
+              userOperation: await this.buildDeployUserOperation({
+                data: tx.data ?? '0x',
+                value: tx.value ?? BigInt(0),
+              }),
+            }
+          : {
+              userOperation: await this.buildCallUserOperation({
+                to: tx.to ?? '0x',
+                data: tx.data ?? '0x',
+                value: tx.value ?? BigInt(0),
+              }),
+            }
+      );
 
-    const estimation = await this.estimateUserOperationGas(userOperation);
-    return (
-      estimation.callGasLimit +
-      estimation.verificationGasLimit +
-      estimation.preVerificationGas
-    );
+      const estimation = await this.estimateUserOperationGas(userOperation);
+      return (
+        estimation.callGasLimit +
+        estimation.verificationGasLimit +
+        estimation.preVerificationGas
+      );
+    } catch (e) {
+      throw parseError(e);
+    }
   }
 
   public override async sendTransaction(
     tx: SendTransactionParameters<Chain, Account>,
     options?: OperationOptions
   ): Promise<Hex> {
-    // deployment transaction
-    if (!tx.to) {
-      const deployment = await this.deployContract(
-        {
-          bytecode: tx.data ?? '0x',
-          value: tx.value,
+    try {
+      // deployment transaction
+      if (!tx.to) {
+        const deployment = await this.deployContract(
+          {
+            bytecode: tx.data ?? '0x',
+            value: tx.value,
+          },
+          options
+        );
+
+        return deployment.hash;
+      }
+
+      // regular transaction
+      const callData = await this.createCallData({
+        to: tx.to,
+        value: tx.value,
+        data: tx.data,
+      });
+
+      options?.onStatusChange?.(OperationStatus.PreparingUserOperation);
+      const userOperation = await this.prepareUserOperation({
+        userOperation: {
+          callData,
         },
-        options
-      );
-
-      return deployment.hash;
-    }
-
-    // regular transaction
-    const callData = await this.createCallData({
-      to: tx.to,
-      value: tx.value,
-      data: tx.data,
-    });
-
-    options?.onStatusChange?.(OperationStatus.PreparingUserOperation);
-    const userOperation = await this.prepareUserOperation({
-      userOperation: {
-        callData,
-      },
-    });
-
-    options?.onStatusChange?.(OperationStatus.SendingUserOperation);
-    const userOpHash = await this.sendUserOperation(userOperation);
-
-    options?.onStatusChange?.(OperationStatus.WaitingForUserOperation);
-    const userOpInfo = await this.waitForUserOperation(userOpHash);
-
-    if (!userOpInfo) {
-      throw new KriptonioError({
-        message: `user operation receipt ${userOpHash} not found. transaction failed`,
       });
-    }
 
-    if (!userOpInfo.success) {
-      throw new KriptonioError({
-        message: `user operation ${userOpHash} failed`,
-      });
-    }
+      options?.onStatusChange?.(OperationStatus.SendingUserOperation);
+      const userOpHash = await this.sendUserOperation(userOperation);
 
-    return userOpInfo.transactionHash;
+      options?.onStatusChange?.(OperationStatus.WaitingForUserOperation);
+      const userOpInfo = await this.waitForUserOperation(userOpHash);
+
+      if (!userOpInfo) {
+        throw new KriptonioError({
+          message: `user operation receipt ${userOpHash} not found. transaction failed`,
+        });
+      }
+
+      if (!userOpInfo.success) {
+        throw new KriptonioError({
+          message: `user operation ${userOpHash} failed`,
+        });
+      }
+
+      return userOpInfo.transactionHash;
+    } catch (e) {
+      throw parseError(e);
+    }
   }
 
   public createCallData(input: {
@@ -301,9 +313,13 @@ export class KernelSmartWallet extends SmartWallet {
   public override sendUserOperation(
     userOperation: PartialUserOperation
   ): Promise<Hex> {
-    return this.#client.sendUserOperation({
-      userOperation: userOperation,
-    });
+    try {
+      return this.#client.sendUserOperation({
+        userOperation: userOperation,
+      });
+    } catch (e) {
+      throw parseError(e);
+    }
   }
 
   public override export(): ExportedKernelWallet {
@@ -319,39 +335,43 @@ export class KernelSmartWallet extends SmartWallet {
     deploy: DeployWallet,
     options?: OperationOptions
   ): Promise<DeployResponse> => {
-    options?.onStatusChange?.(OperationStatus.PreparingUserOperation);
-    const userOperation = await this.prepareUserOperation({
-      userOperation: await this.buildDeployUserOperation({
-        data: assertHex(deploy.bytecode, 'bytecode'),
-        value: deploy.value ?? BigInt(0),
-      }),
-    });
-
-    options?.onStatusChange?.(OperationStatus.SendingUserOperation);
-    const userOpHash = await this.sendUserOperation(userOperation);
-
-    options?.onStatusChange?.(OperationStatus.WaitingForUserOperation);
-    const userOpInfo = await this.waitForUserOperation(userOpHash);
-
-    if (!userOpInfo) {
-      throw new KriptonioError({
-        message: `user operation receipt ${userOpHash} not found`,
+    try {
+      options?.onStatusChange?.(OperationStatus.PreparingUserOperation);
+      const userOperation = await this.prepareUserOperation({
+        userOperation: await this.buildDeployUserOperation({
+          data: assertHex(deploy.bytecode, 'bytecode'),
+          value: deploy.value ?? BigInt(0),
+        }),
       });
+
+      options?.onStatusChange?.(OperationStatus.SendingUserOperation);
+      const userOpHash = await this.sendUserOperation(userOperation);
+
+      options?.onStatusChange?.(OperationStatus.WaitingForUserOperation);
+      const userOpInfo = await this.waitForUserOperation(userOpHash);
+
+      if (!userOpInfo) {
+        throw new KriptonioError({
+          message: `user operation receipt ${userOpHash} not found`,
+        });
+      }
+
+      if (!userOpInfo.success) {
+        throw new KriptonioError({
+          message: `user operation ${userOpHash} failed`,
+        });
+      }
+
+      options?.onStatusChange?.(OperationStatus.GettingContractAddress);
+      const address = await this.getContractAddress(userOpInfo.transactionHash);
+
+      return {
+        hash: userOpInfo.transactionHash,
+        address,
+      };
+    } catch (e) {
+      throw parseError(e);
     }
-
-    if (!userOpInfo.success) {
-      throw new KriptonioError({
-        message: `user operation ${userOpHash} failed`,
-      });
-    }
-
-    options?.onStatusChange?.(OperationStatus.GettingContractAddress);
-    const address = await this.getContractAddress(userOpInfo.transactionHash);
-
-    return {
-      hash: userOpInfo.transactionHash,
-      address,
-    };
   };
 
   private prepareUserOperation = async (args: {

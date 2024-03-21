@@ -105,6 +105,7 @@ export async function sponsorUserOperation(
       paymasterUrl,
       body,
       {
+        timeout: 100_000,
         headers: {
           'Content-Type': 'application/json',
         },
