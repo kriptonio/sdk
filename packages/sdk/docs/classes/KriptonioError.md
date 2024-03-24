@@ -51,13 +51,13 @@ Error.constructor
 
 #### Defined in
 
-[src/Error.ts:21](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/Error.ts#L21)
+[src/Error.ts:21](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/Error.ts#L21)
 
 ## Properties
 
 ### cause
 
-• `Optional` **cause**: `BaseError` \| [`KriptonioError`](KriptonioError.md)
+• `Optional` **cause**: [`KriptonioError`](KriptonioError.md) \| `BaseError`
 
 #### Overrides
 
@@ -65,7 +65,7 @@ Error.cause
 
 #### Defined in
 
-[src/Error.ts:19](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/Error.ts#L19)
+[src/Error.ts:19](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/Error.ts#L19)
 
 ___
 
@@ -75,7 +75,7 @@ ___
 
 #### Defined in
 
-[src/Error.ts:18](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/Error.ts#L18)
+[src/Error.ts:18](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/Error.ts#L18)
 
 ___
 
@@ -135,8 +135,6 @@ https://v8.dev/docs/stack-trace-api#customizing-stack-traces
 
 ▸ (`err`, `stackTraces`): `any`
 
-Optional override for formatting stack traces
-
 ##### Parameters
 
 | Name | Type |
@@ -147,10 +145,6 @@ Optional override for formatting stack traces
 ##### Returns
 
 `any`
-
-**`See`**
-
-https://v8.dev/docs/stack-trace-api#customizing-stack-traces
 
 #### Inherited from
 
@@ -219,4 +213,4 @@ ___
 
 #### Defined in
 
-[src/Error.ts:33](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/Error.ts#L33)
+[src/Error.ts:33](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/Error.ts#L33)

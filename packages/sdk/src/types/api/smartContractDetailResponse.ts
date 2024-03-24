@@ -20,6 +20,7 @@ export interface SmartContractDetailResponse {
     compilerVersion: string;
     optimizerEnabled: boolean;
     optimizerRuns: number;
+    evmVersion: string;
     template: SmartContractTemplateResponse;
     templateInput: any | null;
     standardJsonInput: any | null;

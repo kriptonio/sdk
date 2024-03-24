@@ -46,4 +46,4 @@
 
 #### Defined in
 
-[src/wallet/WalletFactory.ts:7](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/wallet/WalletFactory.ts#L7)
+[src/wallet/WalletFactory.ts:7](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/WalletFactory.ts#L7)

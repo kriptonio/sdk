@@ -28,6 +28,7 @@
 - [deployContract](Wallet.md#deploycontract)
 - [estimateGas](Wallet.md#estimategas)
 - [export](Wallet.md#export)
+- [getFeeData](Wallet.md#getfeedata)
 - [getNonce](Wallet.md#getnonce)
 - [sendTransaction](Wallet.md#sendtransaction)
 - [signMessage](Wallet.md#signmessage)
@@ -52,7 +53,7 @@
 
 #### Defined in
 
-[src/wallet/Wallet.ts:43](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/wallet/Wallet.ts#L43)
+[src/wallet/Wallet.ts:48](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/Wallet.ts#L48)
 
 ## Properties
 
@@ -62,7 +63,7 @@
 
 #### Defined in
 
-[src/wallet/Wallet.ts:43](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/wallet/Wallet.ts#L43)
+[src/wallet/Wallet.ts:48](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/Wallet.ts#L48)
 
 ## Accessors
 
@@ -76,7 +77,7 @@
 
 #### Defined in
 
-[src/wallet/Wallet.ts:47](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/wallet/Wallet.ts#L47)
+[src/wallet/Wallet.ts:52](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/Wallet.ts#L52)
 
 ___
 
@@ -90,7 +91,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:45](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/wallet/Wallet.ts#L45)
+[src/wallet/Wallet.ts:50](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/Wallet.ts#L50)
 
 ## Methods
 
@@ -111,7 +112,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:68](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/wallet/Wallet.ts#L68)
+[src/wallet/Wallet.ts:75](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/Wallet.ts#L75)
 
 ___
 
@@ -131,7 +132,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:59](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/wallet/Wallet.ts#L59)
+[src/wallet/Wallet.ts:66](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/Wallet.ts#L66)
 
 ___
 
@@ -145,7 +146,21 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:55](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/wallet/Wallet.ts#L55)
+[src/wallet/Wallet.ts:60](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/Wallet.ts#L60)
+
+___
+
+### getFeeData
+
+▸ **getFeeData**(): `Promise`\<[`GasData`](../README.md#gasdata)\>
+
+#### Returns
+
+`Promise`\<[`GasData`](../README.md#gasdata)\>
+
+#### Defined in
+
+[src/wallet/Wallet.ts:64](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/Wallet.ts#L64)
 
 ___
 
@@ -159,7 +174,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:49](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/wallet/Wallet.ts#L49)
+[src/wallet/Wallet.ts:54](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/Wallet.ts#L54)
 
 ___
 
@@ -180,7 +195,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:63](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/wallet/Wallet.ts#L63)
+[src/wallet/Wallet.ts:70](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/Wallet.ts#L70)
 
 ___
 
@@ -200,7 +215,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:53](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/wallet/Wallet.ts#L53)
+[src/wallet/Wallet.ts:58](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/Wallet.ts#L58)
 
 ___
 
@@ -220,7 +235,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:51](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/wallet/Wallet.ts#L51)
+[src/wallet/Wallet.ts:56](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/Wallet.ts#L56)
 
 ___
 
@@ -240,4 +255,4 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:57](https://github.com/kriptonio/sdk/blob/76afdaa/packages/sdk/src/wallet/Wallet.ts#L57)
+[src/wallet/Wallet.ts:62](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/Wallet.ts#L62)

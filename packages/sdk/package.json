@@ -1,6 +1,6 @@
 {
   "name": "@kriptonio/sdk",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Kriptonio JS SDK",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -13,7 +13,7 @@
   "scripts": {
     "playground": "ts-node ./playground/new-playground.ts",
     "build": "tsc",
-    "docs": "typedoc --plugin typedoc-plugin-markdown --cleanOutputDir true --readme none --out docs src/index.ts",
+    "docs": "typedoc --plugin typedoc-plugin-markdown --cleanOutputDir true --readme none --skipErrorChecking --out docs src/index.ts",
     "test": "jest --forceExit --runInBand",
     "lint": "eslint src",
     "prepublishOnly": "yarn build"
@@ -45,6 +45,6 @@
     "axios": "1.6.8",
     "dotenv": "16.4.5",
     "permissionless": "0.0.36",
-    "viem": "2.8.16"
+    "viem": "2.8.18"
   }
 }

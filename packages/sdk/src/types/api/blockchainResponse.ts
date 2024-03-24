@@ -22,6 +22,7 @@ export interface BlockchainResponse {
     coinDecimals: number;
     transactionUrlPrefix: string;
     blockUrlPrefix?: string | null;
+    evmVersion?: string | null;
     addressUrlPrefix: string;
     blockchain: string;
     testnet: boolean;

@@ -1,7 +1,11 @@
 import {
+  arbitrum,
+  arbitrumSepolia,
   base,
   baseSepolia,
   mainnet,
+  optimism,
+  optimismSepolia,
   polygon,
   polygonMumbai,
   sepolia,
@@ -14,4 +18,8 @@ export enum ChainId {
   PolygonMumbai = polygonMumbai.id,
   Base = base.id,
   BaseSepolia = baseSepolia.id,
+  Optimism = optimism.id,
+  OptimismSepolia = optimismSepolia.id,
+  Arbitrum = arbitrum.id,
+  ArbitrumSepolia = arbitrumSepolia.id,
 }
