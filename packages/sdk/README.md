@@ -35,4 +35,4 @@ const hash = await wallet.sendTransaction({
 
 ## API Reference
 
-[https://github.com/kriptonio/sdk/docs](https://github.com/kriptonio/sdk/tree/main/docs)
+[https://github.com/kriptonio/sdk/tree/main/packages/sdk/docs](https://github.com/kriptonio/sdk/tree/main/packages/sdk/docs)
