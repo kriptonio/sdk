@@ -1,17 +1,20 @@
 import {
-  BiconomySmartAccountV2,
-  SupportedSigner,
+  SmartAccountClient,
+  UserOperation,
   createSmartAccountClient,
-} from '@biconomy/account';
-import { UserOperation, deepHexlify } from 'permissionless';
+  deepHexlify,
+} from 'permissionless';
+import {
+  SmartAccount,
+  signerToBiconomySmartAccount,
+} from 'permissionless/accounts';
 import {
   Chain,
   Hex,
   HttpTransport,
   PublicClient,
-  TypedData as ViemTypedData,
+  SignableMessage as ViemSignableMessage,
   createPublicClient,
-  createWalletClient,
   http,
 } from 'viem';
 import { getChain } from '../../Chain';
@@ -23,25 +26,26 @@ import { BiconomyWalletConfig, ExportedBiconomyWallet } from '../WalletConfig';
 import { PartialUserOperation, SmartWallet } from './SmartWallet';
 
 export class BiconomySmartWallet extends SmartWallet {
-  #smartAccount: BiconomySmartAccountV2;
+  #smartAccount: SmartAccountClient<HttpTransport, Chain, SmartAccount>;
   #config: BiconomyWalletConfig;
 
   constructor(
     config: BiconomyWalletConfig,
-    smartAccount: BiconomySmartAccountV2,
-    publicClient: PublicClient<HttpTransport, Chain>
+    smartAccount: SmartAccountClient<HttpTransport, Chain, SmartAccount>,
+    publicClient: PublicClient<HttpTransport>,
+    chain: Chain
   ) {
-    super(publicClient.chain, publicClient);
+    super(chain, publicClient);
     this.#config = config;
     this.#smartAccount = smartAccount;
   }
 
   public get entryPoint(): Hex {
-    return this.#smartAccount.getEntryPointAddress();
+    return this.#smartAccount.account.entryPoint;
   }
 
   public getVersion(): Promise<string | null> {
-    return Promise.resolve('2.0.0');
+    return Promise.resolve('v0.2.4');
   }
 
   public get vendor(): string {
@@ -49,11 +53,11 @@ export class BiconomySmartWallet extends SmartWallet {
   }
 
   public getAddress(): Promise<Hex> {
-    return this.#smartAccount.getAccountAddress();
+    return Promise.resolve(this.#smartAccount.account.address);
   }
 
   public getNonce(): Promise<bigint> {
-    return this.#smartAccount.getNonce();
+    return this.#smartAccount.account.getNonce();
   }
 
   public export(): ExportedBiconomyWallet {
@@ -66,23 +70,24 @@ export class BiconomySmartWallet extends SmartWallet {
   }
 
   public signMessage(message: SignableMessage): Promise<Hex> {
-    return this.#smartAccount.signMessage(
-      typeof message === 'string' ? message : message.raw
-    );
+    return this.#smartAccount.signMessage({
+      message: message as ViemSignableMessage,
+    });
   }
 
   public signTypedData(typedData: TypedData): Promise<Hex> {
     return this.#smartAccount.signTypedData({
       message: typedData.message,
-      types: typedData.types as ViemTypedData,
+      types: typedData.types,
       domain: typedData.domain,
       primaryType: typedData.primaryType,
     });
   }
 
-  public sendUserOperation = async (op: PartialUserOperation): Promise<Hex> => {
-    const response = await this.#smartAccount.sendUserOp(op);
-    return response.userOpHash as Hex;
+  public sendUserOperation = (
+    userOperation: PartialUserOperation
+  ): Promise<Hex> => {
+    return this.#smartAccount.sendUserOperation({ userOperation });
   };
 
   protected buildUserOperation = async (input: {
@@ -100,15 +105,19 @@ export class BiconomySmartWallet extends SmartWallet {
       }
     }
 
-    const userOperation = await this.#smartAccount.buildUserOp([
-      {
-        to: input.to,
-        value: input.value,
-        data: input.data,
-      },
-    ]);
+    const callData = await this.createCallData({
+      data: input.data,
+      to: input.to,
+      value: input.value,
+    });
 
-    return userOperation as UserOperation;
+    return this.#smartAccount.prepareUserOperationRequest({
+      userOperation: {
+        callData,
+        maxFeePerGas: input.maxFeePerGas,
+        maxPriorityFeePerGas: input.maxPriorityFeePerGas,
+      },
+    });
   };
 
   public createCallData(input: {
@@ -116,61 +125,61 @@ export class BiconomySmartWallet extends SmartWallet {
     value?: bigint | undefined;
     data?: string | undefined;
   }): Promise<Hex> {
-    return this.#smartAccount.encodeExecute(
-      assertHex(input.to, 'to'),
-      input.value ?? 0n,
-      (input.data as Hex | undefined) ?? '0x'
-    );
+    return this.#smartAccount.account.encodeCallData({
+      to: assertHex(input.to, 'to'),
+      value: input.value ?? 0n,
+      data: (input.data as Hex | undefined) ?? '0x',
+    });
   }
 
   public static async create(config: BiconomyWalletConfig) {
-    const signer = createWalletClient({
-      account: sourceToAccount(config),
-      transport: http(config.rpcUrl),
-    });
-
-    const chainId = await signer.getChainId();
-    const chain = getChain(chainId);
-
     // entry point v0.6
     const entryPointAddress = '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789';
 
-    const smartAccount = await createSmartAccountClient({
-      signer: signer as SupportedSigner,
-      viemChain: signer.chain,
-      chainId,
-      bundlerUrl: config.bundlerUrl ?? config.rpcUrl,
-      entryPointAddress,
-      paymaster: config.paymasterUrl
-        ? {
-            getDummyPaymasterAndData() {
-              return Promise.resolve('0x');
-            },
-            getPaymasterAndData: async (userOperation) => {
-              const paymasterInfo = await sponsorUserOperation(
-                config.paymasterUrl!,
-                deepHexlify(userOperation),
-                entryPointAddress
-              );
+    const publicClient = createPublicClient({
+      transport: http(config.rpcUrl),
+    });
 
-              return {
-                callGasLimit: Number(paymasterInfo.callGasLimit),
-                verificationGasLimit: Number(
-                  paymasterInfo.verificationGasLimit
-                ),
-                preVerificationGas: Number(paymasterInfo.preVerificationGas),
-                paymasterAndData: paymasterInfo.paymasterAndData,
-              };
-            },
+    const chainId = await publicClient.getChainId();
+    const chain = getChain(chainId);
+
+    const biconomyAccount = await signerToBiconomySmartAccount(publicClient, {
+      entryPoint: entryPointAddress,
+      signer: sourceToAccount(config),
+      index: 0n,
+    });
+
+    const smartAccountClient = createSmartAccountClient({
+      account: biconomyAccount,
+      chain,
+      transport: http(config.rpcUrl),
+      sponsorUserOperation: config.paymasterUrl
+        ? async (args: {
+            userOperation: UserOperation;
+            entryPoint: `0x${string}`;
+          }) => {
+            const paymasterInfo = await sponsorUserOperation(
+              config.paymasterUrl!,
+              deepHexlify(args.userOperation),
+              biconomyAccount.entryPoint
+            );
+
+            return {
+              ...args.userOperation,
+              paymasterAndData: paymasterInfo.paymasterAndData,
+              callGasLimit: BigInt(paymasterInfo.callGasLimit),
+              verificationGasLimit: BigInt(paymasterInfo.verificationGasLimit),
+              preVerificationGas: BigInt(paymasterInfo.preVerificationGas),
+            };
           }
         : undefined,
     });
 
-    const publicClient = createPublicClient({
-      transport: http(config.rpcUrl),
-      chain,
-    });
-
-    return new BiconomySmartWallet(config, smartAccount, publicClient);
+    return new BiconomySmartWallet(
+      config,
+      smartAccountClient,
+      publicClient,
+      chain
+    );
   }
 }

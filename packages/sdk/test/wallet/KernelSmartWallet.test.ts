@@ -180,11 +180,14 @@ describe('KernelSmartWallet', () => {
     const message: Hex = '0x68656c6c6f20776f726c64';
     const signature = await wallet.signMessage({ raw: message });
 
-    const isValidSig = await verifyMessage({
-      signer: await wallet.getAddress(),
-      message: ethers.getBytes(message),
+    const publicClient = createPublicClient({
+      transport: http(wallet.rpcUrl),
+    });
+
+    const isValidSig = await publicClient.verifyMessage({
+      address: await wallet.getAddress(),
+      message: { raw: message },
       signature,
-      provider: new ethers.JsonRpcProvider(wallet.rpcUrl) as never,
     });
 
     expect(isValidSig).toBe(true);

@@ -144,11 +144,14 @@ describe('BiconomySmartWallet', () => {
     const message = 'hello world';
     const signature = await wallet.signMessage(message);
 
-    const isValidSig = await verifyMessage({
-      signer: await wallet.getAddress(),
+    const publicClient = createPublicClient({
+      transport: http(wallet.rpcUrl),
+    });
+
+    const isValidSig = await publicClient.verifyMessage({
+      address: await wallet.getAddress(),
       message,
       signature,
-      provider: new ethers.JsonRpcProvider(wallet.rpcUrl) as never,
     });
 
     expect(isValidSig).toBe(true);
@@ -159,22 +162,24 @@ describe('BiconomySmartWallet', () => {
     const wallet = await sdk.wallet.from(
       {
         biconomy: {
-          mnemonic: testEnv.biconomy.mnemonic,
+          privateKey: generatePrivateKey(),
         },
       },
       { chainId: testEnv.biconomy.chainId }
     );
 
     await wallet.deploy();
-
     const message: Hex = '0x68656c6c6f20776f726c64';
     const signature = await wallet.signMessage({ raw: message });
 
-    const isValidSig = await verifyMessage({
-      signer: await wallet.getAddress(),
-      message: ethers.getBytes(message),
+    const publicClient = createPublicClient({
+      transport: http(wallet.rpcUrl),
+    });
+
+    const isValidSig = await publicClient.verifyMessage({
+      address: await wallet.getAddress(),
+      message: { raw: message },
       signature,
-      provider: new ethers.JsonRpcProvider(wallet.rpcUrl) as never,
     });
 
     expect(isValidSig).toBe(true);
