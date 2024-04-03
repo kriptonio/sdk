@@ -35,7 +35,7 @@ export class WalletService {
 
   public generate<TSdkWalletConfig extends SdkWalletConfig & SdkWalletType>(
     config: TSdkWalletConfig
-  ): Promise<EoaWallet | KernelSmartWallet> {
+  ): Promise<EoaWallet | KernelSmartWallet | BiconomySmartWallet> {
     if (config.type === 'eoa') {
       return this.createEoaWallet(
         {
@@ -120,15 +120,21 @@ export class WalletService {
         ).url
       : undefined;
 
+    if ('biconomy' in exportedWallet) {
+      return WalletFactory.from({
+        biconomy: {
+          rpcUrl: walletRpc.url,
+          paymasterUrl,
+          ...exportSource(exportedWallet.biconomy),
+        },
+      });
+    }
+
     return WalletFactory.from({
       kernel: {
         rpcUrl: walletRpc.url,
         paymasterUrl,
-        ...exportSource(
-          'biconomy' in exportedWallet
-            ? exportedWallet.biconomy
-            : exportedWallet.kernel
-        ),
+        ...exportSource(exportedWallet.kernel),
       },
     });
   };

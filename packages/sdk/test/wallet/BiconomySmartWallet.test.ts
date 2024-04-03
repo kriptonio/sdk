@@ -66,7 +66,6 @@ describe('BiconomySmartWallet', () => {
     );
 
     const exported = wallet.export();
-
     expect(Object.keys(exported.biconomy).length).toBe(1);
     expect(
       'privateKey' in exported.biconomy && exported.biconomy.privateKey

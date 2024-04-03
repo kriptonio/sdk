@@ -133,7 +133,7 @@ export class BiconomySmartWallet extends SmartWallet {
     const chain = getChain(chainId);
 
     // entry point v0.6
-    const entryPointAddress = '0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789';
+    const entryPointAddress = '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789';
 
     const smartAccount = await createSmartAccountClient({
       signer: signer as SupportedSigner,
