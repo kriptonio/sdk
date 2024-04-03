@@ -10,7 +10,7 @@ describe('WalletService', () => {
       chainId: ChainId.BaseSepolia,
     });
 
-    expect(wallet.address).toBeDefined();
+    expect(await wallet.getAddress()).toBeDefined();
     expect(wallet).toBeInstanceOf(KernelSmartWallet);
   });
 
@@ -21,7 +21,7 @@ describe('WalletService', () => {
       type: 'eoa',
     });
 
-    expect(wallet.address).toBeDefined();
+    expect(await wallet.getAddress()).toBeDefined();
     expect(wallet).toBeInstanceOf(EoaWallet);
   });
 
@@ -37,7 +37,7 @@ describe('WalletService', () => {
       { chainId: ChainId.BaseSepolia }
     );
 
-    expect(wallet.address).toBeDefined();
+    expect(await wallet.getAddress()).toBeDefined();
     expect(wallet).toBeInstanceOf(KernelSmartWallet);
   });
 
@@ -53,7 +53,7 @@ describe('WalletService', () => {
       { chainId: ChainId.BaseSepolia }
     );
 
-    expect(wallet.address).toBeDefined();
+    expect(await wallet.getAddress()).toBeDefined();
     expect(wallet).toBeInstanceOf(EoaWallet);
   });
 });

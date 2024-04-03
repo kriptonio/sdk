@@ -57,7 +57,9 @@ describe('KernelSmartWallet', () => {
         },
       });
 
-      expect(wallet.address).toBe(referenceWallet.address);
+      expect(await wallet.getAddress()).toBe(
+        await referenceWallet.getAddress()
+      );
     }
   });
 
@@ -131,7 +133,9 @@ describe('KernelSmartWallet', () => {
 
     const hash = await wallet.deploy();
     console.log('deployed with transaction hash', hash);
-    expect(await isSmartAccountDeployed(client, wallet.address)).toBe(true);
+    expect(
+      await isSmartAccountDeployed(client, await wallet.getAddress())
+    ).toBe(true);
   });
 
   it('can sign message when signing string', async () => {
@@ -151,7 +155,7 @@ describe('KernelSmartWallet', () => {
     const signature = await wallet.signMessage(message);
 
     const isValidSig = await verifyMessage({
-      signer: wallet.address,
+      signer: await wallet.getAddress(),
       message,
       signature,
       provider: new ethers.JsonRpcProvider(wallet.rpcUrl) as never,
@@ -177,7 +181,7 @@ describe('KernelSmartWallet', () => {
     const signature = await wallet.signMessage({ raw: message });
 
     const isValidSig = await verifyMessage({
-      signer: wallet.address,
+      signer: await wallet.getAddress(),
       message: ethers.getBytes(message),
       signature,
       provider: new ethers.JsonRpcProvider(wallet.rpcUrl) as never,
@@ -221,11 +225,11 @@ describe('KernelSmartWallet', () => {
       message: {
         from: {
           name: 'Alice',
-          wallet: wallet.address,
+          wallet: await wallet.getAddress(),
         },
         to: {
           name: 'Bob',
-          wallet: wallet.address,
+          wallet: await wallet.getAddress(),
         },
         contents: 'Hello, Bob!',
       },
@@ -238,7 +242,7 @@ describe('KernelSmartWallet', () => {
     });
 
     const isValidSig = await verifyMessage({
-      signer: wallet.address,
+      signer: await wallet.getAddress(),
       typedData,
       signature,
       provider: new ethers.JsonRpcProvider(wallet.rpcUrl) as never,
@@ -540,7 +544,7 @@ describe('KernelSmartWallet', () => {
       },
       { chainId: testEnv.kernel.chainId }
     );
-    console.log('wallet address', wallet.address);
+    console.log('wallet address', await wallet.getAddress());
 
     const receiver = '0x13a11CeC9970d58E1170e98d28D2812a23890341';
     const beforeBalance = await createPublicClient({
@@ -595,7 +599,7 @@ describe('KernelSmartWallet', () => {
     await wallet.deploy();
 
     const estimation = await wallet.estimateGas({
-      to: wallet.address,
+      to: await wallet.getAddress(),
       value: 0n,
       data: '0x',
     });

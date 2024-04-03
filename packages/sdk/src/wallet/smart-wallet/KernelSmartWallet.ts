@@ -7,76 +7,36 @@ import {
   createKernelAccountClient,
 } from '@zerodev/sdk';
 import { CallType } from '@zerodev/sdk/types';
+import { deepHexlify } from 'permissionless';
 import {
-  EstimateUserOperationGasReturnType,
-  UserOperation,
-  deepHexlify,
-  estimateUserOperationGas,
-  isSmartAccountDeployed,
-} from 'permissionless';
-import {
-  Account,
   BaseError,
   Chain,
-  EstimateGasParameters,
   Hex,
   HttpTransport,
   ParseAccount,
   PublicClient,
-  RpcError,
-  SendTransactionParameters,
-  TimeoutError,
   SignableMessage as ViemSignableMessage,
   createPublicClient,
-  encodeFunctionData,
   getContract,
   http,
-  parseAbi,
-  parseEventLogs,
-  toHex,
 } from 'viem';
 import { getChain } from '../../Chain';
 import { KriptonioError } from '../../Error';
-import { ApiClient } from '../../api/ApiClient';
 import { sponsorUserOperation } from '../../api/PaymasterApi';
-import { RpcApi } from '../../api/RpcApi';
-import { OperationStatus } from '../../enum/OperationStatus';
 import { assertHex, parseError } from '../../utils/error';
-import { sleep } from '../../utils/time';
 import { exportSource, isValidSource, sourceToAccount } from '../Helpers';
-import {
-  DeployResponse,
-  DeployWallet,
-  GasData,
-  OperationOptions,
-  SignableMessage,
-  TypedData,
-} from '../Wallet';
+import { SignableMessage, TypedData } from '../Wallet';
 import {
   ExportedKernelWallet,
   KernelWalletWrapperConfig,
 } from '../WalletConfig';
-import {
-  PartialUserOperation,
-  SmartWallet,
-  UserOperationInfo,
-} from './SmartWallet';
-import { UserOperationEventAbi } from './abi/UserOperationEventAbi';
+import { PartialUserOperation, SmartWallet } from './SmartWallet';
 
 export type KernelClient = KernelAccountClient<
   HttpTransport,
   Chain,
   ParseAccount<KernelSmartAccount>
 >;
-
-// source-code https://github.com/safe-global/safe-contracts/blob/0acdd35a203299585438f53885df630f9d486a86/contracts/libraries/CreateCall.sol
-const createCallAddress = '0x9b35Af71d77eaf8d7e40252370304687390A1A52';
-
-const createCallAbi = parseAbi([
-  'function performCreate(uint256 value, bytes memory deploymentData) public returns (address newContract)',
-  'function performCreate2(uint256 value, bytes memory deploymentData, bytes32 salt) public returns (address newContract)',
-  'event ContractCreation(address indexed newContract)',
-]);
 
 export class KernelSmartWallet extends SmartWallet {
   #config: KernelWalletWrapperConfig;
@@ -86,9 +46,9 @@ export class KernelSmartWallet extends SmartWallet {
   constructor(
     config: KernelWalletWrapperConfig,
     client: KernelClient,
-    publicClient: PublicClient
+    publicClient: PublicClient<HttpTransport>
   ) {
-    super(client.chain);
+    super(client.chain, publicClient);
     this.#client = client;
     this.#publicClient = publicClient;
     this.#config = config;
@@ -102,8 +62,8 @@ export class KernelSmartWallet extends SmartWallet {
     return this.#config.kernel.rpcUrl;
   }
 
-  public override get address(): Hex {
-    return this.#client.account.address;
+  public override getAddress(): Promise<Hex> {
+    return Promise.resolve(this.#client.account.address);
   }
 
   public override get entryPoint(): Hex {
@@ -118,7 +78,7 @@ export class KernelSmartWallet extends SmartWallet {
     try {
       const contract = getContract({
         abi: KernelAccountAbi,
-        address: this.address,
+        address: await this.getAddress(),
         client: this.#publicClient,
       });
 
@@ -138,27 +98,14 @@ export class KernelSmartWallet extends SmartWallet {
     return this.#client.account.getNonce();
   }
 
-  public getFeeData = async (): Promise<GasData> => {
-    const rpcApi = new RpcApi(new ApiClient({}));
-
-    try {
-      const bundlerFees = await rpcApi.getBundlerGasPrice({
-        chainId: this.chain.id,
-      });
-
-      if (bundlerFees) {
-        return bundlerFees;
-      }
-    } catch (e) {
-      console.error('error while getting bundler fees', e);
-    }
-
-    const result = await this.#publicClient.estimateFeesPerGas();
+  public override export(): ExportedKernelWallet {
     return {
-      maxFeePerGas: result.maxFeePerGas,
-      maxPriorityFeePerGas: result.maxPriorityFeePerGas,
+      version: '1.0',
+      kernel: {
+        ...exportSource(this.#config.kernel),
+      },
     };
-  };
+  }
 
   public override signMessage(message: SignableMessage): Promise<Hex> {
     return this.#client.signMessage({
@@ -175,118 +122,6 @@ export class KernelSmartWallet extends SmartWallet {
     });
   }
 
-  public deploy = async (options?: OperationOptions): Promise<Hex | null> => {
-    try {
-      const deployed = await this.isDeployed();
-      if (deployed) {
-        return null;
-      }
-
-      return this.sendTransaction(
-        {
-          to: this.address,
-        },
-        options
-      );
-    } catch (e) {
-      throw parseError(e);
-    }
-  };
-
-  public isDeployed = (): Promise<boolean> => {
-    return isSmartAccountDeployed(this.#publicClient, this.address);
-  };
-
-  public override async estimateGas(
-    tx: EstimateGasParameters<Chain>
-  ): Promise<bigint> {
-    try {
-      const isDeployment = !tx.to;
-
-      const userOperation = await this.prepareUserOperation(
-        isDeployment
-          ? {
-              userOperation: await this.buildDeployUserOperation({
-                data: tx.data ?? '0x',
-                value: tx.value ?? BigInt(0),
-              }),
-            }
-          : {
-              userOperation: await this.buildCallUserOperation({
-                to: tx.to ?? '0x',
-                data: tx.data ?? '0x',
-                value: tx.value ?? BigInt(0),
-              }),
-            }
-      );
-
-      const estimation = await this.estimateUserOperationGas(userOperation);
-      return (
-        estimation.callGasLimit +
-        estimation.verificationGasLimit +
-        estimation.preVerificationGas
-      );
-    } catch (e) {
-      throw parseError(e);
-    }
-  }
-
-  public override async sendTransaction(
-    tx: SendTransactionParameters<Chain, Account>,
-    options?: OperationOptions
-  ): Promise<Hex> {
-    try {
-      // deployment transaction
-      if (!tx.to) {
-        const deployment = await this.deployContract(
-          {
-            bytecode: tx.data ?? '0x',
-            value: tx.value,
-          },
-          options
-        );
-
-        return deployment.hash;
-      }
-
-      // regular transaction
-      const callData = await this.createCallData({
-        to: tx.to,
-        value: tx.value,
-        data: tx.data,
-      });
-
-      options?.onStatusChange?.(OperationStatus.PreparingUserOperation);
-      const userOperation = await this.prepareUserOperation({
-        userOperation: {
-          callData,
-        },
-      });
-
-      options?.onStatusChange?.(OperationStatus.SendingUserOperation);
-      const userOpHash = await this.sendUserOperation(userOperation);
-
-      options?.onStatusChange?.(OperationStatus.WaitingForUserOperation);
-      const userOpInfo = await this.waitForUserOperation(userOpHash);
-
-      if (!userOpInfo) {
-        throw new KriptonioError({
-          message: `user operation receipt ${userOpHash} not found. transaction failed`,
-        });
-      }
-
-      if (!userOpInfo.success) {
-        throw new KriptonioError({
-          message: `user operation ${userOpHash} failed`,
-        });
-      }
-
-      return userOpInfo.transactionHash;
-    } catch (e) {
-      throw parseError(e);
-    }
-  }
-
   public createCallData(input: {
     to: string;
     value?: bigint | undefined;
@@ -298,15 +133,6 @@ export class KernelSmartWallet extends SmartWallet {
       value: input.value ?? 0n,
       data: (input.data as Hex | undefined) ?? '0x',
       callType: input.callType,
-    });
-  }
-
-  public override estimateUserOperationGas(
-    userOperation: UserOperation
-  ): Promise<EstimateUserOperationGasReturnType> {
-    return estimateUserOperationGas(this.#client, {
-      userOperation,
-      entryPoint: this.entryPoint,
     });
   }
 
@@ -322,59 +148,7 @@ export class KernelSmartWallet extends SmartWallet {
     }
   }
 
-  public override export(): ExportedKernelWallet {
-    return {
-      version: '1.0',
-      kernel: {
-        ...exportSource(this.#config.kernel),
-      },
-    };
-  }
-
-  public deployContract = async (
-    deploy: DeployWallet,
-    options?: OperationOptions
-  ): Promise<DeployResponse> => {
-    try {
-      options?.onStatusChange?.(OperationStatus.PreparingUserOperation);
-      const userOperation = await this.prepareUserOperation({
-        userOperation: await this.buildDeployUserOperation({
-          data: assertHex(deploy.bytecode, 'bytecode'),
-          value: deploy.value ?? BigInt(0),
-        }),
-      });
-
-      options?.onStatusChange?.(OperationStatus.SendingUserOperation);
-      const userOpHash = await this.sendUserOperation(userOperation);
-
-      options?.onStatusChange?.(OperationStatus.WaitingForUserOperation);
-      const userOpInfo = await this.waitForUserOperation(userOpHash);
-
-      if (!userOpInfo) {
-        throw new KriptonioError({
-          message: `user operation receipt ${userOpHash} not found`,
-        });
-      }
-
-      if (!userOpInfo.success) {
-        throw new KriptonioError({
-          message: `user operation ${userOpHash} failed`,
-        });
-      }
-
-      options?.onStatusChange?.(OperationStatus.GettingContractAddress);
-      const address = await this.getContractAddress(userOpInfo.transactionHash);
-
-      return {
-        hash: userOpInfo.transactionHash,
-        address,
-      };
-    } catch (e) {
-      throw parseError(e);
-    }
-  };
-
-  private prepareUserOperation = async (args: {
+  protected override prepareUserOperation = async (args: {
     userOperation: PartialUserOperation;
   }) => {
     if (!args.userOperation.maxFeePerGas) {
@@ -389,141 +163,6 @@ export class KernelSmartWallet extends SmartWallet {
       userOperation: args.userOperation,
     });
   };
-
-  public waitForUserOperation = async (
-    userOpHash: Hex,
-    timeout = 60_000
-  ): Promise<UserOperationInfo | null> => {
-    const publicClient = this.#publicClient;
-    const currentBlock = await publicClient.getBlockNumber();
-    let elapsed = 0;
-    const stepWaitTime = 1000; // 1 sec
-
-    while (elapsed < timeout) {
-      elapsed += 1000;
-
-      try {
-        const logs = await publicClient.getLogs({
-          address: this.entryPoint,
-          event: UserOperationEventAbi,
-          args: {
-            userOpHash,
-          },
-          fromBlock: currentBlock - 50n,
-          toBlock: 'latest',
-        });
-
-        if (!logs.length) {
-          await sleep(stepWaitTime);
-          continue;
-        }
-
-        return {
-          success: logs[0].args.success,
-          transactionHash: logs[0].transactionHash,
-        };
-      } catch (e) {
-        if (e instanceof RpcError) {
-          await sleep(stepWaitTime);
-          continue;
-        }
-
-        if (e instanceof TimeoutError) {
-          continue;
-        }
-
-        console.error('unexpected error while waiting for user operation', e);
-        return null;
-      }
-    }
-
-    return null;
-  };
-
-  private buildCallUserOperation = (input: {
-    to: Hex;
-    data: Hex;
-    value: bigint;
-  }) => {
-    return this.buildUserOperation(
-      {
-        to: input.to,
-        data: input.data,
-        value: input.value,
-      },
-      'call'
-    );
-  };
-
-  private buildDeployUserOperation = (input: { data: Hex; value: bigint }) => {
-    return this.buildUserOperation(
-      {
-        to: createCallAddress,
-        data: this.buildDeployData(input.value, input.data),
-        value: input.value,
-      },
-      'delegatecall'
-    );
-  };
-
-  private buildUserOperation = async (
-    input: {
-      to: Hex;
-      data: Hex;
-      value: bigint;
-    },
-    callType: CallType
-  ) => {
-    return {
-      callData: await this.createCallData({
-        callType,
-        data: input.data,
-        to: input.to,
-        value: input.value,
-      }),
-    };
-  };
-
-  private buildDeployData = (value: bigint, data: Hex) => {
-    return encodeFunctionData({
-      abi: createCallAbi,
-      functionName: 'performCreate',
-      args: [value, data],
-    });
-  };
-
-  private async getContractAddress(transactionHash: Hex): Promise<Hex> {
-    const publicClient = this.#publicClient;
-    const receipt = await publicClient.waitForTransactionReceipt({
-      hash: transactionHash,
-    });
-
-    const logs = parseEventLogs({
-      abi: createCallAbi,
-      eventName: 'ContractCreation',
-      logs: receipt.logs.map((log) => {
-        return {
-          data: log.data,
-          topics: log.topics as [Hex, ...Hex[]],
-          address: log.address,
-          blockHash: log.blockHash,
-          blockNumber: toHex(log.blockNumber),
-          logIndex: toHex(log.logIndex),
-          transactionHash: log.transactionHash,
-          transactionIndex: toHex(log.transactionIndex),
-          removed: false,
-        };
-      }),
-    });
-
-    if (!logs.length) {
-      throw new KriptonioError({
-        message: 'deployment failed. cannot find contract creation event',
-      });
-    }
-
-    return logs[0].args.newContract;
-  }
 
   public static async create(
     config: KernelWalletWrapperConfig
@@ -601,6 +240,6 @@ export class KernelSmartWallet extends SmartWallet {
       },
     });
 
-    return wallet.address;
+    return await wallet.getAddress();
   }
 }

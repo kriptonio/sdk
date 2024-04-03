@@ -20,6 +20,7 @@ export type EoaWalletWrapperConfig = {
 
 export type KernelWalletWrapperConfig = {
   kernel: KernelWalletConfig;
+  biconomy?: BiconomyWalletConfig;
 };
 
 export type KernelWalletConfig = {
@@ -28,9 +29,18 @@ export type KernelWalletConfig = {
   paymasterUrl?: string;
 } & PrivateKeyOrMnemonic;
 
+export type BiconomyWalletConfig = {
+  rpcUrl: string;
+  bundlerUrl?: string;
+  paymasterUrl?: string;
+} & PrivateKeyOrMnemonic;
+
 export type ExportVersion = '1.0';
 
-export type ExportedWallet = ExportedEoaWallet | ExportedKernelWallet;
+export type ExportedWallet =
+  | ExportedEoaWallet
+  | ExportedKernelWallet
+  | ExportedBiconomyWallet;
 
 export type ExportedEoaWallet = {
   version?: ExportVersion;
@@ -40,6 +50,15 @@ export type ExportedEoaWallet = {
 export type ExportedKernelWallet = {
   version?: ExportVersion;
   kernel: Omit<KernelWalletConfig, 'rpcUrl' | 'bundlerUrl' | 'paymasterUrl'> &
+    PrivateKeyOrMnemonic;
+};
+
+export type ExportedBiconomyWallet = {
+  version?: ExportVersion;
+  biconomy: Omit<
+    BiconomyWalletConfig,
+    'rpcUrl' | 'bundlerUrl' | 'paymasterUrl'
+  > &
     PrivateKeyOrMnemonic;
 };
 

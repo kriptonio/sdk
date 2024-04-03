@@ -14,6 +14,7 @@ import {
   SdkWalletType,
 } from './WalletConfig';
 import { WalletFactory } from './WalletFactory';
+import { BiconomySmartWallet } from './smart-wallet/BiconomySmartWallet';
 import { KernelSmartWallet } from './smart-wallet/KernelSmartWallet';
 
 export class WalletService {
@@ -69,7 +70,7 @@ export class WalletService {
   public from<TConfig extends ExportedWallet>(
     exportedWallet: TConfig,
     config: SdkWalletConfig
-  ): Promise<EoaWallet | KernelSmartWallet> {
+  ): Promise<EoaWallet | KernelSmartWallet | BiconomySmartWallet> {
     if ('eoa' in exportedWallet) {
       return this.createEoaWallet(exportedWallet, config as SdkEoaWalletConfig);
     }
@@ -97,7 +98,7 @@ export class WalletService {
 
     const walletRpc = await this.#rpcService.getOrCreate({
       chainId: config.chainId,
-      wallet: transientWallet.address,
+      wallet: await transientWallet.getAddress(),
     });
 
     const paymasterUrl = !config.paymaster?.disabled
@@ -105,7 +106,7 @@ export class WalletService {
           await this.#paymasterService.getOrCreate({
             chainId: config.chainId,
             entryPoint: transientWallet.entryPoint,
-            wallet: transientWallet.address,
+            wallet: await transientWallet.getAddress(),
           })
         ).url
       : undefined;
