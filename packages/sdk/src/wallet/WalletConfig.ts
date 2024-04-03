@@ -72,7 +72,7 @@ export type SdkEoaWalletType = {
 
 export type SdkWalletType = SdkKernelWalletType | SdkEoaWalletType;
 
-export type SdkKernelWalletConfig = {
+export type SdkSmartWalletConfig = {
   chainId: ChainId;
   paymaster?: {
     disabled?: boolean;
@@ -83,4 +83,4 @@ export type SdkEoaWalletConfig = {
   chainId: ChainId;
 };
 
-export type SdkWalletConfig = SdkEoaWalletConfig | SdkKernelWalletConfig;
+export type SdkWalletConfig = SdkEoaWalletConfig | SdkSmartWalletConfig;

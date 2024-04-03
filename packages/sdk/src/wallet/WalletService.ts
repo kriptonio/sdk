@@ -4,12 +4,13 @@ import { RpcService } from '../service/RpcService';
 import { EoaWallet } from './EoaWallet';
 import { exportSource } from './Helpers';
 import {
+  ExportedBiconomyWallet,
   ExportedEoaWallet,
   ExportedKernelWallet,
   ExportedWallet,
   SdkEoaWalletConfig,
   SdkEoaWalletType,
-  SdkKernelWalletConfig,
+  SdkSmartWalletConfig,
   SdkWalletConfig,
   SdkWalletType,
 } from './WalletConfig';
@@ -62,7 +63,7 @@ export class WalletService {
     config: TWalletConfig,
     options: TWalletConfig extends ExportedEoaWallet
       ? SdkEoaWalletConfig
-      : SdkKernelWalletConfig
+      : SdkSmartWalletConfig
   ): Promise<
     TWalletConfig extends ExportedEoaWallet ? EoaWallet : KernelSmartWallet
   >;
@@ -77,24 +78,30 @@ export class WalletService {
 
     return this.createSmartWallet(
       exportedWallet,
-      config as SdkKernelWalletConfig
+      config as SdkSmartWalletConfig
     );
   }
 
   private createSmartWallet = async (
-    exportedWallet: ExportedKernelWallet,
-    config: SdkKernelWalletConfig
+    exportedWallet: ExportedKernelWallet | ExportedBiconomyWallet,
+    config: SdkSmartWalletConfig
   ) => {
     const initialRpc = await this.#rpcService.getOrCreate({
       chainId: config.chainId,
     });
 
-    const transientWallet = await KernelSmartWallet.create({
-      kernel: {
-        ...exportedWallet.kernel,
-        rpcUrl: initialRpc.url,
-      },
-    });
+    const transientWallet =
+      'biconomy' in exportedWallet
+        ? await BiconomySmartWallet.create({
+            ...exportedWallet.biconomy,
+            rpcUrl: initialRpc.url,
+          })
+        : await KernelSmartWallet.create({
+            kernel: {
+              ...exportedWallet.kernel,
+              rpcUrl: initialRpc.url,
+            },
+          });
 
     const walletRpc = await this.#rpcService.getOrCreate({
       chainId: config.chainId,
@@ -115,7 +122,11 @@ export class WalletService {
       kernel: {
         rpcUrl: walletRpc.url,
         paymasterUrl,
-        ...exportSource(exportedWallet.kernel),
+        ...exportSource(
+          'biconomy' in exportedWallet
+            ? exportedWallet.biconomy
+            : exportedWallet.kernel
+        ),
       },
     });
   };

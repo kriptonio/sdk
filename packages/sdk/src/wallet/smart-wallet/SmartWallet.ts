@@ -182,22 +182,16 @@ export abstract class SmartWallet extends Wallet {
     try {
       const isDeployment = !tx.to;
 
-      const userOperation = await this.prepareUserOperation(
-        isDeployment
-          ? {
-              userOperation: await this.buildDeployUserOperation({
-                data: tx.data ?? '0x',
-                value: tx.value ?? BigInt(0),
-              }),
-            }
-          : {
-              userOperation: await this.buildCallUserOperation({
-                to: tx.to ?? '0x',
-                data: tx.data ?? '0x',
-                value: tx.value ?? BigInt(0),
-              }),
-            }
-      );
+      const userOperation = isDeployment
+        ? await this.buildDeployUserOperation({
+            data: tx.data ?? '0x',
+            value: tx.value ?? BigInt(0),
+          })
+        : await this.buildCallUserOperation({
+            to: tx.to ?? '0x',
+            data: tx.data ?? '0x',
+            value: tx.value ?? BigInt(0),
+          });
 
       const estimation = await this.estimateUserOperationGas(userOperation);
       return (
@@ -224,23 +218,14 @@ export abstract class SmartWallet extends Wallet {
     );
   };
 
-  private buildUserOperation = async (
+  protected abstract buildUserOperation(
     input: {
       to: Hex;
       data: Hex;
       value: bigint;
     },
     callType: CallType
-  ) => {
-    return {
-      callData: await this.createCallData({
-        callType,
-        data: input.data,
-        to: input.to,
-        value: input.value,
-      }),
-    };
-  };
+  ): Promise<UserOperation>;
 
   protected buildCallUserOperation = (input: {
     to: Hex;
@@ -271,11 +256,9 @@ export abstract class SmartWallet extends Wallet {
   ): Promise<DeployResponse> => {
     try {
       options?.onStatusChange?.(OperationStatus.PreparingUserOperation);
-      const userOperation = await this.prepareUserOperation({
-        userOperation: await this.buildDeployUserOperation({
-          data: assertHex(deploy.bytecode, 'bytecode'),
-          value: deploy.value ?? BigInt(0),
-        }),
+      const userOperation = await this.buildDeployUserOperation({
+        data: assertHex(deploy.bytecode, 'bytecode'),
+        value: deploy.value ?? BigInt(0),
       });
 
       options?.onStatusChange?.(OperationStatus.SendingUserOperation);
@@ -326,20 +309,15 @@ export abstract class SmartWallet extends Wallet {
         return deployment.hash;
       }
 
-      // regular transaction
-      const callData = await this.createCallData({
-        callType: 'call',
-        to: tx.to,
-        value: tx.value,
-        data: tx.data,
-      });
-
       options?.onStatusChange?.(OperationStatus.PreparingUserOperation);
-      const userOperation = await this.prepareUserOperation({
-        userOperation: {
-          callData,
+      const userOperation = await this.buildUserOperation(
+        {
+          to: tx.to,
+          value: tx.value ?? 0n,
+          data: tx.data ?? '0x',
         },
-      });
+        'call'
+      );
 
       options?.onStatusChange?.(OperationStatus.SendingUserOperation);
       const userOpHash = await this.sendUserOperation(userOperation);
@@ -398,6 +376,10 @@ export abstract class SmartWallet extends Wallet {
     return logs[0].args.newContract;
   }
 
+  public override get rpcUrl(): string | undefined {
+    return this.publicClient.transport.url;
+  }
+
   /**
    * Sign transaction is not supported for smart wallets
    * @throws KriptonioError
@@ -408,10 +390,6 @@ export abstract class SmartWallet extends Wallet {
         'smart accounts cannot sign transactions. send user operation instead',
     });
   }
-
-  protected abstract prepareUserOperation(args: {
-    userOperation: PartialUserOperation;
-  }): Promise<UserOperation>;
 
   /**
    * Gets the entry point address of the smart wallet
@@ -428,16 +406,6 @@ export abstract class SmartWallet extends Wallet {
    * Gets the smart wallet vendor
    */
   public abstract get vendor(): string;
-
-  /**
-   * Creates a call data for UserOperation
-   */
-  public abstract createCallData(input: {
-    callType: CallType;
-    to: string;
-    value?: bigint;
-    data?: string;
-  }): Promise<Hex>;
 
   /**
    * Sends a user operation from the smart wallet

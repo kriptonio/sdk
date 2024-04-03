@@ -58,10 +58,6 @@ export class KernelSmartWallet extends SmartWallet {
     return this.#client;
   }
 
-  public override get rpcUrl(): string | undefined {
-    return this.#config.kernel.rpcUrl;
-  }
-
   public override getAddress(): Promise<Hex> {
     return Promise.resolve(this.#client.account.address);
   }
@@ -122,6 +118,40 @@ export class KernelSmartWallet extends SmartWallet {
     });
   }
 
+  protected override buildUserOperation = async (
+    input: {
+      to: Hex;
+      data: Hex;
+      value: bigint;
+      maxFeePerGas?: bigint;
+      maxPriorityFeePerGas?: bigint;
+    },
+    callType: CallType
+  ) => {
+    const callData = await this.createCallData({
+      callType,
+      data: input.data,
+      to: input.to,
+      value: input.value,
+    });
+
+    if (!input.maxFeePerGas) {
+      const feeData = await this.getFeeData();
+      if (feeData) {
+        input.maxFeePerGas = feeData.maxFeePerGas;
+        input.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
+      }
+    }
+
+    return this.#client.prepareUserOperationRequest({
+      userOperation: {
+        callData,
+        maxFeePerGas: input.maxFeePerGas,
+        maxPriorityFeePerGas: input.maxPriorityFeePerGas,
+      },
+    });
+  };
+
   public createCallData(input: {
     to: string;
     value?: bigint | undefined;
@@ -147,22 +177,6 @@ export class KernelSmartWallet extends SmartWallet {
       throw parseError(e);
     }
   }
-
-  protected override prepareUserOperation = async (args: {
-    userOperation: PartialUserOperation;
-  }) => {
-    if (!args.userOperation.maxFeePerGas) {
-      const feeData = await this.getFeeData();
-      if (feeData) {
-        args.userOperation.maxFeePerGas = feeData.maxFeePerGas;
-        args.userOperation.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
-      }
-    }
-
-    return this.#client.prepareUserOperationRequest({
-      userOperation: args.userOperation,
-    });
-  };
 
   public static async create(
     config: KernelWalletWrapperConfig

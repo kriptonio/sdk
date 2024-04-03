@@ -3,7 +3,7 @@ import {
   SupportedSigner,
   createSmartAccountClient,
 } from '@biconomy/account';
-import { UserOperation } from 'permissionless';
+import { UserOperation, deepHexlify } from 'permissionless';
 import {
   Chain,
   Hex,
@@ -15,17 +15,9 @@ import {
   http,
 } from 'viem';
 import { getChain } from '../../Chain';
-import { KriptonioError } from '../../Error';
-import { OperationStatus } from '../../enum/OperationStatus';
-import { assertHex, parseError } from '../../utils/error';
+import { sponsorUserOperation } from '../../api/PaymasterApi';
 import { exportSource, sourceToAccount } from '../Helpers';
-import {
-  DeployResponse,
-  DeployWallet,
-  OperationOptions,
-  SignableMessage,
-  TypedData,
-} from '../Wallet';
+import { SignableMessage, TypedData } from '../Wallet';
 import { BiconomyWalletConfig, ExportedBiconomyWallet } from '../WalletConfig';
 import { PartialUserOperation, SmartWallet } from './SmartWallet';
 
@@ -53,10 +45,6 @@ export class BiconomySmartWallet extends SmartWallet {
 
   public get vendor(): string {
     return 'Biconomy';
-  }
-
-  public get rpcUrl(): string | undefined {
-    throw new Error('Method not implemented.');
   }
 
   public getAddress(): Promise<Hex> {
@@ -91,78 +79,35 @@ export class BiconomySmartWallet extends SmartWallet {
     });
   }
 
-  public createCallData(input: {
-    to: string;
-    value?: bigint | undefined;
-    data?: string | undefined;
-  }): Promise<Hex> {
-    return this.#smartAccount.encodeExecute(
-      input.to as Hex,
-      input.value ?? 0n,
-      (input.data ?? '0x') as Hex
-    );
-  }
-
   public sendUserOperation = async (op: PartialUserOperation): Promise<Hex> => {
     const response = await this.#smartAccount.sendUserOp(op);
     return response.userOpHash as Hex;
   };
 
-  public deployContract = async (
-    deploy: DeployWallet,
-    options?: OperationOptions
-  ): Promise<DeployResponse> => {
-    try {
-      options?.onStatusChange?.(OperationStatus.PreparingUserOperation);
-      const userOperation = await this.prepareUserOperation({
-        userOperation: await this.buildDeployUserOperation({
-          data: assertHex(deploy.bytecode, 'bytecode'),
-          value: deploy.value ?? BigInt(0),
-        }),
-      });
-
-      options?.onStatusChange?.(OperationStatus.SendingUserOperation);
-      const userOpHash = await this.sendUserOperation(userOperation);
-
-      options?.onStatusChange?.(OperationStatus.WaitingForUserOperation);
-      const userOpInfo = await this.waitForUserOperation(userOpHash);
-
-      if (!userOpInfo) {
-        throw new KriptonioError({
-          message: `user operation receipt ${userOpHash} not found`,
-        });
-      }
-
-      if (!userOpInfo.success) {
-        throw new KriptonioError({
-          message: `user operation ${userOpHash} failed`,
-        });
-      }
-
-      options?.onStatusChange?.(OperationStatus.GettingContractAddress);
-      const address = await this.getContractAddress(userOpInfo.transactionHash);
-
-      return {
-        hash: userOpInfo.transactionHash,
-        address,
-      };
-    } catch (e) {
-      throw parseError(e);
-    }
-  };
-
-  protected prepareUserOperation = async (args: {
-    userOperation: PartialUserOperation;
-  }) => {
-    if (!args.userOperation.maxFeePerGas) {
+  protected buildUserOperation = async (input: {
+    to: Hex;
+    data: Hex;
+    value: bigint;
+    maxFeePerGas?: bigint;
+    maxPriorityFeePerGas?: bigint;
+  }): Promise<UserOperation> => {
+    if (!input.maxFeePerGas) {
       const feeData = await this.getFeeData();
       if (feeData) {
-        args.userOperation.maxFeePerGas = feeData.maxFeePerGas;
-        args.userOperation.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
+        input.maxFeePerGas = feeData.maxFeePerGas;
+        input.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
       }
     }
 
-    return args.userOperation as UserOperation;
+    const userOperation = await this.#smartAccount.buildUserOp([
+      {
+        to: input.to,
+        value: input.value,
+        data: input.data,
+      },
+    ]);
+
+    return userOperation as UserOperation;
   };
 
   public static async create(config: BiconomyWalletConfig) {
@@ -171,9 +116,36 @@ export class BiconomySmartWallet extends SmartWallet {
       transport: http(config.rpcUrl),
     });
 
+    // entry point v0.6
+    const entryPointAddress = '0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789';
+
     const smartAccount = await createSmartAccountClient({
       signer: signer as SupportedSigner,
       bundlerUrl: config.bundlerUrl ?? config.rpcUrl,
+      entryPointAddress,
+      paymaster: config.paymasterUrl
+        ? {
+            getDummyPaymasterAndData() {
+              return Promise.resolve('0x');
+            },
+            getPaymasterAndData: async (userOperation) => {
+              const paymasterInfo = await sponsorUserOperation(
+                config.paymasterUrl!,
+                deepHexlify(userOperation),
+                entryPointAddress
+              );
+
+              return {
+                callGasLimit: Number(paymasterInfo.callGasLimit),
+                verificationGasLimit: Number(
+                  paymasterInfo.verificationGasLimit
+                ),
+                preVerificationGas: Number(paymasterInfo.preVerificationGas),
+                paymasterAndData: paymasterInfo.paymasterAndData,
+              };
+            },
+          }
+        : undefined,
     });
 
     const chainId = await signer.getChainId();
