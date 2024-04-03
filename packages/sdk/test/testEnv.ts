@@ -13,4 +13,9 @@ export const testEnv = {
     mnemonic: process.env.KERNEL_MNEMONIC as string,
     chainId: parseInt(process.env.KERNEL_CHAIN_ID as string),
   },
+  biconomy: {
+    privateKey: process.env.KERNEL_PRIVATE_KEY as Hex,
+    mnemonic: process.env.KERNEL_MNEMONIC as string,
+    chainId: parseInt(process.env.KERNEL_CHAIN_ID as string),
+  },
 };

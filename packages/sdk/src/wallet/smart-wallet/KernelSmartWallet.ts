@@ -26,10 +26,7 @@ import { sponsorUserOperation } from '../../api/PaymasterApi';
 import { assertHex, parseError } from '../../utils/error';
 import { exportSource, isValidSource, sourceToAccount } from '../Helpers';
 import { SignableMessage, TypedData } from '../Wallet';
-import {
-  ExportedKernelWallet,
-  KernelWalletWrapperConfig,
-} from '../WalletConfig';
+import { ExportedKernelWallet, KernelWalletConfig } from '../WalletConfig';
 import { PartialUserOperation, SmartWallet } from './SmartWallet';
 
 export type KernelClient = KernelAccountClient<
@@ -39,12 +36,12 @@ export type KernelClient = KernelAccountClient<
 >;
 
 export class KernelSmartWallet extends SmartWallet {
-  #config: KernelWalletWrapperConfig;
+  #config: KernelWalletConfig;
   #client: KernelClient;
   #publicClient: PublicClient;
 
   constructor(
-    config: KernelWalletWrapperConfig,
+    config: KernelWalletConfig,
     client: KernelClient,
     publicClient: PublicClient<HttpTransport>
   ) {
@@ -98,7 +95,7 @@ export class KernelSmartWallet extends SmartWallet {
     return {
       version: '1.0',
       kernel: {
-        ...exportSource(this.#config.kernel),
+        ...exportSource(this.#config),
       },
     };
   }
@@ -179,16 +176,16 @@ export class KernelSmartWallet extends SmartWallet {
   }
 
   public static async create(
-    config: KernelWalletWrapperConfig
+    config: KernelWalletConfig
   ): Promise<KernelSmartWallet> {
-    if (!isValidSource(config.kernel)) {
+    if (!isValidSource(config)) {
       throw new KriptonioError({
         message: 'privateKey or mnemonic must be provided',
       });
     }
 
     const publicClient = createPublicClient({
-      transport: http(config.kernel.rpcUrl),
+      transport: http(config.rpcUrl),
     });
 
     const chainId = await publicClient.getChainId();
@@ -199,12 +196,12 @@ export class KernelSmartWallet extends SmartWallet {
   }
 
   public static async createKernelClient(
-    config: KernelWalletWrapperConfig,
+    config: KernelWalletConfig,
     chain: Chain,
     publicClient: PublicClient
   ): Promise<KernelClient> {
     const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
-      signer: sourceToAccount(config.kernel),
+      signer: sourceToAccount(config),
     });
 
     const account = await createKernelAccount(publicClient, {
@@ -220,11 +217,11 @@ export class KernelSmartWallet extends SmartWallet {
     const client = createKernelAccountClient({
       account,
       chain,
-      transport: http(config.kernel.rpcUrl),
-      sponsorUserOperation: config.kernel.paymasterUrl
+      transport: http(config.rpcUrl),
+      sponsorUserOperation: config.paymasterUrl
         ? async (args) => {
             const paymasterInfo = await sponsorUserOperation(
-              config.kernel.paymasterUrl!,
+              config.paymasterUrl!,
               deepHexlify(args.userOperation),
               account.entryPoint
             );
@@ -248,10 +245,8 @@ export class KernelSmartWallet extends SmartWallet {
     rpcUrl: string
   ) {
     const wallet = await KernelSmartWallet.create({
-      kernel: {
-        ...exportSource(config.kernel),
-        rpcUrl,
-      },
+      ...exportSource(config.kernel),
+      rpcUrl,
     });
 
     return await wallet.getAddress();

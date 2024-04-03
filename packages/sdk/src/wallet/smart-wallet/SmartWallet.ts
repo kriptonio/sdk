@@ -391,6 +391,12 @@ export abstract class SmartWallet extends Wallet {
     });
   }
 
+  public abstract createCallData(input: {
+    to: string;
+    value?: bigint | undefined;
+    data?: string | undefined;
+  }): Promise<Hex>;
+
   /**
    * Gets the entry point address of the smart wallet
    */

@@ -16,6 +16,7 @@ import {
 } from 'viem';
 import { getChain } from '../../Chain';
 import { sponsorUserOperation } from '../../api/PaymasterApi';
+import { assertHex } from '../../utils/error';
 import { exportSource, sourceToAccount } from '../Helpers';
 import { SignableMessage, TypedData } from '../Wallet';
 import { BiconomyWalletConfig, ExportedBiconomyWallet } from '../WalletConfig';
@@ -110,17 +111,34 @@ export class BiconomySmartWallet extends SmartWallet {
     return userOperation as UserOperation;
   };
 
+  public createCallData(input: {
+    to: string;
+    value?: bigint | undefined;
+    data?: string | undefined;
+  }): Promise<Hex> {
+    return this.#smartAccount.encodeExecute(
+      assertHex(input.to, 'to'),
+      input.value ?? 0n,
+      (input.data as Hex | undefined) ?? '0x'
+    );
+  }
+
   public static async create(config: BiconomyWalletConfig) {
     const signer = createWalletClient({
       account: sourceToAccount(config),
       transport: http(config.rpcUrl),
     });
 
+    const chainId = await signer.getChainId();
+    const chain = getChain(chainId);
+
     // entry point v0.6
     const entryPointAddress = '0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789';
 
     const smartAccount = await createSmartAccountClient({
       signer: signer as SupportedSigner,
+      viemChain: signer.chain,
+      chainId,
       bundlerUrl: config.bundlerUrl ?? config.rpcUrl,
       entryPointAddress,
       paymaster: config.paymasterUrl
@@ -147,9 +165,6 @@ export class BiconomySmartWallet extends SmartWallet {
           }
         : undefined,
     });
-
-    const chainId = await signer.getChainId();
-    const chain = getChain(chainId);
 
     const publicClient = createPublicClient({
       transport: http(config.rpcUrl),

@@ -12,16 +12,18 @@ export type EoaWalletConfig = {
   rpcUrl: string;
 } & PrivateKeyOrMnemonic;
 
-export type WalletConfig = EoaWalletWrapperConfig | KernelWalletWrapperConfig;
+export type WalletConfig =
+  | EoaWalletWrapperConfig
+  | KernelWalletWrapperConfig
+  | BiconomyWalletWrapperConfig;
 
 export type EoaWalletWrapperConfig = {
   eoa: EoaWalletConfig;
 };
 
-export type KernelWalletWrapperConfig = {
-  kernel: KernelWalletConfig;
-  biconomy?: BiconomyWalletConfig;
-};
+export type KernelWalletWrapperConfig = { kernel: KernelWalletConfig };
+
+export type BiconomyWalletWrapperConfig = { biconomy: BiconomyWalletConfig };
 
 export type KernelWalletConfig = {
   rpcUrl: string;

@@ -65,7 +65,11 @@ export class WalletService {
       ? SdkEoaWalletConfig
       : SdkSmartWalletConfig
   ): Promise<
-    TWalletConfig extends ExportedEoaWallet ? EoaWallet : KernelSmartWallet
+    TWalletConfig extends ExportedEoaWallet
+      ? EoaWallet
+      : TWalletConfig extends ExportedKernelWallet
+        ? KernelSmartWallet
+        : BiconomySmartWallet
   >;
 
   public from<TConfig extends ExportedWallet>(
@@ -97,10 +101,8 @@ export class WalletService {
             rpcUrl: initialRpc.url,
           })
         : await KernelSmartWallet.create({
-            kernel: {
-              ...exportedWallet.kernel,
-              rpcUrl: initialRpc.url,
-            },
+            ...exportedWallet.kernel,
+            rpcUrl: initialRpc.url,
           });
 
     const walletRpc = await this.#rpcService.getOrCreate({
