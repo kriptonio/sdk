@@ -5,7 +5,6 @@ import axios from 'axios';
 import { ethers } from 'ethers';
 import { deepHexlify, isSmartAccountDeployed } from 'permissionless';
 import {
-  BaseError,
   GetTransactionReceiptReturnType,
   Hex,
   createPublicClient,
@@ -15,11 +14,15 @@ import {
   parseUnits,
 } from 'viem';
 import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts';
-import { polygonMumbai } from 'viem/chains';
-import { Configuration, KriptonioError, WalletFactory } from '../../src';
+import { baseSepolia } from 'viem/chains';
+import {
+  Configuration,
+  KriptonioError,
+  WalletFactory,
+  getChain,
+} from '../../src';
 import { sponsorUserOperation } from '../../src/api/PaymasterApi';
 import { BlockchainResponse } from '../../src/types/api/blockchainResponse';
-import { getChain } from '../../src/utils/chain';
 import { createSdk, createSdkConfig } from '../test.utils';
 import { testEnv } from '../testEnv';
 
@@ -258,7 +261,7 @@ describe('KernelSmartWallet', () => {
     await wallet.deploy();
 
     const version = await wallet.getVersion();
-    expect(version).toBe('0.2.3');
+    expect(version).toBe('0.2.4');
   });
 
   it('returns null version when wallet not deployed', async () => {
@@ -278,7 +281,7 @@ describe('KernelSmartWallet', () => {
 
   it('throws error when invalid paymaster url is provided', async () => {
     const sdk = createSdk();
-    const chain = polygonMumbai;
+    const chain = baseSepolia;
     const rpc = await sdk.rpc.getOrCreate({ chainId: chain.id });
     const paymasterUrl = `${Configuration.paymasterApiUrl}/v1/endpoints/invalid/sponsor`;
     const privateKey = testEnv.kernel.privateKey;
@@ -335,7 +338,7 @@ describe('KernelSmartWallet', () => {
 
   it('sends transaction via kernel account', async () => {
     const sdk = createSdk();
-    const chain = polygonMumbai;
+    const chain = baseSepolia;
     const rpc = await sdk.rpc.getOrCreate({ chainId: chain.id });
     const paymaster = await sdk.paymaster.getOrCreate({
       chainId: chain.id,
@@ -520,8 +523,8 @@ describe('KernelSmartWallet', () => {
 
       expect(true).toBe(false);
     } catch (e) {
-      expect(e instanceof BaseError).toBe(true);
-      expect((e as BaseError).details).toBe(
+      expect(e instanceof KriptonioError).toBe(true);
+      expect((e as KriptonioError).message).toBe(
         `UserOperation reverted during simulation with reason: AA21 didn't pay prefund`
       );
     }
@@ -537,6 +540,7 @@ describe('KernelSmartWallet', () => {
       },
       { chainId: testEnv.kernel.chainId }
     );
+    console.log('wallet address', wallet.address);
 
     const receiver = '0x13a11CeC9970d58E1170e98d28D2812a23890341';
     const beforeBalance = await createPublicClient({

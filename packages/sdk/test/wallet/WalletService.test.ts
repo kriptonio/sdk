@@ -7,7 +7,7 @@ describe('WalletService', () => {
   it('can generate a smart wallet for a chain id', async () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.generate({
-      chainId: ChainId.PolygonMumbai,
+      chainId: ChainId.BaseSepolia,
     });
 
     expect(wallet.address).toBeDefined();
@@ -17,7 +17,7 @@ describe('WalletService', () => {
   it('can generate a smart wallet for a provided config', async () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.generate({
-      chainId: ChainId.PolygonMumbai,
+      chainId: ChainId.BaseSepolia,
       type: 'eoa',
     });
 
@@ -34,7 +34,7 @@ describe('WalletService', () => {
           privateKey: testEnv.kernel.privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     expect(wallet.address).toBeDefined();
@@ -50,7 +50,7 @@ describe('WalletService', () => {
           privateKey: testEnv.kernel.privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     expect(wallet.address).toBeDefined();

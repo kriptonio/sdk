@@ -13,7 +13,7 @@ describe('SmartContract', () => {
           privateKey: testEnv.kernel.privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const smartContract = await sdk.smartContract.createFromStandardJson({
@@ -48,7 +48,7 @@ describe('SmartContract', () => {
           privateKey: testEnv.kernel.privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const smartContract = await sdk.smartContract.createFromStandardJson({

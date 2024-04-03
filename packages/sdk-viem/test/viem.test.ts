@@ -14,7 +14,7 @@ describe('viem plugin', () => {
           privateKey: testEnv.kernel.privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const client = createKriptonioClient(wallet);
@@ -31,7 +31,7 @@ describe('viem plugin', () => {
           privateKey: testEnv.kernel.privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const client = createKriptonioClient(wallet).extend(publicActions);
@@ -53,7 +53,7 @@ describe('viem plugin', () => {
           privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const client = createKriptonioClient(wallet).extend(publicActions);
@@ -73,7 +73,7 @@ describe('viem plugin', () => {
           privateKey: testEnv.kernel.privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const client = createKriptonioClient(wallet).extend(publicActions);
@@ -95,7 +95,7 @@ describe('viem plugin', () => {
           privateKey: testEnv.kernel.privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const client = createKriptonioClient(wallet).extend(publicActions);

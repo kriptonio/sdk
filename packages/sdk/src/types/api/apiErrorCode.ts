@@ -11,7 +11,7 @@
  */
 
 
-export type ApiErrorCode = 10000 | 10001 | 10002 | 10003 | 10004 | 10006 | 10007 | 10008 | 10009 | 10011 | 10013 | 10015 | 10018 | 10019 | 10020 | 10021 | 10022 | 10023 | 10024 | 10026 | 10027 | 10029 | 10032 | 10033 | 10040 | 10041 | 10042 | 10043 | 10048 | 10049 | 10050 | 10051 | 10052 | 10053 | 10054 | 10055 | 10056 | 10057 | 10058 | 10059 | 10060 | 10061 | 10062 | 10064 | 10065 | 10066 | 10068 | 10069 | 10070 | 10071 | 10073 | 10074 | 10076 | 10077 | 10078 | 10079 | 10080;
+export type ApiErrorCode = 10000 | 10001 | 10002 | 10003 | 10004 | 10006 | 10007 | 10008 | 10009 | 10011 | 10013 | 10015 | 10018 | 10019 | 10020 | 10021 | 10022 | 10023 | 10024 | 10026 | 10027 | 10029 | 10032 | 10033 | 10040 | 10041 | 10042 | 10043 | 10048 | 10049 | 10050 | 10051 | 10052 | 10053 | 10054 | 10055 | 10056 | 10057 | 10058 | 10059 | 10060 | 10061 | 10062 | 10064 | 10065 | 10066 | 10068 | 10069 | 10070 | 10071 | 10073 | 10074 | 10076 | 10077 | 10078 | 10079 | 10080 | 10081;
 
 export const ApiErrorCode = {
     Unknown: 10000 as ApiErrorCode,
@@ -70,6 +70,7 @@ export const ApiErrorCode = {
     SmartContractsExist: 10077 as ApiErrorCode,
     TokenFetchingError: 10078 as ApiErrorCode,
     TokenMetadataFetchingError: 10079 as ApiErrorCode,
-    BlockchainsNotCompatible: 10080 as ApiErrorCode
+    BlockchainsNotCompatible: 10080 as ApiErrorCode,
+    PersonalSubscriptionPlanNotFound: 10081 as ApiErrorCode
 };
 

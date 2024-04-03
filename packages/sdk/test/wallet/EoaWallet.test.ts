@@ -10,7 +10,7 @@ import {
   verifyTypedData,
 } from 'viem';
 import { sendRawTransaction } from 'viem/actions';
-import { polygon, polygonMumbai } from 'viem/chains';
+import { baseSepolia, polygon } from 'viem/chains';
 import { WalletFactory } from '../../src';
 import { testEnv } from '../testEnv';
 
@@ -105,7 +105,7 @@ describe('EoaWallet', () => {
       domain: {
         name: 'Ether Mail',
         version: '1',
-        chainId: polygonMumbai.id,
+        chainId: baseSepolia.id,
         verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC' as Hex,
       },
       message: {
@@ -143,24 +143,24 @@ describe('EoaWallet', () => {
     const wallet = await WalletFactory.from({
       eoa: {
         privateKey: testEnv.eoa.privateKey,
-        rpcUrl: polygonMumbai.rpcUrls.default.http[0],
+        rpcUrl: baseSepolia.rpcUrls.default.http[0],
       },
     });
 
     const publicClient = createPublicClient({
-      transport: http(polygonMumbai.rpcUrls.default.http[0]),
+      transport: http(baseSepolia.rpcUrls.default.http[0]),
     });
 
     const prepared = await wallet.client.prepareTransactionRequest({
       value: 0n,
       data: '0x',
-      chain: polygonMumbai,
+      chain: baseSepolia,
       type: 'eip1559',
     });
 
     const signed = await wallet.signTransaction({
       ...prepared,
-      chainId: polygonMumbai.id,
+      chainId: baseSepolia.id,
     });
     const hash = await sendRawTransaction(publicClient, {
       serializedTransaction: signed,
@@ -177,7 +177,7 @@ describe('EoaWallet', () => {
     const wallet = await WalletFactory.from({
       eoa: {
         privateKey: testEnv.eoa.privateKey,
-        rpcUrl: polygonMumbai.rpcUrls.default.http[0],
+        rpcUrl: baseSepolia.rpcUrls.default.http[0],
       },
     });
 
@@ -194,12 +194,12 @@ describe('EoaWallet', () => {
     const wallet = await WalletFactory.from({
       eoa: {
         privateKey: testEnv.eoa.privateKey,
-        rpcUrl: polygonMumbai.rpcUrls.default.http[0],
+        rpcUrl: baseSepolia.rpcUrls.default.http[0],
       },
     });
 
     const publicClient = createPublicClient({
-      transport: http(polygonMumbai.rpcUrls.default.http[0]),
+      transport: http(baseSepolia.rpcUrls.default.http[0]),
     });
 
     const receiver = '0x13a11CeC9970d58E1170e98d28D2812a23890341';
@@ -248,12 +248,12 @@ describe('EoaWallet', () => {
     const wallet = await WalletFactory.from({
       eoa: {
         mnemonic: testEnv.eoa.mnemonic,
-        rpcUrl: polygonMumbai.rpcUrls.default.http[0],
+        rpcUrl: baseSepolia.rpcUrls.default.http[0],
       },
     });
 
     const publicClient = createPublicClient({
-      transport: http(polygonMumbai.rpcUrls.default.http[0]),
+      transport: http(baseSepolia.rpcUrls.default.http[0]),
     });
 
     const hash = await wallet.sendTransaction({
@@ -272,12 +272,12 @@ describe('EoaWallet', () => {
     const wallet = await WalletFactory.from({
       eoa: {
         mnemonic: testEnv.eoa.mnemonic,
-        rpcUrl: polygonMumbai.rpcUrls.default.http[0],
+        rpcUrl: baseSepolia.rpcUrls.default.http[0],
       },
     });
 
     const publicClient = createPublicClient({
-      transport: http(polygonMumbai.rpcUrls.default.http[0]),
+      transport: http(baseSepolia.rpcUrls.default.http[0]),
     });
 
     const abi = [

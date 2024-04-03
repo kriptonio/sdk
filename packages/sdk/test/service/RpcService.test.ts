@@ -6,18 +6,18 @@ describe('RpcService', () => {
     const sdk = createSdk();
     const rpc = await sdk.rpc.create({
       title: 'test rpc',
-      chainId: ChainId.PolygonMumbai,
+      chainId: ChainId.BaseSepolia,
     });
 
     expect(rpc.title).toBe('test rpc');
-    expect(rpc.chainId).toBe(ChainId.PolygonMumbai);
+    expect(rpc.chainId).toBe(ChainId.BaseSepolia);
   });
 
   it('can get rpc with provided id', async () => {
     const sdk = createSdk();
     const rpc = await sdk.rpc.create({
       title: 'test rpc',
-      chainId: ChainId.PolygonMumbai,
+      chainId: ChainId.BaseSepolia,
     });
 
     const retrievedRpc = await sdk.rpc.get({ id: rpc.id });
@@ -28,10 +28,10 @@ describe('RpcService', () => {
   it('can get or create rpc for provided chain id', async () => {
     const sdk = createSdk();
     const rpc = await sdk.rpc.getOrCreate({
-      chainId: ChainId.PolygonMumbai,
+      chainId: ChainId.BaseSepolia,
       wallet: '0x123',
     });
 
-    expect(rpc.chainId).toBe(ChainId.PolygonMumbai);
+    expect(rpc.chainId).toBe(ChainId.BaseSepolia);
   });
 });

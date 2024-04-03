@@ -6,20 +6,20 @@ describe('PaymasterService', () => {
     const sdk = createSdk();
     const paymaster = await sdk.paymaster.create({
       title: 'test paymaster',
-      chainId: ChainId.PolygonMumbai,
+      chainId: ChainId.BaseSepolia,
       wallet: '0x123',
     });
 
     expect(paymaster.title).toBe('test paymaster');
     expect(paymaster.wallet).toBe('0x123');
-    expect(paymaster.chainId).toBe(ChainId.PolygonMumbai);
+    expect(paymaster.chainId).toBe(ChainId.BaseSepolia);
   });
 
   it('can get paymaster with provided id', async () => {
     const sdk = createSdk();
     const paymaster = await sdk.paymaster.create({
       title: 'test paymaster',
-      chainId: ChainId.PolygonMumbai,
+      chainId: ChainId.BaseSepolia,
       wallet: '0x123',
     });
 
@@ -31,11 +31,11 @@ describe('PaymasterService', () => {
   it('can get or create paymaster for provided chain id', async () => {
     const sdk = createSdk();
     const paymaster = await sdk.paymaster.getOrCreate({
-      chainId: ChainId.PolygonMumbai,
+      chainId: ChainId.BaseSepolia,
       wallet: '0x123',
       entryPoint: '0x123',
     });
 
-    expect(paymaster.chainId).toBe(ChainId.PolygonMumbai);
+    expect(paymaster.chainId).toBe(ChainId.BaseSepolia);
   });
 });

@@ -10,12 +10,13 @@
 - [ArbitrumSepolia](ChainId.md#arbitrumsepolia)
 - [Base](ChainId.md#base)
 - [BaseSepolia](ChainId.md#basesepolia)
+- [Degen](ChainId.md#degen)
 - [Ethereum](ChainId.md#ethereum)
 - [EthereumSepolia](ChainId.md#ethereumsepolia)
 - [Optimism](ChainId.md#optimism)
 - [OptimismSepolia](ChainId.md#optimismsepolia)
 - [Polygon](ChainId.md#polygon)
-- [PolygonMumbai](ChainId.md#polygonmumbai)
+- [PolygonAmoy](ChainId.md#polygonamoy)
 
 ## Enumeration Members
 
@@ -25,7 +26,7 @@
 
 #### Defined in
 
-[src/Chain.ts:23](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/Chain.ts#L23)
+[src/Chain.ts:48](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L48)
 
 ___
 
@@ -35,7 +36,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:24](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/Chain.ts#L24)
+[src/Chain.ts:49](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L49)
 
 ___
 
@@ -45,7 +46,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:19](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/Chain.ts#L19)
+[src/Chain.ts:44](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L44)
 
 ___
 
@@ -55,7 +56,17 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:20](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/Chain.ts#L20)
+[src/Chain.ts:45](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L45)
+
+___
+
+### Degen
+
+• **Degen** = `number`
+
+#### Defined in
+
+[src/Chain.ts:50](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L50)
 
 ___
 
@@ -65,7 +76,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:15](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/Chain.ts#L15)
+[src/Chain.ts:40](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L40)
 
 ___
 
@@ -75,7 +86,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:16](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/Chain.ts#L16)
+[src/Chain.ts:41](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L41)
 
 ___
 
@@ -85,7 +96,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:21](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/Chain.ts#L21)
+[src/Chain.ts:46](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L46)
 
 ___
 
@@ -95,7 +106,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:22](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/Chain.ts#L22)
+[src/Chain.ts:47](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L47)
 
 ___
 
@@ -105,14 +116,14 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:17](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/Chain.ts#L17)
+[src/Chain.ts:42](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L42)
 
 ___
 
-### PolygonMumbai
+### PolygonAmoy
 
-• **PolygonMumbai** = `number`
+• **PolygonAmoy** = `number`
 
 #### Defined in
 
-[src/Chain.ts:18](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/Chain.ts#L18)
+[src/Chain.ts:43](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L43)

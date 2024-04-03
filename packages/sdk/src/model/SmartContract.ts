@@ -10,13 +10,13 @@ import {
   getContract,
   http,
 } from 'viem';
+import { getChain } from '../Chain';
 import { KriptonioError } from '../Error';
 import { SmartContractApi } from '../api/SmartContractApi';
 import { DeploymentDto } from '../response/DeploymentDto';
 import { SmartContractDeploymentResponse } from '../types/api/smartContractDeploymentResponse';
 import { SmartContractDetailResponse } from '../types/api/smartContractDetailResponse';
 import { TransactionStatus } from '../types/api/transactionStatus';
-import { getChain } from '../utils/chain';
 import { assertHex, parseError } from '../utils/error';
 import { sleep } from '../utils/time';
 import { OperationOptions, Wallet } from '../wallet/Wallet';

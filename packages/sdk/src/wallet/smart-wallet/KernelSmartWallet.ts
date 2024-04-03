@@ -35,12 +35,12 @@ import {
   parseEventLogs,
   toHex,
 } from 'viem';
+import { getChain } from '../../Chain';
 import { KriptonioError } from '../../Error';
 import { ApiClient } from '../../api/ApiClient';
 import { sponsorUserOperation } from '../../api/PaymasterApi';
 import { RpcApi } from '../../api/RpcApi';
 import { OperationStatus } from '../../enum/OperationStatus';
-import { getChain } from '../../utils/chain';
 import { assertHex, parseError } from '../../utils/error';
 import { sleep } from '../../utils/time';
 import { exportSource, isValidSource, sourceToAccount } from '../Helpers';

@@ -73,6 +73,7 @@
 | `client.batch?` | `Object` | Flags for batch settings. |
 | `client.batch.multicall?` | `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  } | Toggle to enable `eth_call` multicall aggregation. |
 | `client.cacheTime` | `number` | Time (in ms) that cached data will remain in memory. |
+| `client.ccipRead?` | ``false`` \| \{ `request?`: (`parameters`: `CcipRequestParameters`) => `Promise`\<\`0x$\{string}\`\>  } | [CCIP Read](https://eips.ethereum.org/EIPS/eip-3668) configuration. |
 | `client.chain` | `Chain` | Chain for the client. |
 | `client.deployContract` | \<TAbi, TChainOverride\>(`args`: \{ [K in string \| number \| symbol]: DeployContractParameters\<TAbi, Chain, KernelSmartAccount, TChainOverride\>[K] }) => `Promise`\<\`0x$\{string}\`\> | Deploys a contract to the network, given bytecode and constructor arguments. This function also allows you to sponsor this transaction if sender is a smartAccount - Docs: https://viem.sh/docs/contract/deployContract.html - Examples: https://stackblitz.com/github/wagmi-dev/viem/tree/main/examples/contracts/deploying-contracts **`Example`** ```ts import { createWalletClient, http } from 'viem' import { privateKeyToAccount } from 'viem/accounts' import { mainnet } from 'viem/chains' const client = createWalletClient({ account: privateKeyToAccount('0x…'), chain: mainnet, transport: http(), }) const hash = await client.deployContract({ abi: [], account: '0x…, bytecode: '0x608060405260405161083e38038061083e833981016040819052610...', }) ``` |
 | `client.extend` | \<client\>(`fn`: (`client`: `Client`\<`HttpTransport`, `Chain`, `KernelSmartAccount`, `BundlerRpcSchema`, `KernelAccountClientActions`\<`Chain`, `KernelSmartAccount`\>\>) => `client`) => `Client`\<`HttpTransport`, `Chain`, `KernelSmartAccount`, `BundlerRpcSchema`, \{ [K in string \| number \| symbol]: client[K] } & `SmartAccountActions`\<`Chain`, `KernelSmartAccount`\> & \{ `signUserOperation`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{(...)}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }) => `Promise`\<`UserOperation`\>  }\> | - |
@@ -97,11 +98,12 @@
 | `publicClient.batch.multicall?` | `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  } | Toggle to enable `eth_call` multicall aggregation. |
 | `publicClient.cacheTime` | `number` | Time (in ms) that cached data will remain in memory. |
 | `publicClient.call` | (`parameters`: `CallParameters`\<`undefined` \| `Chain`\>) => `Promise`\<`CallReturnType`\> | Executes a new message call immediately without submitting a transaction to the network. - Docs: https://viem.sh/docs/actions/public/call - JSON-RPC Methods: [`eth_call`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_call) **`Example`** ```ts import { createPublicClient, http } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const data = await client.call({ account: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266', data: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', to: '0x70997970c51812dc3a010c7d01b50e0d17dc79c8', }) ``` |
+| `publicClient.ccipRead?` | ``false`` \| \{ `request?`: (`parameters`: `CcipRequestParameters`) => `Promise`\<\`0x$\{string}\`\>  } | [CCIP Read](https://eips.ethereum.org/EIPS/eip-3668) configuration. |
 | `publicClient.chain` | `undefined` \| `Chain` | Chain for the client. |
-| `publicClient.createBlockFilter` | () => `Promise`\<\{ `id`: \`0x$\{string}\` ; `request`: `EIP1193RequestFn`\<readonly [\{ `Method`: ``"eth_getFilterChanges"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: \`0x$\{string}\`[] \| `RpcLog`[]  }, \{ `Method`: ``"eth_getFilterLogs"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[]  }, \{ `Method`: ``"eth_uninstallFilter"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `boolean`  }]\> ; `type`: ``"block"``  }\> | Creates a Filter to listen for new block hashes that can be used with [`getFilterChanges`](https://viem.sh/docs/actions/public/getFilterChanges). - Docs: https://viem.sh/docs/actions/public/createBlockFilter - JSON-RPC Methods: [`eth_newBlockFilter`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_newBlockFilter) **`Example`** ```ts import { createPublicClient, createBlockFilter, http } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const filter = await createBlockFilter(client) // { id: "0x345a6572337856574a76364e457a4366", type: 'block' } ``` |
+| `publicClient.createBlockFilter` | () => `Promise`\<\{ `id`: \`0x$\{string}\` ; `request`: `EIP1193RequestFn`\<readonly [\{ `Method`: ``"eth_getFilterChanges"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[] \| \`0x$\{string}\`[]  }, \{ `Method`: ``"eth_getFilterLogs"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[]  }, \{ `Method`: ``"eth_uninstallFilter"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `boolean`  }]\> ; `type`: ``"block"``  }\> | Creates a Filter to listen for new block hashes that can be used with [`getFilterChanges`](https://viem.sh/docs/actions/public/getFilterChanges). - Docs: https://viem.sh/docs/actions/public/createBlockFilter - JSON-RPC Methods: [`eth_newBlockFilter`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_newBlockFilter) **`Example`** ```ts import { createPublicClient, createBlockFilter, http } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const filter = await createBlockFilter(client) // { id: "0x345a6572337856574a76364e457a4366", type: 'block' } ``` |
 | `publicClient.createContractEventFilter` | \<TAbi, TEventName, TArgs, TStrict, TFromBlock, TToBlock\>(`args`: `CreateContractEventFilterParameters`\<`TAbi`, `TEventName`, `TArgs`, `TStrict`, `TFromBlock`, `TToBlock`\>) => `Promise`\<`CreateContractEventFilterReturnType`\<`TAbi`, `TEventName`, `TArgs`, `TStrict`, `TFromBlock`, `TToBlock`\>\> | Creates a Filter to retrieve event logs that can be used with [`getFilterChanges`](https://viem.sh/docs/actions/public/getFilterChanges) or [`getFilterLogs`](https://viem.sh/docs/actions/public/getFilterLogs). - Docs: https://viem.sh/docs/contract/createContractEventFilter **`Example`** ```ts import { createPublicClient, http, parseAbi } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const filter = await client.createContractEventFilter({ abi: parseAbi(['event Transfer(address indexed, address indexed, uint256)']), }) ``` |
 | `publicClient.createEventFilter` | \<TAbiEvent, TAbiEvents, TStrict, TFromBlock, TToBlock, _EventName, _Args\>(`args?`: `CreateEventFilterParameters`\<`TAbiEvent`, `TAbiEvents`, `TStrict`, `TFromBlock`, `TToBlock`, `_EventName`, `_Args`\>) => `Promise`\<\{ [K in string \| number \| symbol]: Filter\<"event", TAbiEvents, \_EventName, \_Args, TStrict, TFromBlock, TToBlock\>[K] }\> | Creates a [`Filter`](https://viem.sh/docs/glossary/types#filter) to listen for new events that can be used with [`getFilterChanges`](https://viem.sh/docs/actions/public/getFilterChanges). - Docs: https://viem.sh/docs/actions/public/createEventFilter - JSON-RPC Methods: [`eth_newFilter`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_newfilter) **`Example`** ```ts import { createPublicClient, http } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const filter = await client.createEventFilter({ address: '0xfba3912ca04dd458c843e2ee08967fc04f3579c2', }) ``` |
-| `publicClient.createPendingTransactionFilter` | () => `Promise`\<\{ `id`: \`0x$\{string}\` ; `request`: `EIP1193RequestFn`\<readonly [\{ `Method`: ``"eth_getFilterChanges"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: \`0x$\{string}\`[] \| `RpcLog`[]  }, \{ `Method`: ``"eth_getFilterLogs"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[]  }, \{ `Method`: ``"eth_uninstallFilter"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `boolean`  }]\> ; `type`: ``"transaction"``  }\> | Creates a Filter to listen for new pending transaction hashes that can be used with [`getFilterChanges`](https://viem.sh/docs/actions/public/getFilterChanges). - Docs: https://viem.sh/docs/actions/public/createPendingTransactionFilter - JSON-RPC Methods: [`eth_newPendingTransactionFilter`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_newpendingtransactionfilter) **`Example`** ```ts import { createPublicClient, http } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const filter = await client.createPendingTransactionFilter() // { id: "0x345a6572337856574a76364e457a4366", type: 'transaction' } ``` |
+| `publicClient.createPendingTransactionFilter` | () => `Promise`\<\{ `id`: \`0x$\{string}\` ; `request`: `EIP1193RequestFn`\<readonly [\{ `Method`: ``"eth_getFilterChanges"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[] \| \`0x$\{string}\`[]  }, \{ `Method`: ``"eth_getFilterLogs"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[]  }, \{ `Method`: ``"eth_uninstallFilter"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `boolean`  }]\> ; `type`: ``"transaction"``  }\> | Creates a Filter to listen for new pending transaction hashes that can be used with [`getFilterChanges`](https://viem.sh/docs/actions/public/getFilterChanges). - Docs: https://viem.sh/docs/actions/public/createPendingTransactionFilter - JSON-RPC Methods: [`eth_newPendingTransactionFilter`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_newpendingtransactionfilter) **`Example`** ```ts import { createPublicClient, http } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const filter = await client.createPendingTransactionFilter() // { id: "0x345a6572337856574a76364e457a4366", type: 'transaction' } ``` |
 | `publicClient.estimateContractGas` | \<TChain, abi, functionName, args\>(`args`: `EstimateContractGasParameters`\<`abi`, `functionName`, `args`, `TChain`\>) => `Promise`\<`bigint`\> | Estimates the gas required to successfully execute a contract write function call. - Docs: https://viem.sh/docs/contract/estimateContractGas **`Remarks`** Internally, uses a [Public Client](https://viem.sh/docs/clients/public) to call the [`estimateGas` action](https://viem.sh/docs/actions/public/estimateGas) with [ABI-encoded `data`](https://viem.sh/docs/contract/encodeFunctionData). **`Example`** ```ts import { createPublicClient, http, parseAbi } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const gas = await client.estimateContractGas({ address: '0xFBA3912Ca04dd458c843e2EE08967fC04f3579c2', abi: parseAbi(['function mint() public']), functionName: 'mint', account: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266', }) ``` |
 | `publicClient.estimateFeesPerGas` | \<TChainOverride, TType\>(`args?`: `EstimateFeesPerGasParameters`\<`undefined` \| `Chain`, `TChainOverride`, `TType`\>) => `Promise`\<`EstimateFeesPerGasReturnType`\> | Returns an estimate for the fees per gas for a transaction to be included in the next block. - Docs: https://viem.sh/docs/actions/public/estimateFeesPerGas **`Example`** ```ts import { createPublicClient, http } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const maxPriorityFeePerGas = await client.estimateFeesPerGas() // { maxFeePerGas: ..., maxPriorityFeePerGas: ... } ``` |
 | `publicClient.estimateGas` | (`args`: `EstimateGasParameters`\<`undefined` \| `Chain`\>) => `Promise`\<`bigint`\> | Estimates the gas necessary to complete a transaction without submitting it to the network. - Docs: https://viem.sh/docs/actions/public/estimateGas - JSON-RPC Methods: [`eth_estimateGas`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_estimategas) **`Example`** ```ts import { createPublicClient, http, parseEther } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const gasEstimate = await client.estimateGas({ account: '0xA0Cf798816D4b9b9866b5330EEa46a18382f251e', to: '0x70997970c51812dc3a010c7d01b50e0d17dc79c8', value: parseEther('1'), }) ``` |
@@ -163,7 +165,7 @@ SmartWallet.constructor
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:86](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L86)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:86](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L86)
 
 ## Properties
 
@@ -179,6 +181,7 @@ SmartWallet.constructor
 | `batch?` | \{ `multicall?`: `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  }  } | Flags for batch settings. |
 | `batch.multicall?` | `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  } | Toggle to enable `eth_call` multicall aggregation. |
 | `cacheTime` | `number` | Time (in ms) that cached data will remain in memory. |
+| `ccipRead?` | ``false`` \| \{ `request?`: (`parameters`: `CcipRequestParameters`) => `Promise`\<\`0x$\{string}\`\>  } | [CCIP Read](https://eips.ethereum.org/EIPS/eip-3668) configuration. |
 | `chain` | `Chain` | Chain for the client. |
 | `deployContract` | \<TAbi, TChainOverride\>(`args`: \{ [K in string \| number \| symbol]: DeployContractParameters\<TAbi, Chain, KernelSmartAccount, TChainOverride\>[K] }) => `Promise`\<\`0x$\{string}\`\> | - |
 | `extend` | \<client\>(`fn`: (`client`: `Client`\<`HttpTransport`, `Chain`, `KernelSmartAccount`, `BundlerRpcSchema`, `KernelAccountClientActions`\<`Chain`, `KernelSmartAccount`\>\>) => `client`) => `Client`\<`HttpTransport`, `Chain`, `KernelSmartAccount`, `BundlerRpcSchema`, \{ [K in string \| number \| symbol]: client[K] } & `SmartAccountActions`\<`Chain`, `KernelSmartAccount`\> & \{ `signUserOperation`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{(...)}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }) => `Promise`\<`UserOperation`\>  }\> | - |
@@ -200,7 +203,7 @@ SmartWallet.constructor
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:83](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L83)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:83](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L83)
 
 ___
 
@@ -210,7 +213,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:82](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L82)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:82](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L82)
 
 ___
 
@@ -227,11 +230,12 @@ ___
 | `batch.multicall?` | `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  } | Toggle to enable `eth_call` multicall aggregation. |
 | `cacheTime` | `number` | Time (in ms) that cached data will remain in memory. |
 | `call` | (`parameters`: `CallParameters`\<`undefined` \| `Chain`\>) => `Promise`\<`CallReturnType`\> | - |
+| `ccipRead?` | ``false`` \| \{ `request?`: (`parameters`: `CcipRequestParameters`) => `Promise`\<\`0x$\{string}\`\>  } | [CCIP Read](https://eips.ethereum.org/EIPS/eip-3668) configuration. |
 | `chain` | `undefined` \| `Chain` | Chain for the client. |
-| `createBlockFilter` | () => `Promise`\<\{ `id`: \`0x$\{string}\` ; `request`: `EIP1193RequestFn`\<readonly [\{ `Method`: ``"eth_getFilterChanges"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: \`0x$\{string}\`[] \| `RpcLog`[]  }, \{ `Method`: ``"eth_getFilterLogs"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[]  }, \{ `Method`: ``"eth_uninstallFilter"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `boolean`  }]\> ; `type`: ``"block"``  }\> | - |
+| `createBlockFilter` | () => `Promise`\<\{ `id`: \`0x$\{string}\` ; `request`: `EIP1193RequestFn`\<readonly [\{ `Method`: ``"eth_getFilterChanges"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[] \| \`0x$\{string}\`[]  }, \{ `Method`: ``"eth_getFilterLogs"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[]  }, \{ `Method`: ``"eth_uninstallFilter"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `boolean`  }]\> ; `type`: ``"block"``  }\> | - |
 | `createContractEventFilter` | \<TAbi, TEventName, TArgs, TStrict, TFromBlock, TToBlock\>(`args`: `CreateContractEventFilterParameters`\<`TAbi`, `TEventName`, `TArgs`, `TStrict`, `TFromBlock`, `TToBlock`\>) => `Promise`\<`CreateContractEventFilterReturnType`\<`TAbi`, `TEventName`, `TArgs`, `TStrict`, `TFromBlock`, `TToBlock`\>\> | - |
 | `createEventFilter` | \<TAbiEvent, TAbiEvents, TStrict, TFromBlock, TToBlock, _EventName, _Args\>(`args?`: `CreateEventFilterParameters`\<`TAbiEvent`, `TAbiEvents`, `TStrict`, `TFromBlock`, `TToBlock`, `_EventName`, `_Args`\>) => `Promise`\<\{ [K in string \| number \| symbol]: Filter\<"event", TAbiEvents, \_EventName, \_Args, TStrict, TFromBlock, TToBlock\>[K] }\> | - |
-| `createPendingTransactionFilter` | () => `Promise`\<\{ `id`: \`0x$\{string}\` ; `request`: `EIP1193RequestFn`\<readonly [\{ `Method`: ``"eth_getFilterChanges"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: \`0x$\{string}\`[] \| `RpcLog`[]  }, \{ `Method`: ``"eth_getFilterLogs"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[]  }, \{ `Method`: ``"eth_uninstallFilter"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `boolean`  }]\> ; `type`: ``"transaction"``  }\> | - |
+| `createPendingTransactionFilter` | () => `Promise`\<\{ `id`: \`0x$\{string}\` ; `request`: `EIP1193RequestFn`\<readonly [\{ `Method`: ``"eth_getFilterChanges"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[] \| \`0x$\{string}\`[]  }, \{ `Method`: ``"eth_getFilterLogs"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[]  }, \{ `Method`: ``"eth_uninstallFilter"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `boolean`  }]\> ; `type`: ``"transaction"``  }\> | - |
 | `estimateContractGas` | \<TChain, abi, functionName, args\>(`args`: `EstimateContractGasParameters`\<`abi`, `functionName`, `args`, `TChain`\>) => `Promise`\<`bigint`\> | - |
 | `estimateFeesPerGas` | \<TChainOverride, TType\>(`args?`: `EstimateFeesPerGasParameters`\<`undefined` \| `Chain`, `TChainOverride`, `TType`\>) => `Promise`\<`EstimateFeesPerGasReturnType`\> | - |
 | `estimateGas` | (`args`: `EstimateGasParameters`\<`undefined` \| `Chain`\>) => `Promise`\<`bigint`\> | - |
@@ -285,7 +289,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:84](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L84)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:84](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L84)
 
 ___
 
@@ -299,7 +303,7 @@ SmartWallet.chain
 
 #### Defined in
 
-[src/wallet/Wallet.ts:48](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/Wallet.ts#L48)
+[src/wallet/Wallet.ts:48](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/Wallet.ts#L48)
 
 ## Accessors
 
@@ -317,7 +321,7 @@ SmartWallet.address
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:105](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L105)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:105](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L105)
 
 ___
 
@@ -335,6 +339,7 @@ ___
 | `batch?` | \{ `multicall?`: `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  }  } | Flags for batch settings. |
 | `batch.multicall?` | `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  } | Toggle to enable `eth_call` multicall aggregation. |
 | `cacheTime` | `number` | Time (in ms) that cached data will remain in memory. |
+| `ccipRead?` | ``false`` \| \{ `request?`: (`parameters`: `CcipRequestParameters`) => `Promise`\<\`0x$\{string}\`\>  } | [CCIP Read](https://eips.ethereum.org/EIPS/eip-3668) configuration. |
 | `chain` | `Chain` | Chain for the client. |
 | `deployContract` | \<TAbi, TChainOverride\>(`args`: \{ [K in string \| number \| symbol]: DeployContractParameters\<TAbi, Chain, KernelSmartAccount, TChainOverride\>[K] }) => `Promise`\<\`0x$\{string}\`\> | - |
 | `extend` | \<client\>(`fn`: (`client`: `Client`\<`HttpTransport`, `Chain`, `KernelSmartAccount`, `BundlerRpcSchema`, `KernelAccountClientActions`\<`Chain`, `KernelSmartAccount`\>\>) => `client`) => `Client`\<`HttpTransport`, `Chain`, `KernelSmartAccount`, `BundlerRpcSchema`, \{ [K in string \| number \| symbol]: client[K] } & `SmartAccountActions`\<`Chain`, `KernelSmartAccount`\> & \{ `signUserOperation`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{(...)}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }) => `Promise`\<`UserOperation`\>  }\> | - |
@@ -356,7 +361,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:97](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L97)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:97](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L97)
 
 ___
 
@@ -374,7 +379,7 @@ SmartWallet.entryPoint
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:109](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L109)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:109](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L109)
 
 ___
 
@@ -392,7 +397,7 @@ SmartWallet.rpcUrl
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:101](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L101)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:101](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L101)
 
 ___
 
@@ -410,7 +415,7 @@ SmartWallet.vendor
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:113](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L113)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:113](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L113)
 
 ## Methods
 
@@ -433,7 +438,7 @@ SmartWallet.vendor
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:443](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L443)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:443](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L443)
 
 ___
 
@@ -454,7 +459,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:487](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L487)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:487](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L487)
 
 ___
 
@@ -476,7 +481,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:458](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L458)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:458](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L458)
 
 ___
 
@@ -500,7 +505,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:469](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L469)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:469](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L469)
 
 ___
 
@@ -528,7 +533,7 @@ SmartWallet.createCallData
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:290](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L290)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:290](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L290)
 
 ___
 
@@ -552,7 +557,7 @@ SmartWallet.deploy
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:178](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L178)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:178](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L178)
 
 ___
 
@@ -577,7 +582,7 @@ SmartWallet.deployContract
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:334](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L334)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:334](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L334)
 
 ___
 
@@ -601,7 +606,7 @@ SmartWallet.estimateGas
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:200](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L200)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:200](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L200)
 
 ___
 
@@ -625,7 +630,7 @@ SmartWallet.estimateUserOperationGas
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:304](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L304)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:304](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L304)
 
 ___
 
@@ -643,7 +648,7 @@ SmartWallet.export
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:325](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L325)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:325](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L325)
 
 ___
 
@@ -663,7 +668,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:495](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L495)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:495](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L495)
 
 ___
 
@@ -681,7 +686,7 @@ SmartWallet.getFeeData
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:141](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L141)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:141](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L141)
 
 ___
 
@@ -699,7 +704,7 @@ SmartWallet.getNonce
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:137](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L137)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:137](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L137)
 
 ___
 
@@ -717,7 +722,7 @@ SmartWallet.getVersion
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:117](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L117)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:117](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L117)
 
 ___
 
@@ -735,7 +740,7 @@ SmartWallet.isDeployed
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:196](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L196)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:196](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L196)
 
 ___
 
@@ -756,7 +761,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:377](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L377)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:377](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L377)
 
 ___
 
@@ -781,7 +786,7 @@ SmartWallet.sendTransaction
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:234](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L234)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:234](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L234)
 
 ___
 
@@ -805,7 +810,7 @@ SmartWallet.sendUserOperation
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:313](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L313)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:313](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L313)
 
 ___
 
@@ -829,7 +834,7 @@ SmartWallet.signMessage
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:163](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L163)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:163](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L163)
 
 ___
 
@@ -853,7 +858,7 @@ SmartWallet.signTransaction
 
 #### Defined in
 
-[src/wallet/smart-wallet/SmartWallet.ts:35](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/SmartWallet.ts#L35)
+[src/wallet/smart-wallet/SmartWallet.ts:35](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/SmartWallet.ts#L35)
 
 ___
 
@@ -877,7 +882,7 @@ SmartWallet.signTypedData
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:169](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L169)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:169](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L169)
 
 ___
 
@@ -902,7 +907,7 @@ SmartWallet.waitForUserOperation
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:393](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L393)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:393](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L393)
 
 ___
 
@@ -923,7 +928,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:593](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L593)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:593](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L593)
 
 ___
 
@@ -943,13 +948,13 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:528](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L528)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:528](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L528)
 
 ___
 
 ### createKernelClient
 
-▸ **createKernelClient**(`config`, `chain`, `publicClient`): `Promise`\<\{ `account`: `KernelSmartAccount` ; `batch?`: \{ `multicall?`: `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  }  } ; `cacheTime`: `number` ; `chain`: `Chain` ; `deployContract`: \<TAbi, TChainOverride\>(`args`: \{ [K in string \| number \| symbol]: DeployContractParameters\<TAbi, Chain, KernelSmartAccount, TChainOverride\>[K] }) => `Promise`\<\`0x$\{string}\`\> ; `extend`: \<client\>(`fn`: (`client`: `Client`\<`HttpTransport`, `Chain`, `KernelSmartAccount`, `BundlerRpcSchema`, `KernelAccountClientActions`\<`Chain`, `KernelSmartAccount`\>\>) => `client`) => `Client`\<`HttpTransport`, `Chain`, `KernelSmartAccount`, `BundlerRpcSchema`, \{ [K in string \| number \| symbol]: client[K] } & `SmartAccountActions`\<`Chain`, `KernelSmartAccount`\> & \{ `signUserOperation`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: ... ; `userOperation`: ...  }) => `Promise`\<...\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }) => `Promise`\<`UserOperation`\>  }\> ; `key`: `string` ; `name`: `string` ; `pollingInterval`: `number` ; `prepareUserOperationRequest`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }, `stateOverrides?`: `StateOverrides`) => `Promise`\<\{ `callData`: \`0x$\{string}\` ; `callGasLimit`: `bigint` ; `initCode`: \`0x$\{string}\` ; `maxFeePerGas`: `bigint` ; `maxPriorityFeePerGas`: `bigint` ; `nonce`: `bigint` ; `paymasterAndData`: \`0x$\{string}\` ; `preVerificationGas`: `bigint` ; `sender`: \`0x$\{string}\` ; `signature`: \`0x$\{string}\` ; `verificationGasLimit`: `bigint`  }\> ; `request`: `EIP1193RequestFn`\<`BundlerRpcSchema`\> ; `sendTransaction`: \<TChainOverride\>(`args`: `SendTransactionParameters`\<`Chain`, `KernelSmartAccount`, `TChainOverride`\>) => `Promise`\<\`0x$\{string}\`\> ; `sendTransactions`: (`args`: \{ `account?`: `SmartAccount` ; `maxFeePerGas?`: `bigint` ; `maxPriorityFeePerGas?`: `bigint` ; `nonce?`: `bigint` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `transactions`: \{ `data`: \`0x$\{string}\` ; `to`: \`0x$\{string}\` ; `value`: `bigint`  }[]  }) => `Promise`\<\`0x$\{string}\`\> ; `sendUserOperation`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }) => `Promise`\<\`0x$\{string}\`\> ; `signMessage`: (`args`: `SignMessageParameters`\<`KernelSmartAccount`\>) => `Promise`\<\`0x$\{string}\`\> ; `signTypedData`: \<TTypedData, TPrimaryType\>(`args`: `SignTypedDataParameters`\<`TTypedData`, `TPrimaryType`, `KernelSmartAccount`\>) => `Promise`\<\`0x$\{string}\`\> ; `signUserOperation`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }) => `Promise`\<`UserOperation`\> ; `transport`: `TransportConfig`\<``"http"``, `EIP1193RequestFn`\> & \{ `fetchOptions?`: `Omit`\<`RequestInit`, ``"body"``\> ; `url?`: `string`  } ; `type`: `string` ; `uid`: `string` ; `writeContract`: \<TAbi, TFunctionName, TArgs, TChainOverride\>(`args`: `WriteContractParameters`\<`TAbi`, `TFunctionName`, `TArgs`, `Chain`, `KernelSmartAccount`, `TChainOverride`\>) => `Promise`\<\`0x$\{string}\`\>  }\>
+▸ **createKernelClient**(`config`, `chain`, `publicClient`): `Promise`\<\{ `account`: `KernelSmartAccount` ; `batch?`: \{ `multicall?`: `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  }  } ; `cacheTime`: `number` ; `ccipRead?`: ``false`` \| \{ `request?`: (`parameters`: `CcipRequestParameters`) => `Promise`\<\`0x$\{string}\`\>  } ; `chain`: `Chain` ; `deployContract`: \<TAbi, TChainOverride\>(`args`: \{ [K in string \| number \| symbol]: DeployContractParameters\<TAbi, Chain, KernelSmartAccount, TChainOverride\>[K] }) => `Promise`\<\`0x$\{string}\`\> ; `extend`: \<client\>(`fn`: (`client`: `Client`\<`HttpTransport`, `Chain`, `KernelSmartAccount`, `BundlerRpcSchema`, `KernelAccountClientActions`\<`Chain`, `KernelSmartAccount`\>\>) => `client`) => `Client`\<`HttpTransport`, `Chain`, `KernelSmartAccount`, `BundlerRpcSchema`, \{ [K in string \| number \| symbol]: client[K] } & `SmartAccountActions`\<`Chain`, `KernelSmartAccount`\> & \{ `signUserOperation`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: ... ; `userOperation`: ...  }) => `Promise`\<...\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }) => `Promise`\<`UserOperation`\>  }\> ; `key`: `string` ; `name`: `string` ; `pollingInterval`: `number` ; `prepareUserOperationRequest`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }, `stateOverrides?`: `StateOverrides`) => `Promise`\<\{ `callData`: \`0x$\{string}\` ; `callGasLimit`: `bigint` ; `initCode`: \`0x$\{string}\` ; `maxFeePerGas`: `bigint` ; `maxPriorityFeePerGas`: `bigint` ; `nonce`: `bigint` ; `paymasterAndData`: \`0x$\{string}\` ; `preVerificationGas`: `bigint` ; `sender`: \`0x$\{string}\` ; `signature`: \`0x$\{string}\` ; `verificationGasLimit`: `bigint`  }\> ; `request`: `EIP1193RequestFn`\<`BundlerRpcSchema`\> ; `sendTransaction`: \<TChainOverride\>(`args`: `SendTransactionParameters`\<`Chain`, `KernelSmartAccount`, `TChainOverride`\>) => `Promise`\<\`0x$\{string}\`\> ; `sendTransactions`: (`args`: \{ `account?`: `SmartAccount` ; `maxFeePerGas?`: `bigint` ; `maxPriorityFeePerGas?`: `bigint` ; `nonce?`: `bigint` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `transactions`: \{ `data`: \`0x$\{string}\` ; `to`: \`0x$\{string}\` ; `value`: `bigint`  }[]  }) => `Promise`\<\`0x$\{string}\`\> ; `sendUserOperation`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }) => `Promise`\<\`0x$\{string}\`\> ; `signMessage`: (`args`: `SignMessageParameters`\<`KernelSmartAccount`\>) => `Promise`\<\`0x$\{string}\`\> ; `signTypedData`: \<TTypedData, TPrimaryType\>(`args`: `SignTypedDataParameters`\<`TTypedData`, `TPrimaryType`, `KernelSmartAccount`\>) => `Promise`\<\`0x$\{string}\`\> ; `signUserOperation`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }) => `Promise`\<`UserOperation`\> ; `transport`: `TransportConfig`\<``"http"``, `EIP1193RequestFn`\> & \{ `fetchOptions?`: `Omit`\<`RequestInit`, ``"body"``\> ; `url?`: `string`  } ; `type`: `string` ; `uid`: `string` ; `writeContract`: \<TAbi, TFunctionName, TArgs, TChainOverride\>(`args`: `WriteContractParameters`\<`TAbi`, `TFunctionName`, `TArgs`, `Chain`, `KernelSmartAccount`, `TChainOverride`\>) => `Promise`\<\`0x$\{string}\`\>  }\>
 
 #### Parameters
 
@@ -963,11 +968,12 @@ ___
 | `publicClient.batch.multicall?` | `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  } | Toggle to enable `eth_call` multicall aggregation. |
 | `publicClient.cacheTime` | `number` | Time (in ms) that cached data will remain in memory. |
 | `publicClient.call` | (`parameters`: `CallParameters`\<`undefined` \| `Chain`\>) => `Promise`\<`CallReturnType`\> | Executes a new message call immediately without submitting a transaction to the network. - Docs: https://viem.sh/docs/actions/public/call - JSON-RPC Methods: [`eth_call`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_call) **`Example`** ```ts import { createPublicClient, http } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const data = await client.call({ account: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266', data: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', to: '0x70997970c51812dc3a010c7d01b50e0d17dc79c8', }) ``` |
+| `publicClient.ccipRead?` | ``false`` \| \{ `request?`: (`parameters`: `CcipRequestParameters`) => `Promise`\<\`0x$\{string}\`\>  } | [CCIP Read](https://eips.ethereum.org/EIPS/eip-3668) configuration. |
 | `publicClient.chain` | `undefined` \| `Chain` | Chain for the client. |
-| `publicClient.createBlockFilter` | () => `Promise`\<\{ `id`: \`0x$\{string}\` ; `request`: `EIP1193RequestFn`\<readonly [\{ `Method`: ``"eth_getFilterChanges"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: \`0x$\{string}\`[] \| `RpcLog`[]  }, \{ `Method`: ``"eth_getFilterLogs"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[]  }, \{ `Method`: ``"eth_uninstallFilter"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `boolean`  }]\> ; `type`: ``"block"``  }\> | Creates a Filter to listen for new block hashes that can be used with [`getFilterChanges`](https://viem.sh/docs/actions/public/getFilterChanges). - Docs: https://viem.sh/docs/actions/public/createBlockFilter - JSON-RPC Methods: [`eth_newBlockFilter`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_newBlockFilter) **`Example`** ```ts import { createPublicClient, createBlockFilter, http } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const filter = await createBlockFilter(client) // { id: "0x345a6572337856574a76364e457a4366", type: 'block' } ``` |
+| `publicClient.createBlockFilter` | () => `Promise`\<\{ `id`: \`0x$\{string}\` ; `request`: `EIP1193RequestFn`\<readonly [\{ `Method`: ``"eth_getFilterChanges"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[] \| \`0x$\{string}\`[]  }, \{ `Method`: ``"eth_getFilterLogs"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[]  }, \{ `Method`: ``"eth_uninstallFilter"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `boolean`  }]\> ; `type`: ``"block"``  }\> | Creates a Filter to listen for new block hashes that can be used with [`getFilterChanges`](https://viem.sh/docs/actions/public/getFilterChanges). - Docs: https://viem.sh/docs/actions/public/createBlockFilter - JSON-RPC Methods: [`eth_newBlockFilter`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_newBlockFilter) **`Example`** ```ts import { createPublicClient, createBlockFilter, http } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const filter = await createBlockFilter(client) // { id: "0x345a6572337856574a76364e457a4366", type: 'block' } ``` |
 | `publicClient.createContractEventFilter` | \<TAbi, TEventName, TArgs, TStrict, TFromBlock, TToBlock\>(`args`: `CreateContractEventFilterParameters`\<`TAbi`, `TEventName`, `TArgs`, `TStrict`, `TFromBlock`, `TToBlock`\>) => `Promise`\<`CreateContractEventFilterReturnType`\<`TAbi`, `TEventName`, `TArgs`, `TStrict`, `TFromBlock`, `TToBlock`\>\> | Creates a Filter to retrieve event logs that can be used with [`getFilterChanges`](https://viem.sh/docs/actions/public/getFilterChanges) or [`getFilterLogs`](https://viem.sh/docs/actions/public/getFilterLogs). - Docs: https://viem.sh/docs/contract/createContractEventFilter **`Example`** ```ts import { createPublicClient, http, parseAbi } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const filter = await client.createContractEventFilter({ abi: parseAbi(['event Transfer(address indexed, address indexed, uint256)']), }) ``` |
 | `publicClient.createEventFilter` | \<TAbiEvent, TAbiEvents, TStrict, TFromBlock, TToBlock, _EventName, _Args\>(`args?`: `CreateEventFilterParameters`\<`TAbiEvent`, `TAbiEvents`, `TStrict`, `TFromBlock`, `TToBlock`, `_EventName`, `_Args`\>) => `Promise`\<\{ [K in string \| number \| symbol]: Filter\<"event", TAbiEvents, \_EventName, \_Args, TStrict, TFromBlock, TToBlock\>[K] }\> | Creates a [`Filter`](https://viem.sh/docs/glossary/types#filter) to listen for new events that can be used with [`getFilterChanges`](https://viem.sh/docs/actions/public/getFilterChanges). - Docs: https://viem.sh/docs/actions/public/createEventFilter - JSON-RPC Methods: [`eth_newFilter`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_newfilter) **`Example`** ```ts import { createPublicClient, http } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const filter = await client.createEventFilter({ address: '0xfba3912ca04dd458c843e2ee08967fc04f3579c2', }) ``` |
-| `publicClient.createPendingTransactionFilter` | () => `Promise`\<\{ `id`: \`0x$\{string}\` ; `request`: `EIP1193RequestFn`\<readonly [\{ `Method`: ``"eth_getFilterChanges"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: \`0x$\{string}\`[] \| `RpcLog`[]  }, \{ `Method`: ``"eth_getFilterLogs"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[]  }, \{ `Method`: ``"eth_uninstallFilter"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `boolean`  }]\> ; `type`: ``"transaction"``  }\> | Creates a Filter to listen for new pending transaction hashes that can be used with [`getFilterChanges`](https://viem.sh/docs/actions/public/getFilterChanges). - Docs: https://viem.sh/docs/actions/public/createPendingTransactionFilter - JSON-RPC Methods: [`eth_newPendingTransactionFilter`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_newpendingtransactionfilter) **`Example`** ```ts import { createPublicClient, http } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const filter = await client.createPendingTransactionFilter() // { id: "0x345a6572337856574a76364e457a4366", type: 'transaction' } ``` |
+| `publicClient.createPendingTransactionFilter` | () => `Promise`\<\{ `id`: \`0x$\{string}\` ; `request`: `EIP1193RequestFn`\<readonly [\{ `Method`: ``"eth_getFilterChanges"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[] \| \`0x$\{string}\`[]  }, \{ `Method`: ``"eth_getFilterLogs"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `RpcLog`[]  }, \{ `Method`: ``"eth_uninstallFilter"`` ; `Parameters`: [filterId: \`0x$\{string}\`] ; `ReturnType`: `boolean`  }]\> ; `type`: ``"transaction"``  }\> | Creates a Filter to listen for new pending transaction hashes that can be used with [`getFilterChanges`](https://viem.sh/docs/actions/public/getFilterChanges). - Docs: https://viem.sh/docs/actions/public/createPendingTransactionFilter - JSON-RPC Methods: [`eth_newPendingTransactionFilter`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_newpendingtransactionfilter) **`Example`** ```ts import { createPublicClient, http } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const filter = await client.createPendingTransactionFilter() // { id: "0x345a6572337856574a76364e457a4366", type: 'transaction' } ``` |
 | `publicClient.estimateContractGas` | \<TChain, abi, functionName, args\>(`args`: `EstimateContractGasParameters`\<`abi`, `functionName`, `args`, `TChain`\>) => `Promise`\<`bigint`\> | Estimates the gas required to successfully execute a contract write function call. - Docs: https://viem.sh/docs/contract/estimateContractGas **`Remarks`** Internally, uses a [Public Client](https://viem.sh/docs/clients/public) to call the [`estimateGas` action](https://viem.sh/docs/actions/public/estimateGas) with [ABI-encoded `data`](https://viem.sh/docs/contract/encodeFunctionData). **`Example`** ```ts import { createPublicClient, http, parseAbi } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const gas = await client.estimateContractGas({ address: '0xFBA3912Ca04dd458c843e2EE08967fC04f3579c2', abi: parseAbi(['function mint() public']), functionName: 'mint', account: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266', }) ``` |
 | `publicClient.estimateFeesPerGas` | \<TChainOverride, TType\>(`args?`: `EstimateFeesPerGasParameters`\<`undefined` \| `Chain`, `TChainOverride`, `TType`\>) => `Promise`\<`EstimateFeesPerGasReturnType`\> | Returns an estimate for the fees per gas for a transaction to be included in the next block. - Docs: https://viem.sh/docs/actions/public/estimateFeesPerGas **`Example`** ```ts import { createPublicClient, http } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const maxPriorityFeePerGas = await client.estimateFeesPerGas() // { maxFeePerGas: ..., maxPriorityFeePerGas: ... } ``` |
 | `publicClient.estimateGas` | (`args`: `EstimateGasParameters`\<`undefined` \| `Chain`\>) => `Promise`\<`bigint`\> | Estimates the gas necessary to complete a transaction without submitting it to the network. - Docs: https://viem.sh/docs/actions/public/estimateGas - JSON-RPC Methods: [`eth_estimateGas`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_estimategas) **`Example`** ```ts import { createPublicClient, http, parseEther } from 'viem' import { mainnet } from 'viem/chains' const client = createPublicClient({ chain: mainnet, transport: http(), }) const gasEstimate = await client.estimateGas({ account: '0xA0Cf798816D4b9b9866b5330EEa46a18382f251e', to: '0x70997970c51812dc3a010c7d01b50e0d17dc79c8', value: parseEther('1'), }) ``` |
@@ -1021,8 +1027,8 @@ ___
 
 #### Returns
 
-`Promise`\<\{ `account`: `KernelSmartAccount` ; `batch?`: \{ `multicall?`: `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  }  } ; `cacheTime`: `number` ; `chain`: `Chain` ; `deployContract`: \<TAbi, TChainOverride\>(`args`: \{ [K in string \| number \| symbol]: DeployContractParameters\<TAbi, Chain, KernelSmartAccount, TChainOverride\>[K] }) => `Promise`\<\`0x$\{string}\`\> ; `extend`: \<client\>(`fn`: (`client`: `Client`\<`HttpTransport`, `Chain`, `KernelSmartAccount`, `BundlerRpcSchema`, `KernelAccountClientActions`\<`Chain`, `KernelSmartAccount`\>\>) => `client`) => `Client`\<`HttpTransport`, `Chain`, `KernelSmartAccount`, `BundlerRpcSchema`, \{ [K in string \| number \| symbol]: client[K] } & `SmartAccountActions`\<`Chain`, `KernelSmartAccount`\> & \{ `signUserOperation`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: ... ; `userOperation`: ...  }) => `Promise`\<...\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }) => `Promise`\<`UserOperation`\>  }\> ; `key`: `string` ; `name`: `string` ; `pollingInterval`: `number` ; `prepareUserOperationRequest`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }, `stateOverrides?`: `StateOverrides`) => `Promise`\<\{ `callData`: \`0x$\{string}\` ; `callGasLimit`: `bigint` ; `initCode`: \`0x$\{string}\` ; `maxFeePerGas`: `bigint` ; `maxPriorityFeePerGas`: `bigint` ; `nonce`: `bigint` ; `paymasterAndData`: \`0x$\{string}\` ; `preVerificationGas`: `bigint` ; `sender`: \`0x$\{string}\` ; `signature`: \`0x$\{string}\` ; `verificationGasLimit`: `bigint`  }\> ; `request`: `EIP1193RequestFn`\<`BundlerRpcSchema`\> ; `sendTransaction`: \<TChainOverride\>(`args`: `SendTransactionParameters`\<`Chain`, `KernelSmartAccount`, `TChainOverride`\>) => `Promise`\<\`0x$\{string}\`\> ; `sendTransactions`: (`args`: \{ `account?`: `SmartAccount` ; `maxFeePerGas?`: `bigint` ; `maxPriorityFeePerGas?`: `bigint` ; `nonce?`: `bigint` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `transactions`: \{ `data`: \`0x$\{string}\` ; `to`: \`0x$\{string}\` ; `value`: `bigint`  }[]  }) => `Promise`\<\`0x$\{string}\`\> ; `sendUserOperation`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }) => `Promise`\<\`0x$\{string}\`\> ; `signMessage`: (`args`: `SignMessageParameters`\<`KernelSmartAccount`\>) => `Promise`\<\`0x$\{string}\`\> ; `signTypedData`: \<TTypedData, TPrimaryType\>(`args`: `SignTypedDataParameters`\<`TTypedData`, `TPrimaryType`, `KernelSmartAccount`\>) => `Promise`\<\`0x$\{string}\`\> ; `signUserOperation`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }) => `Promise`\<`UserOperation`\> ; `transport`: `TransportConfig`\<``"http"``, `EIP1193RequestFn`\> & \{ `fetchOptions?`: `Omit`\<`RequestInit`, ``"body"``\> ; `url?`: `string`  } ; `type`: `string` ; `uid`: `string` ; `writeContract`: \<TAbi, TFunctionName, TArgs, TChainOverride\>(`args`: `WriteContractParameters`\<`TAbi`, `TFunctionName`, `TArgs`, `Chain`, `KernelSmartAccount`, `TChainOverride`\>) => `Promise`\<\`0x$\{string}\`\>  }\>
+`Promise`\<\{ `account`: `KernelSmartAccount` ; `batch?`: \{ `multicall?`: `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  }  } ; `cacheTime`: `number` ; `ccipRead?`: ``false`` \| \{ `request?`: (`parameters`: `CcipRequestParameters`) => `Promise`\<\`0x$\{string}\`\>  } ; `chain`: `Chain` ; `deployContract`: \<TAbi, TChainOverride\>(`args`: \{ [K in string \| number \| symbol]: DeployContractParameters\<TAbi, Chain, KernelSmartAccount, TChainOverride\>[K] }) => `Promise`\<\`0x$\{string}\`\> ; `extend`: \<client\>(`fn`: (`client`: `Client`\<`HttpTransport`, `Chain`, `KernelSmartAccount`, `BundlerRpcSchema`, `KernelAccountClientActions`\<`Chain`, `KernelSmartAccount`\>\>) => `client`) => `Client`\<`HttpTransport`, `Chain`, `KernelSmartAccount`, `BundlerRpcSchema`, \{ [K in string \| number \| symbol]: client[K] } & `SmartAccountActions`\<`Chain`, `KernelSmartAccount`\> & \{ `signUserOperation`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: ... ; `userOperation`: ...  }) => `Promise`\<...\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }) => `Promise`\<`UserOperation`\>  }\> ; `key`: `string` ; `name`: `string` ; `pollingInterval`: `number` ; `prepareUserOperationRequest`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }, `stateOverrides?`: `StateOverrides`) => `Promise`\<\{ `callData`: \`0x$\{string}\` ; `callGasLimit`: `bigint` ; `initCode`: \`0x$\{string}\` ; `maxFeePerGas`: `bigint` ; `maxPriorityFeePerGas`: `bigint` ; `nonce`: `bigint` ; `paymasterAndData`: \`0x$\{string}\` ; `preVerificationGas`: `bigint` ; `sender`: \`0x$\{string}\` ; `signature`: \`0x$\{string}\` ; `verificationGasLimit`: `bigint`  }\> ; `request`: `EIP1193RequestFn`\<`BundlerRpcSchema`\> ; `sendTransaction`: \<TChainOverride\>(`args`: `SendTransactionParameters`\<`Chain`, `KernelSmartAccount`, `TChainOverride`\>) => `Promise`\<\`0x$\{string}\`\> ; `sendTransactions`: (`args`: \{ `account?`: `SmartAccount` ; `maxFeePerGas?`: `bigint` ; `maxPriorityFeePerGas?`: `bigint` ; `nonce?`: `bigint` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `transactions`: \{ `data`: \`0x$\{string}\` ; `to`: \`0x$\{string}\` ; `value`: `bigint`  }[]  }) => `Promise`\<\`0x$\{string}\`\> ; `sendUserOperation`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }) => `Promise`\<\`0x$\{string}\`\> ; `signMessage`: (`args`: `SignMessageParameters`\<`KernelSmartAccount`\>) => `Promise`\<\`0x$\{string}\`\> ; `signTypedData`: \<TTypedData, TPrimaryType\>(`args`: `SignTypedDataParameters`\<`TTypedData`, `TPrimaryType`, `KernelSmartAccount`\>) => `Promise`\<\`0x$\{string}\`\> ; `signUserOperation`: \<TTransport\>(`args`: \{ `account?`: `SmartAccount` ; `sponsorUserOperation?`: (`args`: \{ `entryPoint`: \`0x$\{string}\` ; `userOperation`: `UserOperation`  }) => `Promise`\<`UserOperation`\> ; `userOperation`: `PartialBy`\<`UserOperation`, ``"nonce"`` \| ``"maxFeePerGas"`` \| ``"maxPriorityFeePerGas"`` \| ``"signature"`` \| ``"sender"`` \| ``"initCode"`` \| ``"callGasLimit"`` \| ``"verificationGasLimit"`` \| ``"preVerificationGas"`` \| ``"paymasterAndData"``\>  }) => `Promise`\<`UserOperation`\> ; `transport`: `TransportConfig`\<``"http"``, `EIP1193RequestFn`\> & \{ `fetchOptions?`: `Omit`\<`RequestInit`, ``"body"``\> ; `url?`: `string`  } ; `type`: `string` ; `uid`: `string` ; `writeContract`: \<TAbi, TFunctionName, TArgs, TChainOverride\>(`args`: `WriteContractParameters`\<`TAbi`, `TFunctionName`, `TArgs`, `Chain`, `KernelSmartAccount`, `TChainOverride`\>) => `Promise`\<\`0x$\{string}\`\>  }\>
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:548](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L548)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:548](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L548)

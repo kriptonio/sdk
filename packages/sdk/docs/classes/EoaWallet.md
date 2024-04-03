@@ -59,6 +59,7 @@
 | `client.batch?` | `Object` | Flags for batch settings. |
 | `client.batch.multicall?` | `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  } | Toggle to enable `eth_call` multicall aggregation. |
 | `client.cacheTime` | `number` | Time (in ms) that cached data will remain in memory. |
+| `client.ccipRead?` | ``false`` \| \{ `request?`: (`parameters`: `CcipRequestParameters`) => `Promise`\<\`0x$\{string}\`\>  } | [CCIP Read](https://eips.ethereum.org/EIPS/eip-3668) configuration. |
 | `client.chain` | `Chain` | Chain for the client. |
 | `client.deployContract` | \<abi, chainOverride\>(`args`: `DeployContractParameters`\<`abi`, `Chain`, `PrivateKeyAccount` \| `HDAccount`, `chainOverride`\>) => `Promise`\<\`0x$\{string}\`\> | Deploys a contract to the network, given bytecode and constructor arguments. - Docs: https://viem.sh/docs/contract/deployContract - Examples: https://stackblitz.com/github/wevm/viem/tree/main/examples/contracts/deploying-contracts **`Example`** ```ts import { createWalletClient, http } from 'viem' import { privateKeyToAccount } from 'viem/accounts' import { mainnet } from 'viem/chains' const client = createWalletClient({ account: privateKeyToAccount('0x…'), chain: mainnet, transport: http(), }) const hash = await client.deployContract({ abi: [], account: '0x…, bytecode: '0x608060405260405161083e38038061083e833981016040819052610...', }) ``` |
 | `client.extend` | \<client\>(`fn`: (`client`: `Client`\<`HttpTransport`, `Chain`, `PrivateKeyAccount` \| `HDAccount`, `WalletRpcSchema`, `WalletActions`\<`Chain`, `PrivateKeyAccount` \| `HDAccount`\>\>) => `client`) => `Client`\<`HttpTransport`, `Chain`, `PrivateKeyAccount` \| `HDAccount`, `WalletRpcSchema`, \{ [K in string \| number \| symbol]: client[K] } & `WalletActions`\<`Chain`, `PrivateKeyAccount` \| `HDAccount`\>\> | - |
@@ -94,7 +95,7 @@
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:38](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L38)
+[src/wallet/EoaWallet.ts:38](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L38)
 
 ## Properties
 
@@ -111,6 +112,7 @@
 | `batch?` | \{ `multicall?`: `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  }  } | Flags for batch settings. |
 | `batch.multicall?` | `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  } | Toggle to enable `eth_call` multicall aggregation. |
 | `cacheTime` | `number` | Time (in ms) that cached data will remain in memory. |
+| `ccipRead?` | ``false`` \| \{ `request?`: (`parameters`: `CcipRequestParameters`) => `Promise`\<\`0x$\{string}\`\>  } | [CCIP Read](https://eips.ethereum.org/EIPS/eip-3668) configuration. |
 | `chain` | `Chain` | Chain for the client. |
 | `deployContract` | \<abi, chainOverride\>(`args`: `DeployContractParameters`\<`abi`, `Chain`, `PrivateKeyAccount` \| `HDAccount`, `chainOverride`\>) => `Promise`\<\`0x$\{string}\`\> | - |
 | `extend` | \<client\>(`fn`: (`client`: `Client`\<`HttpTransport`, `Chain`, `PrivateKeyAccount` \| `HDAccount`, `WalletRpcSchema`, `WalletActions`\<`Chain`, `PrivateKeyAccount` \| `HDAccount`\>\>) => `client`) => `Client`\<`HttpTransport`, `Chain`, `PrivateKeyAccount` \| `HDAccount`, `WalletRpcSchema`, \{ [K in string \| number \| symbol]: client[K] } & `WalletActions`\<`Chain`, `PrivateKeyAccount` \| `HDAccount`\>\> | - |
@@ -138,7 +140,7 @@
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:35](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L35)
+[src/wallet/EoaWallet.ts:35](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L35)
 
 ___
 
@@ -148,7 +150,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:36](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L36)
+[src/wallet/EoaWallet.ts:36](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L36)
 
 ___
 
@@ -162,7 +164,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:48](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/Wallet.ts#L48)
+[src/wallet/Wallet.ts:48](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/Wallet.ts#L48)
 
 ## Accessors
 
@@ -180,7 +182,7 @@ Wallet.address
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:52](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L52)
+[src/wallet/EoaWallet.ts:52](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L52)
 
 ___
 
@@ -199,6 +201,7 @@ ___
 | `batch?` | \{ `multicall?`: `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  }  } | Flags for batch settings. |
 | `batch.multicall?` | `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  } | Toggle to enable `eth_call` multicall aggregation. |
 | `cacheTime` | `number` | Time (in ms) that cached data will remain in memory. |
+| `ccipRead?` | ``false`` \| \{ `request?`: (`parameters`: `CcipRequestParameters`) => `Promise`\<\`0x$\{string}\`\>  } | [CCIP Read](https://eips.ethereum.org/EIPS/eip-3668) configuration. |
 | `chain` | `Chain` | Chain for the client. |
 | `deployContract` | \<abi, chainOverride\>(`args`: `DeployContractParameters`\<`abi`, `Chain`, `PrivateKeyAccount` \| `HDAccount`, `chainOverride`\>) => `Promise`\<\`0x$\{string}\`\> | - |
 | `extend` | \<client\>(`fn`: (`client`: `Client`\<`HttpTransport`, `Chain`, `PrivateKeyAccount` \| `HDAccount`, `WalletRpcSchema`, `WalletActions`\<`Chain`, `PrivateKeyAccount` \| `HDAccount`\>\>) => `client`) => `Client`\<`HttpTransport`, `Chain`, `PrivateKeyAccount` \| `HDAccount`, `WalletRpcSchema`, \{ [K in string \| number \| symbol]: client[K] } & `WalletActions`\<`Chain`, `PrivateKeyAccount` \| `HDAccount`\>\> | - |
@@ -226,7 +229,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:44](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L44)
+[src/wallet/EoaWallet.ts:44](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L44)
 
 ___
 
@@ -240,7 +243,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:74](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L74)
+[src/wallet/EoaWallet.ts:74](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L74)
 
 ___
 
@@ -258,7 +261,7 @@ Wallet.rpcUrl
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:48](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L48)
+[src/wallet/EoaWallet.ts:48](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L48)
 
 ## Methods
 
@@ -283,7 +286,7 @@ Wallet.rpcUrl
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:92](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L92)
+[src/wallet/EoaWallet.ts:92](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L92)
 
 ___
 
@@ -307,7 +310,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:86](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L86)
+[src/wallet/EoaWallet.ts:86](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L86)
 
 ___
 
@@ -325,7 +328,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:146](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L146)
+[src/wallet/EoaWallet.ts:146](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L146)
 
 ___
 
@@ -343,7 +346,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:78](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L78)
+[src/wallet/EoaWallet.ts:78](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L78)
 
 ___
 
@@ -361,7 +364,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:56](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L56)
+[src/wallet/EoaWallet.ts:56](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L56)
 
 ___
 
@@ -386,7 +389,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:131](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L131)
+[src/wallet/EoaWallet.ts:131](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L131)
 
 ___
 
@@ -410,7 +413,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:68](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L68)
+[src/wallet/EoaWallet.ts:68](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L68)
 
 ___
 
@@ -434,7 +437,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:64](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L64)
+[src/wallet/EoaWallet.ts:64](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L64)
 
 ___
 
@@ -458,7 +461,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:122](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L122)
+[src/wallet/EoaWallet.ts:122](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L122)
 
 ___
 
@@ -479,7 +482,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:186](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L186)
+[src/wallet/EoaWallet.ts:186](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L186)
 
 ___
 
@@ -499,7 +502,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:153](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L153)
+[src/wallet/EoaWallet.ts:153](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L153)
 
 ___
 
@@ -525,6 +528,7 @@ ___
 | `batch?` | \{ `multicall?`: `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  }  } | Flags for batch settings. |
 | `batch.multicall?` | `boolean` \| \{ `batchSize?`: `number` ; `wait?`: `number`  } | Toggle to enable `eth_call` multicall aggregation. |
 | `cacheTime` | `number` | Time (in ms) that cached data will remain in memory. |
+| `ccipRead?` | ``false`` \| \{ `request?`: (`parameters`: `CcipRequestParameters`) => `Promise`\<\`0x$\{string}\`\>  } | [CCIP Read](https://eips.ethereum.org/EIPS/eip-3668) configuration. |
 | `chain` | `Chain` | Chain for the client. |
 | `deployContract` | \<abi, chainOverride\>(`args`: `DeployContractParameters`\<`abi`, `Chain`, `PrivateKeyAccount` \| `HDAccount`, `chainOverride`\>) => `Promise`\<\`0x$\{string}\`\> | - |
 | `extend` | \<client\>(`fn`: (`client`: `Client`\<`HttpTransport`, `Chain`, `PrivateKeyAccount` \| `HDAccount`, `WalletRpcSchema`, `WalletActions`\<`Chain`, `PrivateKeyAccount` \| `HDAccount`\>\>) => `client`) => `Client`\<`HttpTransport`, `Chain`, `PrivateKeyAccount` \| `HDAccount`, `WalletRpcSchema`, \{ [K in string \| number \| symbol]: client[K] } & `WalletActions`\<`Chain`, `PrivateKeyAccount` \| `HDAccount`\>\> | - |
@@ -552,4 +556,4 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:178](https://github.com/kriptonio/sdk/blob/f9a3148/packages/sdk/src/wallet/EoaWallet.ts#L178)
+[src/wallet/EoaWallet.ts:178](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/EoaWallet.ts#L178)

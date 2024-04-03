@@ -21,7 +21,7 @@ const sdk = new KriptonioSdk({
 });
 
 const wallet = await sdk.wallet.generate({
-  chainId: ChainId.PolygonMumbai,
+  chainId: ChainId.BaseSepolia,
 });
 
 const signer = createKriptonioSigner(wallet);

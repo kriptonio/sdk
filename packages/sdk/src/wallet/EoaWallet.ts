@@ -13,9 +13,9 @@ import {
   publicActions,
 } from 'viem';
 import { estimateGas, getTransactionCount } from 'viem/actions';
+import { getChain } from '../Chain';
 import { KriptonioError } from '../Error';
 import { OperationStatus } from '../enum/OperationStatus';
-import { getChain } from '../utils/chain';
 import { assertHex, parseError } from '../utils/error';
 import { exportSource, isValidSource, sourceToAccount } from './Helpers';
 import {

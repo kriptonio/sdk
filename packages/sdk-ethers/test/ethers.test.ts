@@ -2,7 +2,7 @@ import { verifyMessage } from '@ambire/signature-validator';
 import { ChainId } from '@kriptonio/sdk';
 import { TypedDataEncoder, ethers, isError } from 'ethers';
 import { Hex, verifyTypedData } from 'viem';
-import { polygonMumbai } from 'viem/chains';
+import { baseSepolia } from 'viem/chains';
 import { createKriptonioSigner } from '../src';
 import { createSdk } from './test.utils';
 import { testEnv } from './testEnv';
@@ -16,7 +16,7 @@ describe('ethers plugin', () => {
           privateKey: testEnv.kernel.privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const signer = createKriptonioSigner(wallet);
@@ -32,7 +32,7 @@ describe('ethers plugin', () => {
           privateKey: testEnv.kernel.privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const signer = createKriptonioSigner(wallet);
@@ -57,7 +57,7 @@ describe('ethers plugin', () => {
           privateKey: testEnv.kernel.privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const signer = createKriptonioSigner(wallet);
@@ -66,7 +66,7 @@ describe('ethers plugin', () => {
       domain: {
         name: 'Ether Mail',
         version: '1',
-        chainId: polygonMumbai.id,
+        chainId: baseSepolia.id,
         verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
       },
       types: {
@@ -122,7 +122,7 @@ describe('ethers plugin', () => {
           privateKey: testEnv.kernel.privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const signer = createKriptonioSigner(wallet);
@@ -145,7 +145,7 @@ describe('ethers plugin', () => {
           privateKey: ethers.Wallet.createRandom().privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const signer = createKriptonioSigner(wallet);
@@ -176,7 +176,7 @@ describe('ethers plugin', () => {
           privateKey: testEnv.kernel.privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const signer = createKriptonioSigner(wallet);
@@ -197,7 +197,7 @@ describe('ethers plugin', () => {
           privateKey: ethers.Wallet.createRandom().privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const signer = createKriptonioSigner(wallet);
@@ -218,7 +218,7 @@ describe('ethers plugin', () => {
           privateKey: testEnv.kernel.privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const signer = createKriptonioSigner(wallet);
@@ -246,7 +246,7 @@ describe('ethers plugin', () => {
           privateKey: testEnv.kernel.privateKey,
         },
       },
-      { chainId: ChainId.PolygonMumbai }
+      { chainId: ChainId.BaseSepolia }
     );
 
     const signer = createKriptonioSigner(wallet);
