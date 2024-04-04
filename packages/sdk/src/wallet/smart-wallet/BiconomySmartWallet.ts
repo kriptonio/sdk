@@ -8,10 +8,7 @@ import {
   BiconomySmartAccount,
   signerToBiconomySmartAccount,
 } from 'permissionless/accounts';
-import {
-  ENTRYPOINT_ADDRESS_V06_TYPE,
-  EntryPoint,
-} from 'permissionless/types/entrypoint';
+import { ENTRYPOINT_ADDRESS_V06_TYPE } from 'permissionless/types/entrypoint';
 import { ENTRYPOINT_ADDRESS_V06 } from 'permissionless/utils';
 import {
   BaseError,
@@ -34,7 +31,7 @@ import { SignableMessage, TypedData } from '../Wallet';
 import { BiconomyWalletConfig, ExportedBiconomyWallet } from '../WalletConfig';
 import { PartialUserOperation, SmartWallet } from './SmartWallet';
 
-export class BiconomySmartWallet extends SmartWallet {
+export class BiconomySmartWallet extends SmartWallet<ENTRYPOINT_ADDRESS_V06_TYPE> {
   #biconomyAccount: SmartAccountClient<
     ENTRYPOINT_ADDRESS_V06_TYPE,
     Transport,
@@ -59,7 +56,7 @@ export class BiconomySmartWallet extends SmartWallet {
     this.#biconomyAccount = smartAccount;
   }
 
-  public get entryPoint(): EntryPoint {
+  public get entryPoint(): ENTRYPOINT_ADDRESS_V06_TYPE {
     return this.#biconomyAccount.account.entryPoint;
   }
 
@@ -120,7 +117,7 @@ export class BiconomySmartWallet extends SmartWallet {
   }
 
   public sendUserOperation = (
-    userOperation: PartialUserOperation
+    userOperation: PartialUserOperation<ENTRYPOINT_ADDRESS_V06_TYPE>
   ): Promise<Hex> => {
     return this.#biconomyAccount.sendUserOperation({ userOperation });
   };

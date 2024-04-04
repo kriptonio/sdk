@@ -7,8 +7,8 @@ import {
   isSmartAccountDeployed,
 } from 'permissionless';
 import {
-  ENTRYPOINT_ADDRESS_V06_TYPE,
   EntryPoint,
+  GetEntryPointVersion,
 } from 'permissionless/types/entrypoint';
 import {
   Account,
@@ -41,19 +41,38 @@ import {
 } from '../Wallet';
 import { UserOperationEventAbi } from './abi/UserOperationEventAbi';
 
-export type PartialUserOperation = PartialBy<
-  UserOperation<'v0.6'>,
-  | 'nonce'
-  | 'sender'
-  | 'initCode'
-  | 'signature'
-  | 'callGasLimit'
-  | 'maxFeePerGas'
-  | 'maxPriorityFeePerGas'
-  | 'preVerificationGas'
-  | 'verificationGasLimit'
-  | 'paymasterAndData'
->;
+export type PartialUserOperation<TEntryPoint extends EntryPoint> =
+  GetEntryPointVersion<TEntryPoint> extends 'v0.6'
+    ? PartialBy<
+        UserOperation<'v0.6'>,
+        | 'sender'
+        | 'nonce'
+        | 'initCode'
+        | 'callGasLimit'
+        | 'verificationGasLimit'
+        | 'preVerificationGas'
+        | 'maxFeePerGas'
+        | 'maxPriorityFeePerGas'
+        | 'paymasterAndData'
+        | 'signature'
+      >
+    : PartialBy<
+        UserOperation<'v0.7'>,
+        | 'sender'
+        | 'nonce'
+        | 'factory'
+        | 'factoryData'
+        | 'callGasLimit'
+        | 'verificationGasLimit'
+        | 'preVerificationGas'
+        | 'maxFeePerGas'
+        | 'maxPriorityFeePerGas'
+        | 'paymaster'
+        | 'paymasterVerificationGasLimit'
+        | 'paymasterPostOpGasLimit'
+        | 'paymasterData'
+        | 'signature'
+      >;
 
 export type UserOperationInfo = {
   success: boolean | undefined;
@@ -69,7 +88,9 @@ export const createCallAbi = parseAbi([
   'event ContractCreation(address indexed newContract)',
 ]);
 
-export abstract class SmartWallet extends Wallet {
+export abstract class SmartWallet<
+  TEntryPoint extends EntryPoint,
+> extends Wallet {
   protected publicClient: PublicClient<HttpTransport>;
 
   constructor(chain: Chain, publicClient: PublicClient<HttpTransport>) {
@@ -154,17 +175,12 @@ export abstract class SmartWallet extends Wallet {
   };
 
   public estimateUserOperationGas = (
-    userOperation: UserOperation<'v0.6'>
-  ): Promise<
-    EstimateUserOperationGasReturnType<ENTRYPOINT_ADDRESS_V06_TYPE>
-  > => {
-    return estimateUserOperationGas<ENTRYPOINT_ADDRESS_V06_TYPE>(
-      this.publicClient,
-      {
-        userOperation,
-        entryPoint: this.entryPoint as ENTRYPOINT_ADDRESS_V06_TYPE,
-      }
-    );
+    userOperation: UserOperation<GetEntryPointVersion<TEntryPoint>>
+  ): Promise<EstimateUserOperationGasReturnType<TEntryPoint>> => {
+    return estimateUserOperationGas<TEntryPoint>(this.publicClient, {
+      userOperation,
+      entryPoint: this.entryPoint,
+    });
   };
 
   public deploy = async (options?: OperationOptions): Promise<Hex | null> => {
@@ -222,7 +238,7 @@ export abstract class SmartWallet extends Wallet {
     value: bigint;
     maxFeePerGas: bigint | undefined;
     maxPriorityFeePerGas: bigint | undefined;
-  }) => {
+  }): Promise<UserOperation<GetEntryPointVersion<TEntryPoint>>> => {
     return this.buildUserOperation(
       {
         to: createCallAddress,
@@ -244,7 +260,7 @@ export abstract class SmartWallet extends Wallet {
       maxPriorityFeePerGas: bigint | undefined;
     },
     callType: CallType
-  ): Promise<UserOperation<'v0.6'>>;
+  ): Promise<UserOperation<GetEntryPointVersion<TEntryPoint>>>;
 
   protected buildCallUserOperation = (input: {
     to: Hex;
@@ -418,7 +434,7 @@ export abstract class SmartWallet extends Wallet {
   /**
    * Gets the entry point address of the smart wallet
    */
-  public abstract get entryPoint(): EntryPoint;
+  public abstract get entryPoint(): TEntryPoint;
 
   /**
    * Gets the smart wallet version
@@ -435,5 +451,7 @@ export abstract class SmartWallet extends Wallet {
    * Sends a user operation from the smart wallet
    * @returns user operation hash
    */
-  public abstract sendUserOperation(op: PartialUserOperation): Promise<Hex>;
+  public abstract sendUserOperation(
+    op: PartialUserOperation<TEntryPoint>
+  ): Promise<Hex>;
 }
