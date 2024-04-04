@@ -1,7 +1,7 @@
 import { ChainId, KriptonioSdk } from '@kriptonio/sdk';
 import { Button, Frog } from 'frog';
 
-const chainId = ChainId.PolygonMumbai;
+const chainId = ChainId.BaseSepolia;
 const baseUrl = 'http://localhost:5173';
 const smartContractId = process.env.SMART_CONTRACT_ID!;
 const privateKey = process.env.PRIVATE_KEY!;

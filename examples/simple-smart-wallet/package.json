@@ -12,13 +12,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@kriptonio/sdk": "^0.2.17"
+    "@kriptonio/sdk": "^0.4.2"
   },
   "devDependencies": {
-    "@types/node": "^20.11.29",
+    "@types/node": "^20.12.4",
     "ts-node": "^10.9.2",
     "tslib": "^2.6.2",
-    "tsx": "^4.7.1",
-    "typescript": "^5.4.2"
+    "tsx": "^4.7.2",
+    "typescript": "^5.4.3"
   }
 }
