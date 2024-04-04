@@ -22,6 +22,7 @@ const sdk = new KriptonioSdk({
 
 const wallet = await sdk.wallet.generate({
   chainId: ChainId.BaseSepolia,
+  type: 'kernel',
 });
 
 const signer = createKriptonioSigner(wallet);
