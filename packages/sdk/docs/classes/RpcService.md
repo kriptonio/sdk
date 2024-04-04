@@ -37,7 +37,7 @@
 
 #### Defined in
 
-[src/service/RpcService.ts:9](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/RpcService.ts#L9)
+[src/service/RpcService.ts:9](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/service/RpcService.ts#L9)
 
 ## Properties
 
@@ -47,7 +47,7 @@
 
 #### Defined in
 
-[src/service/RpcService.ts:6](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/RpcService.ts#L6)
+[src/service/RpcService.ts:6](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/service/RpcService.ts#L6)
 
 ___
 
@@ -57,7 +57,7 @@ ___
 
 #### Defined in
 
-[src/service/RpcService.ts:7](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/RpcService.ts#L7)
+[src/service/RpcService.ts:7](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/service/RpcService.ts#L7)
 
 ## Methods
 
@@ -77,7 +77,7 @@ ___
 
 #### Defined in
 
-[src/service/RpcService.ts:14](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/RpcService.ts#L14)
+[src/service/RpcService.ts:14](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/service/RpcService.ts#L14)
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 #### Defined in
 
-[src/service/RpcService.ts:18](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/RpcService.ts#L18)
+[src/service/RpcService.ts:18](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/service/RpcService.ts#L18)
 
 ___
 
@@ -117,4 +117,4 @@ ___
 
 #### Defined in
 
-[src/service/RpcService.ts:22](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/RpcService.ts#L22)
+[src/service/RpcService.ts:22](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/service/RpcService.ts#L22)

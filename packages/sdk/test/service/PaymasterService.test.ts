@@ -33,7 +33,7 @@ describe('PaymasterService', () => {
     const paymaster = await sdk.paymaster.getOrCreate({
       chainId: ChainId.BaseSepolia,
       wallet: '0x123',
-      entryPoint: '0x123',
+      entryPoint: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
     });
 
     expect(paymaster.chainId).toBe(ChainId.BaseSepolia);

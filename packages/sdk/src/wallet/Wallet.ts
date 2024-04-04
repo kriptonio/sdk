@@ -10,8 +10,6 @@ import {
 import { OperationStatus } from '../enum/OperationStatus';
 import { ExportedWallet } from './WalletConfig';
 
-export type WalletType = 'eoa' | 'kernel';
-
 export type DeployResponse = {
   hash: Hex;
   address: Hex;

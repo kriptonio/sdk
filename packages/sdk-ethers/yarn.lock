@@ -969,10 +969,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@kriptonio/sdk@0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@kriptonio/sdk/-/sdk-0.4.2.tgz#2168dba9c3f17da1d7f47ecbdb42d2d72307b6d4"
-  integrity sha512-Iejk3/vhv7gbyYw4UUWAT1Mg8VSziVEx/01BFPbM7uauhFfKRE1J8TM1zOQDlD3S63Zruj2ZkQkKwC6C4WZETA==
+"@kriptonio/sdk@0.4.3":
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/@kriptonio/sdk/-/sdk-0.4.3.tgz#05f55b0d3121823619901c6651d48f63fdc861cd"
+  integrity sha512-LYK3q1pxszsoI2EQ7ZicRhEUZCKk833i813lBVOfpmXuzMWftcnUPG9V31AKPouewcs/B+Dzm7yVsnYaEbHZAQ==
   dependencies:
     "@zerodev/ecdsa-validator" "5.2.1-alpha-0"
     "@zerodev/sdk" "5.2.0-alpha-4"

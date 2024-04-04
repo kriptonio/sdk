@@ -162,9 +162,7 @@ describe('ethers plugin', () => {
       expect(ethersError).toBe(true);
 
       const error = e as Error;
-      expect(error.message).toContain(
-        'gas required exceeds allowance (0) (code=UNKNOWN_ERROR, version=6.11.1)'
-      );
+      expect(error.message).toContain('insufficient funds for transfer');
     }
   });
 
@@ -251,7 +249,7 @@ describe('ethers plugin', () => {
 
     const signer = createKriptonioSigner(wallet);
     const contract = new ethers.Contract(
-      '0x787f5426D1349Db61a20181c1e07713633780f8e',
+      '0xD6666147A3315Fc7E3441AA8F10975D0477ea8C5',
       abi,
       signer
     );

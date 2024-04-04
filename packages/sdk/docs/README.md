@@ -62,7 +62,6 @@
 - [SmartContractDeployment](README.md#smartcontractdeployment)
 - [TypedData](README.md#typeddata)
 - [WalletConfig](README.md#walletconfig)
-- [WalletType](README.md#wallettype)
 
 ### Variables
 
@@ -81,7 +80,7 @@
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:34](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L34)
+[src/wallet/WalletConfig.ts:34](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L34)
 
 ___
 
@@ -97,7 +96,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:26](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L26)
+[src/wallet/WalletConfig.ts:26](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L26)
 
 ___
 
@@ -107,7 +106,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:31](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L31)
+[src/wallet/Wallet.ts:29](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/Wallet.ts#L29)
 
 ___
 
@@ -124,7 +123,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:28](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/model/SmartContract.ts#L28)
+[src/model/SmartContract.ts:28](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/model/SmartContract.ts#L28)
 
 ___
 
@@ -141,7 +140,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:15](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L15)
+[src/wallet/Wallet.ts:13](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/Wallet.ts#L13)
 
 ___
 
@@ -151,7 +150,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:32](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L32)
+[src/wallet/EoaWallet.ts:32](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/EoaWallet.ts#L32)
 
 ___
 
@@ -161,7 +160,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:11](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L11)
+[src/wallet/WalletConfig.ts:11](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L11)
 
 ___
 
@@ -177,7 +176,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:20](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L20)
+[src/wallet/WalletConfig.ts:20](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L20)
 
 ___
 
@@ -193,7 +192,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:24](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/model/SmartContract.ts#L24)
+[src/model/SmartContract.ts:24](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/model/SmartContract.ts#L24)
 
 ___
 
@@ -203,7 +202,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:40](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L40)
+[src/wallet/WalletConfig.ts:40](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L40)
 
 ___
 
@@ -220,7 +219,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:58](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L58)
+[src/wallet/WalletConfig.ts:58](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L58)
 
 ___
 
@@ -237,7 +236,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:47](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L47)
+[src/wallet/WalletConfig.ts:47](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L47)
 
 ___
 
@@ -254,7 +253,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:52](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L52)
+[src/wallet/WalletConfig.ts:52](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L52)
 
 ___
 
@@ -264,7 +263,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:42](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L42)
+[src/wallet/WalletConfig.ts:42](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L42)
 
 ___
 
@@ -281,7 +280,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:36](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L36)
+[src/wallet/Wallet.ts:34](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/Wallet.ts#L34)
 
 ___
 
@@ -300,7 +299,7 @@ ___
 
 #### Defined in
 
-[src/api/PaymasterApi.ts:20](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/api/PaymasterApi.ts#L20)
+[src/api/PaymasterApi.ts:20](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/api/PaymasterApi.ts#L20)
 
 ___
 
@@ -316,7 +315,7 @@ ___
 
 #### Defined in
 
-[src/api/PaymasterApi.ts:16](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/api/PaymasterApi.ts#L16)
+[src/api/PaymasterApi.ts:16](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/api/PaymasterApi.ts#L16)
 
 ___
 
@@ -332,7 +331,7 @@ ___
 
 #### Defined in
 
-[src/wallet/smart-wallet/KernelSmartWallet.ts:39](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L39)
+[src/wallet/smart-wallet/KernelSmartWallet.ts:39](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/smart-wallet/KernelSmartWallet.ts#L39)
 
 ___
 
@@ -342,7 +341,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:28](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L28)
+[src/wallet/WalletConfig.ts:28](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L28)
 
 ___
 
@@ -358,7 +357,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:24](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L24)
+[src/wallet/WalletConfig.ts:24](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L24)
 
 ___
 
@@ -374,7 +373,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:20](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L20)
+[src/wallet/Wallet.ts:18](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/Wallet.ts#L18)
 
 ___
 
@@ -384,7 +383,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:3](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L3)
+[src/wallet/WalletConfig.ts:3](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L3)
 
 ___
 
@@ -400,7 +399,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:71](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L71)
+[src/wallet/WalletConfig.ts:71](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L71)
 
 ___
 
@@ -416,7 +415,7 @@ ___
 
 #### Defined in
 
-[src/Sdk.ts:8](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/Sdk.ts#L8)
+[src/Sdk.ts:8](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/Sdk.ts#L8)
 
 ___
 
@@ -432,7 +431,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:91](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L91)
+[src/wallet/WalletConfig.ts:91](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L91)
 
 ___
 
@@ -448,7 +447,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:75](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L75)
+[src/wallet/WalletConfig.ts:75](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L75)
 
 ___
 
@@ -464,7 +463,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:67](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L67)
+[src/wallet/WalletConfig.ts:67](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L67)
 
 ___
 
@@ -474,7 +473,7 @@ ___
 
 #### Defined in
 
-[src/Sdk.ts:12](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/Sdk.ts#L12)
+[src/Sdk.ts:12](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/Sdk.ts#L12)
 
 ___
 
@@ -492,7 +491,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:84](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L84)
+[src/wallet/WalletConfig.ts:84](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L84)
 
 ___
 
@@ -502,7 +501,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:95](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L95)
+[src/wallet/WalletConfig.ts:95](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L95)
 
 ___
 
@@ -512,7 +511,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:79](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L79)
+[src/wallet/WalletConfig.ts:79](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L79)
 
 ___
 
@@ -522,7 +521,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:41](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L41)
+[src/wallet/Wallet.ts:39](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/Wallet.ts#L39)
 
 ___
 
@@ -542,7 +541,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:33](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/model/SmartContract.ts#L33)
+[src/model/SmartContract.ts:33](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/model/SmartContract.ts#L33)
 
 ___
 
@@ -559,7 +558,7 @@ ___
 
 #### Defined in
 
-[src/model/SmartContract.ts:41](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/model/SmartContract.ts#L41)
+[src/model/SmartContract.ts:41](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/model/SmartContract.ts#L41)
 
 ___
 
@@ -578,7 +577,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:24](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L24)
+[src/wallet/Wallet.ts:22](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/Wallet.ts#L22)
 
 ___
 
@@ -588,17 +587,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletConfig.ts:15](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletConfig.ts#L15)
-
-___
-
-### WalletType
-
-Ƭ **WalletType**: ``"eoa"`` \| ``"kernel"``
-
-#### Defined in
-
-[src/wallet/Wallet.ts:13](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L13)
+[src/wallet/WalletConfig.ts:15](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletConfig.ts#L15)
 
 ## Variables
 
@@ -636,7 +625,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:17](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/Chain.ts#L17)
+[src/Chain.ts:17](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/Chain.ts#L17)
 
 ## Functions
 
@@ -656,7 +645,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:53](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/Chain.ts#L53)
+[src/Chain.ts:53](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/Chain.ts#L53)
 
 ___
 
@@ -695,4 +684,4 @@ ___
 
 #### Defined in
 
-[src/api/PaymasterApi.ts:97](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/api/PaymasterApi.ts#L97)
+[src/api/PaymasterApi.ts:97](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/api/PaymasterApi.ts#L97)

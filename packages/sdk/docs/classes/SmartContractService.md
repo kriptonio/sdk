@@ -35,7 +35,7 @@
 
 #### Defined in
 
-[src/service/SmartContractService.ts:11](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/SmartContractService.ts#L11)
+[src/service/SmartContractService.ts:11](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/service/SmartContractService.ts#L11)
 
 ## Properties
 
@@ -45,7 +45,7 @@
 
 #### Defined in
 
-[src/service/SmartContractService.ts:9](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/SmartContractService.ts#L9)
+[src/service/SmartContractService.ts:9](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/service/SmartContractService.ts#L9)
 
 ## Methods
 
@@ -65,7 +65,7 @@
 
 #### Defined in
 
-[src/service/SmartContractService.ts:19](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/SmartContractService.ts#L19)
+[src/service/SmartContractService.ts:19](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/service/SmartContractService.ts#L19)
 
 ___
 
@@ -85,4 +85,4 @@ ___
 
 #### Defined in
 
-[src/service/SmartContractService.ts:15](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/SmartContractService.ts#L15)
+[src/service/SmartContractService.ts:15](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/service/SmartContractService.ts#L15)

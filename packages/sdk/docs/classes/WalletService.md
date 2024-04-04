@@ -39,7 +39,7 @@
 
 #### Defined in
 
-[src/wallet/WalletService.ts:26](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletService.ts#L26)
+[src/wallet/WalletService.ts:26](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletService.ts#L26)
 
 ## Properties
 
@@ -49,7 +49,7 @@
 
 #### Defined in
 
-[src/wallet/WalletService.ts:24](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletService.ts#L24)
+[src/wallet/WalletService.ts:24](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletService.ts#L24)
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletService.ts:23](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletService.ts#L23)
+[src/wallet/WalletService.ts:23](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletService.ts#L23)
 
 ## Methods
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletService.ts:147](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletService.ts#L147)
+[src/wallet/WalletService.ts:147](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletService.ts#L147)
 
 ___
 
@@ -101,7 +101,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletService.ts:94](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletService.ts#L94)
+[src/wallet/WalletService.ts:94](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletService.ts#L94)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletService.ts:67](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletService.ts#L67)
+[src/wallet/WalletService.ts:67](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletService.ts#L67)
 
 ___
 
@@ -154,4 +154,4 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletService.ts:31](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletService.ts#L31)
+[src/wallet/WalletService.ts:31](https://github.com/kriptonio/sdk/blob/9e9d3ab/packages/sdk/src/wallet/WalletService.ts#L31)
