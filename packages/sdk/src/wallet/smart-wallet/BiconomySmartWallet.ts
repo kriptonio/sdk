@@ -5,14 +5,20 @@ import {
   deepHexlify,
 } from 'permissionless';
 import {
-  SmartAccount,
+  BiconomySmartAccount,
   signerToBiconomySmartAccount,
 } from 'permissionless/accounts';
+import {
+  ENTRYPOINT_ADDRESS_V06_TYPE,
+  EntryPoint,
+} from 'permissionless/types/entrypoint';
+import { ENTRYPOINT_ADDRESS_V06 } from 'permissionless/utils';
 import {
   Chain,
   Hex,
   HttpTransport,
   PublicClient,
+  Transport,
   SignableMessage as ViemSignableMessage,
   createPublicClient,
   http,
@@ -26,12 +32,22 @@ import { BiconomyWalletConfig, ExportedBiconomyWallet } from '../WalletConfig';
 import { PartialUserOperation, SmartWallet } from './SmartWallet';
 
 export class BiconomySmartWallet extends SmartWallet {
-  #smartAccount: SmartAccountClient<HttpTransport, Chain, SmartAccount>;
+  #smartAccount: SmartAccountClient<
+    ENTRYPOINT_ADDRESS_V06_TYPE,
+    Transport,
+    Chain,
+    BiconomySmartAccount<ENTRYPOINT_ADDRESS_V06_TYPE>
+  >;
   #config: BiconomyWalletConfig;
 
   constructor(
     config: BiconomyWalletConfig,
-    smartAccount: SmartAccountClient<HttpTransport, Chain, SmartAccount>,
+    smartAccount: SmartAccountClient<
+      ENTRYPOINT_ADDRESS_V06_TYPE,
+      Transport,
+      Chain,
+      BiconomySmartAccount<ENTRYPOINT_ADDRESS_V06_TYPE>
+    >,
     publicClient: PublicClient<HttpTransport>,
     chain: Chain
   ) {
@@ -40,7 +56,7 @@ export class BiconomySmartWallet extends SmartWallet {
     this.#smartAccount = smartAccount;
   }
 
-  public get entryPoint(): Hex {
+  public get entryPoint(): EntryPoint {
     return this.#smartAccount.account.entryPoint;
   }
 
@@ -96,7 +112,7 @@ export class BiconomySmartWallet extends SmartWallet {
     value: bigint;
     maxFeePerGas?: bigint;
     maxPriorityFeePerGas?: bigint;
-  }): Promise<UserOperation> => {
+  }): Promise<UserOperation<'v0.6'>> => {
     if (!input.maxFeePerGas) {
       const feeData = await this.getFeeData();
       if (feeData) {
@@ -133,8 +149,7 @@ export class BiconomySmartWallet extends SmartWallet {
   }
 
   public static async create(config: BiconomyWalletConfig) {
-    // entry point v0.6
-    const entryPointAddress = '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789';
+    const entryPointAddress = ENTRYPOINT_ADDRESS_V06;
 
     const publicClient = createPublicClient({
       transport: http(config.rpcUrl),
@@ -146,33 +161,37 @@ export class BiconomySmartWallet extends SmartWallet {
     const biconomyAccount = await signerToBiconomySmartAccount(publicClient, {
       entryPoint: entryPointAddress,
       signer: sourceToAccount(config),
-      index: 0n,
     });
 
     const smartAccountClient = createSmartAccountClient({
       account: biconomyAccount,
+      entryPoint: entryPointAddress,
       chain,
-      transport: http(config.rpcUrl),
-      sponsorUserOperation: config.paymasterUrl
-        ? async (args: {
-            userOperation: UserOperation;
-            entryPoint: `0x${string}`;
-          }) => {
-            const paymasterInfo = await sponsorUserOperation(
-              config.paymasterUrl!,
-              deepHexlify(args.userOperation),
-              biconomyAccount.entryPoint
-            );
+      bundlerTransport: http(config.bundlerUrl ?? config.rpcUrl),
+      middleware: {
+        sponsorUserOperation: config.paymasterUrl
+          ? async (args: {
+              userOperation: UserOperation<'v0.6'>;
+              entryPoint: `0x${string}`;
+            }) => {
+              const paymasterInfo = await sponsorUserOperation(
+                config.paymasterUrl!,
+                deepHexlify(args.userOperation),
+                biconomyAccount.entryPoint
+              );
 
-            return {
-              ...args.userOperation,
-              paymasterAndData: paymasterInfo.paymasterAndData,
-              callGasLimit: BigInt(paymasterInfo.callGasLimit),
-              verificationGasLimit: BigInt(paymasterInfo.verificationGasLimit),
-              preVerificationGas: BigInt(paymasterInfo.preVerificationGas),
-            };
-          }
-        : undefined,
+              return {
+                ...args.userOperation,
+                paymasterAndData: paymasterInfo.paymasterAndData,
+                callGasLimit: BigInt(paymasterInfo.callGasLimit),
+                verificationGasLimit: BigInt(
+                  paymasterInfo.verificationGasLimit
+                ),
+                preVerificationGas: BigInt(paymasterInfo.preVerificationGas),
+              };
+            }
+          : undefined,
+      },
     });
 
     return new BiconomySmartWallet(

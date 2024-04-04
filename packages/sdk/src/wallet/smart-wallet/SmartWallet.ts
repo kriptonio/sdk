@@ -7,6 +7,10 @@ import {
   isSmartAccountDeployed,
 } from 'permissionless';
 import {
+  ENTRYPOINT_ADDRESS_V06_TYPE,
+  EntryPoint,
+} from 'permissionless/types/entrypoint';
+import {
   Account,
   Chain,
   EstimateGasParameters,
@@ -38,7 +42,7 @@ import {
 import { UserOperationEventAbi } from './abi/UserOperationEventAbi';
 
 export type PartialUserOperation = PartialBy<
-  UserOperation,
+  UserOperation<'v0.6'>,
   | 'nonce'
   | 'sender'
   | 'initCode'
@@ -150,12 +154,17 @@ export abstract class SmartWallet extends Wallet {
   };
 
   public estimateUserOperationGas = (
-    userOperation: UserOperation
-  ): Promise<EstimateUserOperationGasReturnType> => {
-    return estimateUserOperationGas(this.publicClient, {
-      userOperation,
-      entryPoint: this.entryPoint,
-    });
+    userOperation: UserOperation<'v0.6'>
+  ): Promise<
+    EstimateUserOperationGasReturnType<ENTRYPOINT_ADDRESS_V06_TYPE>
+  > => {
+    return estimateUserOperationGas<ENTRYPOINT_ADDRESS_V06_TYPE>(
+      this.publicClient,
+      {
+        userOperation,
+        entryPoint: this.entryPoint as ENTRYPOINT_ADDRESS_V06_TYPE,
+      }
+    );
   };
 
   public deploy = async (options?: OperationOptions): Promise<Hex | null> => {
@@ -225,7 +234,7 @@ export abstract class SmartWallet extends Wallet {
       value: bigint;
     },
     callType: CallType
-  ): Promise<UserOperation>;
+  ): Promise<UserOperation<'v0.6'>>;
 
   protected buildCallUserOperation = (input: {
     to: Hex;
@@ -400,7 +409,7 @@ export abstract class SmartWallet extends Wallet {
   /**
    * Gets the entry point address of the smart wallet
    */
-  public abstract get entryPoint(): Hex;
+  public abstract get entryPoint(): EntryPoint;
 
   /**
    * Gets the smart wallet version

@@ -7,7 +7,11 @@ import {
   createKernelAccountClient,
 } from '@zerodev/sdk';
 import { CallType } from '@zerodev/sdk/types';
-import { deepHexlify } from 'permissionless';
+import { ENTRYPOINT_ADDRESS_V06, deepHexlify } from 'permissionless';
+import {
+  ENTRYPOINT_ADDRESS_V06_TYPE,
+  EntryPoint,
+} from 'permissionless/types/entrypoint';
 import {
   BaseError,
   Chain,
@@ -15,6 +19,7 @@ import {
   HttpTransport,
   ParseAccount,
   PublicClient,
+  Transport,
   SignableMessage as ViemSignableMessage,
   createPublicClient,
   getContract,
@@ -30,9 +35,10 @@ import { ExportedKernelWallet, KernelWalletConfig } from '../WalletConfig';
 import { PartialUserOperation, SmartWallet } from './SmartWallet';
 
 export type KernelClient = KernelAccountClient<
-  HttpTransport,
+  ENTRYPOINT_ADDRESS_V06_TYPE,
+  Transport,
   Chain,
-  ParseAccount<KernelSmartAccount>
+  ParseAccount<KernelSmartAccount<ENTRYPOINT_ADDRESS_V06_TYPE>>
 >;
 
 export class KernelSmartWallet extends SmartWallet {
@@ -59,7 +65,7 @@ export class KernelSmartWallet extends SmartWallet {
     return Promise.resolve(this.#client.account.address);
   }
 
-  public override get entryPoint(): Hex {
+  public override get entryPoint(): EntryPoint {
     return this.#client.account.entryPoint;
   }
 
@@ -191,50 +197,63 @@ export class KernelSmartWallet extends SmartWallet {
     const chainId = await publicClient.getChainId();
     const chain = getChain(chainId);
 
-    const client = await this.createKernelClient(config, chain, publicClient);
+    const client = await this._createKernelClient(config, chain, publicClient);
     return new KernelSmartWallet(config, client, publicClient);
   }
 
-  public static async createKernelClient(
+  public static async _createKernelClient(
     config: KernelWalletConfig,
     chain: Chain,
     publicClient: PublicClient
   ): Promise<KernelClient> {
-    const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
+    const entryPoint = ENTRYPOINT_ADDRESS_V06;
+
+    const sudoPlugin = await signerToEcdsaValidator(publicClient, {
       signer: sourceToAccount(config),
+      entryPoint,
     });
 
-    const account = await createKernelAccount(publicClient, {
-      // will use kernel 2.4 when creating the account
-      // ref: https://github.com/zerodevapp/kernel
-      accountLogicAddress: '0xd3082872F8B06073A021b4602e022d5A070d7cfC',
-      plugins: {
-        sudo: ecdsaValidator,
-      },
-      index: BigInt(0),
-    });
+    const account = await createKernelAccount<ENTRYPOINT_ADDRESS_V06_TYPE>(
+      publicClient,
+      {
+        entryPoint,
+        plugins: {
+          sudo: sudoPlugin,
+          entryPoint,
+        },
+        // will use kernel 2.4 when creating the account
+        // ref: https://github.com/zerodevapp/kernel
+        accountLogicAddress: '0xd3082872F8B06073A021b4602e022d5A070d7cfC',
+        index: BigInt(0),
+      }
+    );
 
     const client = createKernelAccountClient({
       account,
+      entryPoint,
       chain,
-      transport: http(config.rpcUrl),
-      sponsorUserOperation: config.paymasterUrl
-        ? async (args) => {
-            const paymasterInfo = await sponsorUserOperation(
-              config.paymasterUrl!,
-              deepHexlify(args.userOperation),
-              account.entryPoint
-            );
+      bundlerTransport: http(config.bundlerUrl ?? config.rpcUrl),
+      middleware: {
+        sponsorUserOperation: config.paymasterUrl
+          ? async (args) => {
+              const paymasterInfo = await sponsorUserOperation(
+                config.paymasterUrl!,
+                deepHexlify(args.userOperation),
+                account.entryPoint
+              );
 
-            return {
-              ...args.userOperation,
-              paymasterAndData: paymasterInfo.paymasterAndData,
-              callGasLimit: BigInt(paymasterInfo.callGasLimit),
-              verificationGasLimit: BigInt(paymasterInfo.verificationGasLimit),
-              preVerificationGas: BigInt(paymasterInfo.preVerificationGas),
-            };
-          }
-        : undefined,
+              return {
+                ...args.userOperation,
+                paymasterAndData: paymasterInfo.paymasterAndData,
+                callGasLimit: BigInt(paymasterInfo.callGasLimit),
+                verificationGasLimit: BigInt(
+                  paymasterInfo.verificationGasLimit
+                ),
+                preVerificationGas: BigInt(paymasterInfo.preVerificationGas),
+              };
+            }
+          : undefined,
+      },
     });
 
     return client as KernelClient;
