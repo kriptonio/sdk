@@ -51,7 +51,7 @@ Error.constructor
 
 #### Defined in
 
-[src/Error.ts:21](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Error.ts#L21)
+[src/Error.ts:21](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Error.ts#L21)
 
 ## Properties
 
@@ -65,7 +65,7 @@ Error.cause
 
 #### Defined in
 
-[src/Error.ts:19](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Error.ts#L19)
+[src/Error.ts:19](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Error.ts#L19)
 
 ___
 
@@ -75,7 +75,7 @@ ___
 
 #### Defined in
 
-[src/Error.ts:18](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Error.ts#L18)
+[src/Error.ts:18](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Error.ts#L18)
 
 ___
 
@@ -213,4 +213,4 @@ ___
 
 #### Defined in
 
-[src/Error.ts:33](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Error.ts#L33)
+[src/Error.ts:33](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Error.ts#L33)

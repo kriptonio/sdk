@@ -37,7 +37,7 @@
 
 #### Defined in
 
-[src/api/PaymasterApi.ts:30](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/api/PaymasterApi.ts#L30)
+[src/api/PaymasterApi.ts:30](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/api/PaymasterApi.ts#L30)
 
 ## Properties
 
@@ -47,7 +47,7 @@
 
 #### Defined in
 
-[src/api/PaymasterApi.ts:28](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/api/PaymasterApi.ts#L28)
+[src/api/PaymasterApi.ts:28](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/api/PaymasterApi.ts#L28)
 
 ## Methods
 
@@ -67,7 +67,7 @@
 
 #### Defined in
 
-[src/api/PaymasterApi.ts:34](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/api/PaymasterApi.ts#L34)
+[src/api/PaymasterApi.ts:34](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/api/PaymasterApi.ts#L34)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 #### Defined in
 
-[src/api/PaymasterApi.ts:84](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/api/PaymasterApi.ts#L84)
+[src/api/PaymasterApi.ts:84](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/api/PaymasterApi.ts#L84)
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
 #### Defined in
 
-[src/api/PaymasterApi.ts:52](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/api/PaymasterApi.ts#L52)
+[src/api/PaymasterApi.ts:52](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/api/PaymasterApi.ts#L52)
 
 ___
 
@@ -127,4 +127,4 @@ ___
 
 #### Defined in
 
-[src/api/PaymasterApi.ts:67](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/api/PaymasterApi.ts#L67)
+[src/api/PaymasterApi.ts:67](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/api/PaymasterApi.ts#L67)

@@ -43,8 +43,7 @@ export type KernelClient = KernelAccountClient<
 
 export class KernelSmartWallet extends SmartWallet {
   #config: KernelWalletConfig;
-  #client: KernelClient;
-  #publicClient: PublicClient;
+  #kernelClient: KernelClient;
 
   constructor(
     config: KernelWalletConfig,
@@ -52,21 +51,20 @@ export class KernelSmartWallet extends SmartWallet {
     publicClient: PublicClient<HttpTransport>
   ) {
     super(client.chain, publicClient);
-    this.#client = client;
-    this.#publicClient = publicClient;
+    this.#kernelClient = client;
     this.#config = config;
   }
 
   public get client(): KernelClient {
-    return this.#client;
+    return this.#kernelClient;
   }
 
   public override getAddress(): Promise<Hex> {
-    return Promise.resolve(this.#client.account.address);
+    return Promise.resolve(this.#kernelClient.account.address);
   }
 
   public override get entryPoint(): EntryPoint {
-    return this.#client.account.entryPoint;
+    return this.#kernelClient.account.entryPoint;
   }
 
   public get vendor(): string {
@@ -78,7 +76,7 @@ export class KernelSmartWallet extends SmartWallet {
       const contract = getContract({
         abi: KernelAccountAbi,
         address: await this.getAddress(),
-        client: this.#publicClient,
+        client: this.publicClient,
       });
 
       return await contract.read.version();
@@ -94,7 +92,7 @@ export class KernelSmartWallet extends SmartWallet {
   }
 
   public override getNonce(): Promise<bigint> {
-    return this.#client.account.getNonce();
+    return this.#kernelClient.account.getNonce();
   }
 
   public override export(): ExportedKernelWallet {
@@ -107,13 +105,13 @@ export class KernelSmartWallet extends SmartWallet {
   }
 
   public override signMessage(message: SignableMessage): Promise<Hex> {
-    return this.#client.signMessage({
+    return this.#kernelClient.signMessage({
       message: message as ViemSignableMessage,
     });
   }
 
   public override signTypedData(typedData: TypedData): Promise<Hex> {
-    return this.#client.signTypedData({
+    return this.#kernelClient.signTypedData({
       message: typedData.message,
       primaryType: typedData.primaryType,
       types: typedData.types,
@@ -126,8 +124,8 @@ export class KernelSmartWallet extends SmartWallet {
       to: Hex;
       data: Hex;
       value: bigint;
-      maxFeePerGas?: bigint;
-      maxPriorityFeePerGas?: bigint;
+      maxFeePerGas: bigint | undefined;
+      maxPriorityFeePerGas: bigint | undefined;
     },
     callType: CallType
   ) => {
@@ -146,7 +144,7 @@ export class KernelSmartWallet extends SmartWallet {
       }
     }
 
-    return this.#client.prepareUserOperationRequest({
+    return this.#kernelClient.prepareUserOperationRequest({
       userOperation: {
         callData,
         maxFeePerGas: input.maxFeePerGas,
@@ -161,7 +159,7 @@ export class KernelSmartWallet extends SmartWallet {
     data?: string | undefined;
     callType?: CallType;
   }): Promise<Hex> {
-    return this.#client.account.encodeCallData({
+    return this.#kernelClient.account.encodeCallData({
       to: assertHex(input.to, 'to'),
       value: input.value ?? 0n,
       data: (input.data as Hex | undefined) ?? '0x',
@@ -173,7 +171,7 @@ export class KernelSmartWallet extends SmartWallet {
     userOperation: PartialUserOperation
   ): Promise<Hex> {
     try {
-      return this.#client.sendUserOperation({
+      return this.#kernelClient.sendUserOperation({
         userOperation: userOperation,
       });
     } catch (e) {

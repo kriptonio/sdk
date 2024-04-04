@@ -1,7 +1,13 @@
 import { verifyMessage } from '@ambire/signature-validator';
 import axios from 'axios';
 import { ethers } from 'ethers';
-import { isSmartAccountDeployed } from 'permissionless';
+import {
+  ENTRYPOINT_ADDRESS_V06,
+  createSmartAccountClient,
+  deepHexlify,
+  isSmartAccountDeployed,
+} from 'permissionless';
+import { signerToBiconomySmartAccount } from 'permissionless/accounts';
 import {
   GetTransactionReceiptReturnType,
   Hex,
@@ -11,8 +17,15 @@ import {
   http,
   parseUnits,
 } from 'viem';
-import { generatePrivateKey } from 'viem/accounts';
-import { KriptonioError, WalletFactory, getChain } from '../../src';
+import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts';
+import { baseSepolia } from 'viem/chains';
+import {
+  Configuration,
+  KriptonioError,
+  WalletFactory,
+  getChain,
+  sponsorUserOperation,
+} from '../../src';
 import { BlockchainResponse } from '../../src/types/api/blockchainResponse';
 import { createSdk, createSdkConfig } from '../test.utils';
 import { testEnv } from '../testEnv';
@@ -260,7 +273,7 @@ describe('BiconomySmartWallet', () => {
     await wallet.deploy();
 
     const version = await wallet.getVersion();
-    expect(version).toBe('0.2.4');
+    expect(version).toBe('2.0.0');
   });
 
   it('returns null version when wallet not deployed', async () => {
@@ -278,118 +291,116 @@ describe('BiconomySmartWallet', () => {
     expect(version).toBe(null);
   });
 
-  // it('throws error when invalid paymaster url is provided', async () => {
-  //   const sdk = createSdk();
-  //   const chain = baseSepolia;
-  //   const rpc = await sdk.rpc.getOrCreate({ chainId: chain.id });
-  //   const paymasterUrl = `${Configuration.paymasterApiUrl}/v1/endpoints/invalid/sponsor`;
-  //   const privateKey = testEnv.biconomy.privateKey;
+  it('throws error when invalid paymaster url is provided', async () => {
+    const sdk = createSdk();
+    const chain = baseSepolia;
+    const rpc = await sdk.rpc.getOrCreate({ chainId: chain.id });
+    const paymasterUrl = `${Configuration.paymasterApiUrl}/v1/endpoints/invalid/sponsor`;
+    const privateKey = testEnv.biconomy.privateKey;
 
-  //   const signer = privateKeyToAccount(privateKey);
-  //   const publicClient = createPublicClient({
-  //     transport: http(rpc.url),
-  //     chain,
-  //   });
+    const signer = privateKeyToAccount(privateKey);
+    const publicClient = createPublicClient({
+      transport: http(rpc.url),
+      chain,
+    });
 
-  //   const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
-  //     signer,
-  //   });
+    const entryPoint = ENTRYPOINT_ADDRESS_V06;
+    const biconomyAccount = await signerToBiconomySmartAccount(publicClient, {
+      entryPoint: ENTRYPOINT_ADDRESS_V06,
+      signer: signer,
+    });
 
-  //   const account = await createbiconomyAccount(publicClient, {
-  //     plugins: {
-  //       sudo: ecdsaValidator,
-  //     },
-  //   });
+    const smartAccountClient = createSmartAccountClient({
+      account: biconomyAccount,
+      entryPoint,
+      chain,
+      bundlerTransport: http(rpc.url),
+      middleware: {
+        sponsorUserOperation: async (args) => {
+          const paymasterInfo = await sponsorUserOperation(
+            paymasterUrl,
+            deepHexlify(args.userOperation),
+            entryPoint
+          );
 
-  //   const biconomyClient = createbiconomyAccountClient({
-  //     account,
-  //     chain,
-  //     transport: http(rpc.url),
-  //     sponsorUserOperation: async (args) => {
-  //       const paymasterInfo = await sponsorUserOperation(
-  //         paymasterUrl,
-  //         deepHexlify(args.userOperation),
-  //         account.entryPoint
-  //       );
+          return {
+            ...args.userOperation,
+            paymasterAndData: paymasterInfo.paymasterAndData,
+            callGasLimit: BigInt(paymasterInfo.callGasLimit),
+            verificationGasLimit: BigInt(paymasterInfo.verificationGasLimit),
+            preVerificationGas: BigInt(paymasterInfo.preVerificationGas),
+          };
+        },
+      },
+    });
 
-  //       return {
-  //         ...args.userOperation,
-  //         paymasterAndData: paymasterInfo.paymasterAndData,
-  //         callGasLimit: BigInt(paymasterInfo.callGasLimit),
-  //         verificationGasLimit: BigInt(paymasterInfo.verificationGasLimit),
-  //         preVerificationGas: BigInt(paymasterInfo.preVerificationGas),
-  //       };
-  //     },
-  //   });
+    const value = parseUnits('0.00001', 18);
+    await expect(async () => {
+      await smartAccountClient.sendTransaction({
+        to: biconomyAccount.address,
+        value,
+      });
+    }).rejects.toThrow(
+      new KriptonioError({
+        message: 'paymaster with provided access token not found',
+      })
+    );
+  });
 
-  //   const value = parseUnits('0.00001', 18);
-  //   await expect(async () => {
-  //     await biconomyClient.sendTransaction({
-  //       to: account.address,
-  //       value,
-  //     });
-  //   }).rejects.toThrow(
-  //     new KriptonioError({
-  //       message: 'paymaster with provided access token not found',
-  //     })
-  //   );
-  // });
+  it('sends transaction via biconomy account', async () => {
+    const sdk = createSdk();
+    const chain = baseSepolia;
+    const rpc = await sdk.rpc.getOrCreate({ chainId: chain.id });
+    const paymaster = await sdk.paymaster.getOrCreate({
+      chainId: chain.id,
+      entryPoint: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
+    });
+    const privateKey = testEnv.biconomy.privateKey;
 
-  // it('sends transaction via biconomy account', async () => {
-  //   const sdk = createSdk();
-  //   const chain = baseSepolia;
-  //   const rpc = await sdk.rpc.getOrCreate({ chainId: chain.id });
-  //   const paymaster = await sdk.paymaster.getOrCreate({
-  //     chainId: chain.id,
-  //     entryPoint: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
-  //   });
-  //   const privateKey = testEnv.biconomy.privateKey;
+    const signer = privateKeyToAccount(privateKey);
+    const publicClient = createPublicClient({
+      transport: http(rpc.url),
+      chain,
+    });
 
-  //   const signer = privateKeyToAccount(privateKey);
-  //   const publicClient = createPublicClient({
-  //     transport: http(rpc.url),
-  //     chain,
-  //   });
+    const entryPoint = ENTRYPOINT_ADDRESS_V06;
+    const biconomyAccount = await signerToBiconomySmartAccount(publicClient, {
+      entryPoint: ENTRYPOINT_ADDRESS_V06,
+      signer: signer,
+    });
 
-  //   const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
-  //     signer,
-  //   });
+    const smartAccountClient = createSmartAccountClient({
+      account: biconomyAccount,
+      entryPoint,
+      chain,
+      bundlerTransport: http(rpc.url),
+      middleware: {
+        sponsorUserOperation: async (args) => {
+          const paymasterInfo = await sponsorUserOperation(
+            paymaster.url,
+            deepHexlify(args.userOperation),
+            entryPoint
+          );
 
-  //   const account = await createbiconomyAccount(publicClient, {
-  //     plugins: {
-  //       sudo: ecdsaValidator,
-  //     },
-  //   });
+          return {
+            ...args.userOperation,
+            paymasterAndData: paymasterInfo.paymasterAndData,
+            callGasLimit: BigInt(paymasterInfo.callGasLimit),
+            verificationGasLimit: BigInt(paymasterInfo.verificationGasLimit),
+            preVerificationGas: BigInt(paymasterInfo.preVerificationGas),
+          };
+        },
+      },
+    });
 
-  //   const biconomyClient = createbiconomyAccountClient({
-  //     account,
-  //     chain,
-  //     transport: http(rpc.url),
-  //     sponsorUserOperation: async (args) => {
-  //       const paymasterInfo = await sponsorUserOperation(
-  //         paymaster.url,
-  //         deepHexlify(args.userOperation),
-  //         account.entryPoint
-  //       );
+    const value = parseUnits('0.00001', 18);
+    const hash = await smartAccountClient.sendTransaction({
+      to: biconomyAccount.address,
+      value,
+    });
 
-  //       return {
-  //         ...args.userOperation,
-  //         paymasterAndData: paymasterInfo.paymasterAndData,
-  //         callGasLimit: BigInt(paymasterInfo.callGasLimit),
-  //         verificationGasLimit: BigInt(paymasterInfo.verificationGasLimit),
-  //         preVerificationGas: BigInt(paymasterInfo.preVerificationGas),
-  //       };
-  //     },
-  //   });
-
-  //   const value = parseUnits('0.00001', 18);
-  //   const hash = await biconomyClient.sendTransaction({
-  //     to: account.address,
-  //     value,
-  //   });
-
-  //   expect(hash).toBeDefined();
-  // });
+    expect(hash).toBeDefined();
+  });
 
   it('can deploy a contract', async () => {
     const sdk = createSdk();
@@ -523,9 +534,7 @@ describe('BiconomySmartWallet', () => {
       expect(true).toBe(false);
     } catch (e) {
       expect(e instanceof KriptonioError).toBe(true);
-      expect((e as KriptonioError).message).toBe(
-        `UserOperation reverted during simulation with reason: AA21 didn't pay prefund`
-      );
+      expect((e as KriptonioError).message).toBe(`AA21 didn't pay prefund`);
     }
   });
 

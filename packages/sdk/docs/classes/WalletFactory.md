@@ -26,7 +26,7 @@
 
 ### from
 
-▸ **from**\<`TConfig`\>(`config`): `Promise`\<`TConfig` extends [`EoaWalletWrapperConfig`](../README.md#eoawalletwrapperconfig) ? [`EoaWallet`](EoaWallet.md) : [`KernelSmartWallet`](KernelSmartWallet.md)\>
+▸ **from**\<`TConfig`\>(`config`): `Promise`\<`TConfig` extends [`EoaWalletWrapperConfig`](../README.md#eoawalletwrapperconfig) ? [`EoaWallet`](EoaWallet.md) : `TConfig` extends [`KernelWalletWrapperConfig`](../README.md#kernelwalletwrapperconfig) ? [`KernelSmartWallet`](KernelSmartWallet.md) : `BiconomySmartWallet`\>
 
 #### Type parameters
 
@@ -42,8 +42,8 @@
 
 #### Returns
 
-`Promise`\<`TConfig` extends [`EoaWalletWrapperConfig`](../README.md#eoawalletwrapperconfig) ? [`EoaWallet`](EoaWallet.md) : [`KernelSmartWallet`](KernelSmartWallet.md)\>
+`Promise`\<`TConfig` extends [`EoaWalletWrapperConfig`](../README.md#eoawalletwrapperconfig) ? [`EoaWallet`](EoaWallet.md) : `TConfig` extends [`KernelWalletWrapperConfig`](../README.md#kernelwalletwrapperconfig) ? [`KernelSmartWallet`](KernelSmartWallet.md) : `BiconomySmartWallet`\>
 
 #### Defined in
 
-[src/wallet/WalletFactory.ts:7](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/wallet/WalletFactory.ts#L7)
+[src/wallet/WalletFactory.ts:12](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/WalletFactory.ts#L12)

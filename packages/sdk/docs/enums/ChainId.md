@@ -26,7 +26,7 @@
 
 #### Defined in
 
-[src/Chain.ts:48](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L48)
+[src/Chain.ts:48](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Chain.ts#L48)
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:49](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L49)
+[src/Chain.ts:49](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Chain.ts#L49)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:44](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L44)
+[src/Chain.ts:44](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Chain.ts#L44)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:45](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L45)
+[src/Chain.ts:45](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Chain.ts#L45)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:50](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L50)
+[src/Chain.ts:50](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Chain.ts#L50)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:40](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L40)
+[src/Chain.ts:40](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Chain.ts#L40)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:41](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L41)
+[src/Chain.ts:41](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Chain.ts#L41)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:46](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L46)
+[src/Chain.ts:46](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Chain.ts#L46)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:47](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L47)
+[src/Chain.ts:47](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Chain.ts#L47)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:42](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L42)
+[src/Chain.ts:42](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Chain.ts#L42)
 
 ___
 
@@ -126,4 +126,4 @@ ___
 
 #### Defined in
 
-[src/Chain.ts:43](https://github.com/kriptonio/sdk/blob/b75f033/packages/sdk/src/Chain.ts#L43)
+[src/Chain.ts:43](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Chain.ts#L43)

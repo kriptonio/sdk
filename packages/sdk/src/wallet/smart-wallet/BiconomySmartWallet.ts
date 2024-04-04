@@ -14,6 +14,7 @@ import {
 } from 'permissionless/types/entrypoint';
 import { ENTRYPOINT_ADDRESS_V06 } from 'permissionless/utils';
 import {
+  BaseError,
   Chain,
   Hex,
   HttpTransport,
@@ -21,9 +22,11 @@ import {
   Transport,
   SignableMessage as ViemSignableMessage,
   createPublicClient,
+  getContract,
   http,
 } from 'viem';
 import { getChain } from '../../Chain';
+import { KriptonioError } from '../../Error';
 import { sponsorUserOperation } from '../../api/PaymasterApi';
 import { assertHex } from '../../utils/error';
 import { exportSource, sourceToAccount } from '../Helpers';
@@ -32,7 +35,7 @@ import { BiconomyWalletConfig, ExportedBiconomyWallet } from '../WalletConfig';
 import { PartialUserOperation, SmartWallet } from './SmartWallet';
 
 export class BiconomySmartWallet extends SmartWallet {
-  #smartAccount: SmartAccountClient<
+  #biconomyAccount: SmartAccountClient<
     ENTRYPOINT_ADDRESS_V06_TYPE,
     Transport,
     Chain,
@@ -53,27 +56,43 @@ export class BiconomySmartWallet extends SmartWallet {
   ) {
     super(chain, publicClient);
     this.#config = config;
-    this.#smartAccount = smartAccount;
+    this.#biconomyAccount = smartAccount;
   }
 
   public get entryPoint(): EntryPoint {
-    return this.#smartAccount.account.entryPoint;
+    return this.#biconomyAccount.account.entryPoint;
   }
 
-  public getVersion(): Promise<string | null> {
-    return Promise.resolve('v0.2.4');
-  }
+  public getVersion = async (): Promise<string | null> => {
+    try {
+      const contract = getContract({
+        abi: BiconomyAbi,
+        address: await this.getAddress(),
+        client: this.publicClient,
+      });
+
+      return await contract.read.VERSION();
+    } catch (e) {
+      if (e instanceof BaseError) {
+        return null;
+      }
+
+      throw new KriptonioError({
+        message: 'error while getting smart wallet version',
+      });
+    }
+  };
 
   public get vendor(): string {
     return 'Biconomy';
   }
 
   public getAddress(): Promise<Hex> {
-    return Promise.resolve(this.#smartAccount.account.address);
+    return Promise.resolve(this.#biconomyAccount.account.address);
   }
 
   public getNonce(): Promise<bigint> {
-    return this.#smartAccount.account.getNonce();
+    return this.#biconomyAccount.account.getNonce();
   }
 
   public export(): ExportedBiconomyWallet {
@@ -86,13 +105,13 @@ export class BiconomySmartWallet extends SmartWallet {
   }
 
   public signMessage(message: SignableMessage): Promise<Hex> {
-    return this.#smartAccount.signMessage({
+    return this.#biconomyAccount.signMessage({
       message: message as ViemSignableMessage,
     });
   }
 
   public signTypedData(typedData: TypedData): Promise<Hex> {
-    return this.#smartAccount.signTypedData({
+    return this.#biconomyAccount.signTypedData({
       message: typedData.message,
       types: typedData.types,
       domain: typedData.domain,
@@ -103,15 +122,15 @@ export class BiconomySmartWallet extends SmartWallet {
   public sendUserOperation = (
     userOperation: PartialUserOperation
   ): Promise<Hex> => {
-    return this.#smartAccount.sendUserOperation({ userOperation });
+    return this.#biconomyAccount.sendUserOperation({ userOperation });
   };
 
   protected buildUserOperation = async (input: {
     to: Hex;
     data: Hex;
     value: bigint;
-    maxFeePerGas?: bigint;
-    maxPriorityFeePerGas?: bigint;
+    maxFeePerGas: bigint | undefined;
+    maxPriorityFeePerGas: bigint | undefined;
   }): Promise<UserOperation<'v0.6'>> => {
     if (!input.maxFeePerGas) {
       const feeData = await this.getFeeData();
@@ -127,7 +146,7 @@ export class BiconomySmartWallet extends SmartWallet {
       value: input.value,
     });
 
-    return this.#smartAccount.prepareUserOperationRequest({
+    return this.#biconomyAccount.prepareUserOperationRequest({
       userOperation: {
         callData,
         maxFeePerGas: input.maxFeePerGas,
@@ -141,7 +160,7 @@ export class BiconomySmartWallet extends SmartWallet {
     value?: bigint | undefined;
     data?: string | undefined;
   }): Promise<Hex> {
-    return this.#smartAccount.account.encodeCallData({
+    return this.#biconomyAccount.account.encodeCallData({
       to: assertHex(input.to, 'to'),
       value: input.value ?? 0n,
       data: (input.data as Hex | undefined) ?? '0x',
@@ -202,3 +221,19 @@ export class BiconomySmartWallet extends SmartWallet {
     );
   }
 }
+
+const BiconomyAbi = [
+  {
+    inputs: [],
+    name: 'VERSION',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'pure',
+    type: 'function',
+  },
+] as const;

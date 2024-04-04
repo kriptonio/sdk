@@ -68,11 +68,18 @@ export type SdkKernelWalletType = {
   type?: 'kernel';
 };
 
+export type SdkBiconomyWalletType = {
+  type: 'biconomy';
+};
+
 export type SdkEoaWalletType = {
   type: 'eoa';
 };
 
-export type SdkWalletType = SdkKernelWalletType | SdkEoaWalletType;
+export type SdkWalletType =
+  | SdkKernelWalletType
+  | SdkEoaWalletType
+  | SdkBiconomyWalletType;
 
 export type SdkSmartWalletConfig = {
   chainId: ChainId;

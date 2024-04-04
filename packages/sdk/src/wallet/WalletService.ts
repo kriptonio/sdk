@@ -8,6 +8,7 @@ import {
   ExportedEoaWallet,
   ExportedKernelWallet,
   ExportedWallet,
+  SdkBiconomyWalletType,
   SdkEoaWalletConfig,
   SdkEoaWalletType,
   SdkSmartWalletConfig,
@@ -30,7 +31,11 @@ export class WalletService {
   public generate<TSdkWalletConfig extends SdkWalletConfig & SdkWalletType>(
     config: TSdkWalletConfig
   ): Promise<
-    TSdkWalletConfig extends SdkEoaWalletType ? EoaWallet : KernelSmartWallet
+    TSdkWalletConfig extends SdkEoaWalletType
+      ? EoaWallet
+      : TSdkWalletConfig extends SdkBiconomyWalletType
+        ? BiconomySmartWallet
+        : KernelSmartWallet
   >;
 
   public generate<TSdkWalletConfig extends SdkWalletConfig & SdkWalletType>(

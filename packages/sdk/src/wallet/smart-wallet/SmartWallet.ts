@@ -33,8 +33,8 @@ import { OperationStatus } from '../../enum/OperationStatus';
 import { assertHex, parseError } from '../../utils/error';
 import { sleep } from '../../utils/time';
 import {
+  DeployContract,
   DeployResponse,
-  DeployWallet,
   GasData,
   OperationOptions,
   Wallet,
@@ -195,11 +195,15 @@ export abstract class SmartWallet extends Wallet {
         ? await this.buildDeployUserOperation({
             data: tx.data ?? '0x',
             value: tx.value ?? BigInt(0),
+            maxFeePerGas: tx.maxFeePerGas,
+            maxPriorityFeePerGas: tx.maxPriorityFeePerGas,
           })
         : await this.buildCallUserOperation({
             to: tx.to ?? '0x',
             data: tx.data ?? '0x',
             value: tx.value ?? BigInt(0),
+            maxFeePerGas: tx.maxFeePerGas,
+            maxPriorityFeePerGas: tx.maxPriorityFeePerGas,
           });
 
       const estimation = await this.estimateUserOperationGas(userOperation);
@@ -216,12 +220,16 @@ export abstract class SmartWallet extends Wallet {
   protected buildDeployUserOperation = (input: {
     data: Hex;
     value: bigint;
+    maxFeePerGas: bigint | undefined;
+    maxPriorityFeePerGas: bigint | undefined;
   }) => {
     return this.buildUserOperation(
       {
         to: createCallAddress,
         data: this.buildDeployData(input.value, input.data),
         value: input.value,
+        maxFeePerGas: input.maxFeePerGas,
+        maxPriorityFeePerGas: input.maxPriorityFeePerGas,
       },
       'delegatecall'
     );
@@ -232,6 +240,8 @@ export abstract class SmartWallet extends Wallet {
       to: Hex;
       data: Hex;
       value: bigint;
+      maxFeePerGas: bigint | undefined;
+      maxPriorityFeePerGas: bigint | undefined;
     },
     callType: CallType
   ): Promise<UserOperation<'v0.6'>>;
@@ -240,15 +250,10 @@ export abstract class SmartWallet extends Wallet {
     to: Hex;
     data: Hex;
     value: bigint;
+    maxFeePerGas: bigint | undefined;
+    maxPriorityFeePerGas: bigint | undefined;
   }) => {
-    return this.buildUserOperation(
-      {
-        to: input.to,
-        data: input.data,
-        value: input.value,
-      },
-      'call'
-    );
+    return this.buildUserOperation(input, 'call');
   };
 
   private buildDeployData = (value: bigint, data: Hex) => {
@@ -260,7 +265,7 @@ export abstract class SmartWallet extends Wallet {
   };
 
   public deployContract = async (
-    deploy: DeployWallet,
+    deploy: DeployContract,
     options?: OperationOptions
   ): Promise<DeployResponse> => {
     try {
@@ -268,6 +273,8 @@ export abstract class SmartWallet extends Wallet {
       const userOperation = await this.buildDeployUserOperation({
         data: assertHex(deploy.bytecode, 'bytecode'),
         value: deploy.value ?? BigInt(0),
+        maxFeePerGas: deploy.maxFeePerGas,
+        maxPriorityFeePerGas: deploy.maxPriorityFeePerGas,
       });
 
       options?.onStatusChange?.(OperationStatus.SendingUserOperation);
@@ -324,6 +331,8 @@ export abstract class SmartWallet extends Wallet {
           to: tx.to,
           value: tx.value ?? 0n,
           data: tx.data ?? '0x',
+          maxFeePerGas: tx.maxFeePerGas,
+          maxPriorityFeePerGas: tx.maxPriorityFeePerGas,
         },
         'call'
       );
