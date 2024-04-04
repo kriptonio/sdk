@@ -1,13 +1,13 @@
 import { verifyMessage } from '@ambire/signature-validator';
-import { signerToEcdsaValidator } from '@zerodev/ecdsa-validator';
-import { createKernelAccount, createKernelAccountClient } from '@zerodev/sdk';
 import axios from 'axios';
 import { ethers } from 'ethers';
 import {
   ENTRYPOINT_ADDRESS_V06,
+  createSmartAccountClient,
   deepHexlify,
   isSmartAccountDeployed,
 } from 'permissionless';
+import { signerToBiconomySmartAccount } from 'permissionless/accounts';
 import {
   GetTransactionReceiptReturnType,
   Hex,
@@ -24,13 +24,13 @@ import {
   KriptonioError,
   WalletFactory,
   getChain,
+  sponsorUserOperation,
 } from '../../src';
-import { sponsorUserOperation } from '../../src/api/PaymasterApi';
 import { BlockchainResponse } from '../../src/types/api/blockchainResponse';
 import { createSdk, createSdkConfig } from '../test.utils';
 import { testEnv } from '../testEnv';
 
-describe('KernelSmartWallet', () => {
+describe('BiconomySmartWallet', () => {
   it('has the same address across all supported chains', async () => {
     const sdkConfig = createSdkConfig();
     const response = await axios.get<BlockchainResponse[]>('v1/blockchains', {
@@ -47,16 +47,16 @@ describe('KernelSmartWallet', () => {
 
     const referenceChain = getChain(supportedChains[0].chainId);
     const referenceWallet = await WalletFactory.from({
-      kernel: {
-        privateKey: testEnv.kernel.privateKey,
+      biconomy: {
+        privateKey: testEnv.biconomy.privateKey,
         rpcUrl: referenceChain.rpcUrls.default.http[0],
       },
     });
 
     for (const chain of supportedChains.map((c) => getChain(c.chainId))) {
       const wallet = await WalletFactory.from({
-        kernel: {
-          privateKey: testEnv.kernel.privateKey,
+        biconomy: {
+          privateKey: testEnv.biconomy.privateKey,
           rpcUrl: chain.rpcUrls.default.http[0],
         },
       });
@@ -69,36 +69,35 @@ describe('KernelSmartWallet', () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.from(
       {
-        kernel: {
-          privateKey: testEnv.kernel.privateKey,
+        biconomy: {
+          privateKey: testEnv.biconomy.privateKey,
         },
       },
-      { chainId: testEnv.kernel.chainId }
+      { chainId: testEnv.biconomy.chainId }
     );
 
     const exported = wallet.export();
-
-    expect(Object.keys(exported.kernel).length).toBe(1);
-    expect('privateKey' in exported.kernel && exported.kernel.privateKey).toBe(
-      testEnv.kernel.privateKey
-    );
+    expect(Object.keys(exported.biconomy).length).toBe(1);
+    expect(
+      'privateKey' in exported.biconomy && exported.biconomy.privateKey
+    ).toBe(testEnv.biconomy.privateKey);
   });
 
   it('can export when created with mnemonic', async () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.from(
       {
-        kernel: {
-          mnemonic: testEnv.kernel.mnemonic,
+        biconomy: {
+          mnemonic: testEnv.biconomy.mnemonic,
         },
       },
-      { chainId: testEnv.kernel.chainId }
+      { chainId: testEnv.biconomy.chainId }
     );
 
     const exported = wallet.export();
-    expect(Object.keys(exported.kernel).length).toBe(1);
-    expect('mnemonic' in exported.kernel && exported.kernel.mnemonic).toBe(
-      testEnv.kernel.mnemonic
+    expect(Object.keys(exported.biconomy).length).toBe(1);
+    expect('mnemonic' in exported.biconomy && exported.biconomy.mnemonic).toBe(
+      testEnv.biconomy.mnemonic
     );
   });
 
@@ -106,11 +105,11 @@ describe('KernelSmartWallet', () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.from(
       {
-        kernel: {
-          mnemonic: testEnv.kernel.mnemonic,
+        biconomy: {
+          mnemonic: testEnv.biconomy.mnemonic,
         },
       },
-      { chainId: testEnv.kernel.chainId }
+      { chainId: testEnv.biconomy.chainId }
     );
 
     const nonce = await wallet.getNonce();
@@ -121,11 +120,11 @@ describe('KernelSmartWallet', () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.from(
       {
-        kernel: {
-          mnemonic: testEnv.kernel.mnemonic,
+        biconomy: {
+          mnemonic: testEnv.biconomy.mnemonic,
         },
       },
-      { chainId: testEnv.kernel.chainId }
+      { chainId: testEnv.biconomy.chainId }
     );
 
     const client = createPublicClient({
@@ -142,11 +141,11 @@ describe('KernelSmartWallet', () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.from(
       {
-        kernel: {
-          mnemonic: testEnv.kernel.mnemonic,
+        biconomy: {
+          mnemonic: testEnv.biconomy.mnemonic,
         },
       },
-      { chainId: testEnv.kernel.chainId }
+      { chainId: testEnv.biconomy.chainId }
     );
 
     await wallet.deploy();
@@ -154,11 +153,14 @@ describe('KernelSmartWallet', () => {
     const message = 'hello world';
     const signature = await wallet.signMessage(message);
 
-    const isValidSig = await verifyMessage({
-      signer: wallet.address,
+    const publicClient = createPublicClient({
+      transport: http(wallet.rpcUrl),
+    });
+
+    const isValidSig = await publicClient.verifyMessage({
+      address: wallet.address,
       message,
       signature,
-      provider: new ethers.JsonRpcProvider(wallet.rpcUrl) as never,
     });
 
     expect(isValidSig).toBe(true);
@@ -168,15 +170,14 @@ describe('KernelSmartWallet', () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.from(
       {
-        kernel: {
-          mnemonic: testEnv.kernel.mnemonic,
+        biconomy: {
+          privateKey: generatePrivateKey(),
         },
       },
-      { chainId: testEnv.kernel.chainId }
+      { chainId: testEnv.biconomy.chainId }
     );
 
     await wallet.deploy();
-
     const message: Hex = '0x68656c6c6f20776f726c64';
     const signature = await wallet.signMessage({ raw: message });
 
@@ -197,11 +198,11 @@ describe('KernelSmartWallet', () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.from(
       {
-        kernel: {
-          mnemonic: testEnv.kernel.mnemonic,
+        biconomy: {
+          mnemonic: testEnv.biconomy.mnemonic,
         },
       },
-      { chainId: testEnv.kernel.chainId }
+      { chainId: testEnv.biconomy.chainId }
     );
 
     await wallet.deploy();
@@ -258,28 +259,28 @@ describe('KernelSmartWallet', () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.from(
       {
-        kernel: {
-          mnemonic: testEnv.kernel.mnemonic,
+        biconomy: {
+          mnemonic: testEnv.biconomy.mnemonic,
         },
       },
-      { chainId: testEnv.kernel.chainId }
+      { chainId: testEnv.biconomy.chainId }
     );
 
     await wallet.deploy();
 
     const version = await wallet.getVersion();
-    expect(version).toBe('0.2.4');
+    expect(version).toBe('2.0.0');
   });
 
   it('returns null version when wallet not deployed', async () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.from(
       {
-        kernel: {
+        biconomy: {
           privateKey: generatePrivateKey(),
         },
       },
-      { chainId: testEnv.kernel.chainId }
+      { chainId: testEnv.biconomy.chainId }
     );
 
     const version = await wallet.getVersion();
@@ -291,30 +292,23 @@ describe('KernelSmartWallet', () => {
     const chain = baseSepolia;
     const rpc = await sdk.rpc.getOrCreate({ chainId: chain.id });
     const paymasterUrl = `${Configuration.paymasterApiUrl}/v1/endpoints/invalid/sponsor`;
-    const privateKey = testEnv.kernel.privateKey;
+    const privateKey = testEnv.biconomy.privateKey;
 
+    const signer = privateKeyToAccount(privateKey);
     const publicClient = createPublicClient({
       transport: http(rpc.url),
       chain,
     });
 
     const entryPoint = ENTRYPOINT_ADDRESS_V06;
-    const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
-      signer: privateKeyToAccount(privateKey),
-      entryPoint,
+    const biconomyAccount = await signerToBiconomySmartAccount(publicClient, {
+      entryPoint: ENTRYPOINT_ADDRESS_V06,
+      signer: signer,
     });
 
-    const account = await createKernelAccount(publicClient, {
+    const smartAccountClient = createSmartAccountClient({
+      account: biconomyAccount,
       entryPoint,
-      plugins: {
-        entryPoint,
-        sudo: ecdsaValidator,
-      },
-    });
-
-    const kernelClient = createKernelAccountClient({
-      entryPoint,
-      account,
       chain,
       bundlerTransport: http(rpc.url),
       middleware: {
@@ -322,7 +316,7 @@ describe('KernelSmartWallet', () => {
           const paymasterInfo = await sponsorUserOperation(
             paymasterUrl,
             deepHexlify(args.userOperation),
-            account.entryPoint
+            entryPoint
           );
 
           return {
@@ -338,8 +332,8 @@ describe('KernelSmartWallet', () => {
 
     const value = parseUnits('0.00001', 18);
     await expect(async () => {
-      await kernelClient.sendTransaction({
-        to: account.address,
+      await smartAccountClient.sendTransaction({
+        to: biconomyAccount.address,
         value,
       });
     }).rejects.toThrow(
@@ -349,7 +343,7 @@ describe('KernelSmartWallet', () => {
     );
   });
 
-  it('sends transaction via kernel account', async () => {
+  it('sends transaction via biconomy account', async () => {
     const sdk = createSdk();
     const chain = baseSepolia;
     const rpc = await sdk.rpc.getOrCreate({ chainId: chain.id });
@@ -357,30 +351,23 @@ describe('KernelSmartWallet', () => {
       chainId: chain.id,
       entryPoint: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
     });
-    const privateKey = testEnv.kernel.privateKey;
+    const privateKey = testEnv.biconomy.privateKey;
 
+    const signer = privateKeyToAccount(privateKey);
     const publicClient = createPublicClient({
       transport: http(rpc.url),
       chain,
     });
 
     const entryPoint = ENTRYPOINT_ADDRESS_V06;
-    const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
-      signer: privateKeyToAccount(privateKey),
-      entryPoint,
+    const biconomyAccount = await signerToBiconomySmartAccount(publicClient, {
+      entryPoint: ENTRYPOINT_ADDRESS_V06,
+      signer: signer,
     });
 
-    const account = await createKernelAccount(publicClient, {
+    const smartAccountClient = createSmartAccountClient({
+      account: biconomyAccount,
       entryPoint,
-      plugins: {
-        entryPoint,
-        sudo: ecdsaValidator,
-      },
-    });
-
-    const kernelClient = createKernelAccountClient({
-      entryPoint,
-      account,
       chain,
       bundlerTransport: http(rpc.url),
       middleware: {
@@ -388,7 +375,7 @@ describe('KernelSmartWallet', () => {
           const paymasterInfo = await sponsorUserOperation(
             paymaster.url,
             deepHexlify(args.userOperation),
-            account.entryPoint
+            entryPoint
           );
 
           return {
@@ -403,8 +390,8 @@ describe('KernelSmartWallet', () => {
     });
 
     const value = parseUnits('0.00001', 18);
-    const hash = await kernelClient.sendTransaction({
-      to: account.address,
+    const hash = await smartAccountClient.sendTransaction({
+      to: biconomyAccount.address,
       value,
     });
 
@@ -415,11 +402,11 @@ describe('KernelSmartWallet', () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.from(
       {
-        kernel: {
-          mnemonic: testEnv.kernel.mnemonic,
+        biconomy: {
+          mnemonic: testEnv.biconomy.mnemonic,
         },
       },
-      { chainId: testEnv.kernel.chainId }
+      { chainId: testEnv.biconomy.chainId }
     );
 
     const abi = [
@@ -478,11 +465,11 @@ describe('KernelSmartWallet', () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.from(
       {
-        kernel: {
-          privateKey: testEnv.kernel.privateKey,
+        biconomy: {
+          privateKey: testEnv.biconomy.privateKey,
         },
       },
-      { chainId: testEnv.kernel.chainId }
+      { chainId: testEnv.biconomy.chainId }
     );
 
     const receiver = '0x13a11CeC9970d58E1170e98d28D2812a23890341';
@@ -526,11 +513,11 @@ describe('KernelSmartWallet', () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.from(
       {
-        kernel: {
+        biconomy: {
           privateKey: generatePrivateKey(),
         },
       },
-      { chainId: testEnv.kernel.chainId, paymaster: { disabled: true } }
+      { chainId: testEnv.biconomy.chainId, paymaster: { disabled: true } }
     );
 
     const receiver = '0x13a11CeC9970d58E1170e98d28D2812a23890341';
@@ -551,11 +538,11 @@ describe('KernelSmartWallet', () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.from(
       {
-        kernel: {
-          privateKey: testEnv.kernel.privateKey,
+        biconomy: {
+          privateKey: testEnv.biconomy.privateKey,
         },
       },
-      { chainId: testEnv.kernel.chainId }
+      { chainId: testEnv.biconomy.chainId }
     );
     console.log('wallet address', wallet.address);
 
@@ -602,11 +589,11 @@ describe('KernelSmartWallet', () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.from(
       {
-        kernel: {
-          privateKey: testEnv.kernel.privateKey,
+        biconomy: {
+          privateKey: testEnv.biconomy.privateKey,
         },
       },
-      { chainId: testEnv.kernel.chainId }
+      { chainId: testEnv.biconomy.chainId }
     );
 
     await wallet.deploy();

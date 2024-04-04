@@ -19,8 +19,8 @@ import { OperationStatus } from '../enum/OperationStatus';
 import { assertHex, parseError } from '../utils/error';
 import { exportSource, isValidSource, sourceToAccount } from './Helpers';
 import {
+  DeployContract,
   DeployResponse,
-  DeployWallet,
   GasData,
   OperationOptions,
   SignableMessage,
@@ -55,7 +55,7 @@ export class EoaWallet extends Wallet {
 
   public override async getNonce(): Promise<bigint> {
     const nonce = await getTransactionCount(this.#client, {
-      address: this.address,
+      address: await this.address,
     });
 
     return BigInt(nonce);
@@ -90,7 +90,7 @@ export class EoaWallet extends Wallet {
   }
 
   public override async deployContract(
-    deploy: DeployWallet,
+    deploy: DeployContract,
     options?: OperationOptions
   ): Promise<DeployResponse> {
     try {

@@ -28,10 +28,10 @@ export type TypedData = {
   primaryType: string;
 };
 
-export type DeployWallet = {
+export type DeployContract = {
   bytecode: string;
   value?: bigint;
-};
+} & GasData;
 
 export type GasData = {
   maxFeePerGas?: bigint;
@@ -73,7 +73,7 @@ export abstract class Wallet {
   ): Promise<Hex>;
 
   public abstract deployContract(
-    deploy: DeployWallet,
+    deploy: DeployContract,
     options?: OperationOptions
   ): Promise<DeployResponse>;
 }

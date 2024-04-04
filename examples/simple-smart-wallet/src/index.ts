@@ -8,6 +8,7 @@ const sdk = new KriptonioSdk({ accessToken });
 // Generate a wallet
 const wallet = await sdk.wallet.generate({
   chainId: ChainId.BaseSepolia,
+  type: 'kernel',
 });
 
 // Log the wallet address

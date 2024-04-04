@@ -96,7 +96,7 @@ export class PaymasterApi {
 
 export async function sponsorUserOperation(
   paymasterUrl: string,
-  userOperation: UserOperation,
+  userOperation: UserOperation<'v0.6'>,
   entryPoint: Hex
 ): Promise<SponsoredUserOperation> {
   try {

@@ -4,16 +4,19 @@ import { RpcService } from '../service/RpcService';
 import { EoaWallet } from './EoaWallet';
 import { exportSource } from './Helpers';
 import {
+  ExportedBiconomyWallet,
   ExportedEoaWallet,
   ExportedKernelWallet,
   ExportedWallet,
+  SdkBiconomyWalletType,
   SdkEoaWalletConfig,
   SdkEoaWalletType,
-  SdkKernelWalletConfig,
+  SdkSmartWalletConfig,
   SdkWalletConfig,
   SdkWalletType,
 } from './WalletConfig';
 import { WalletFactory } from './WalletFactory';
+import { BiconomySmartWallet } from './smart-wallet/BiconomySmartWallet';
 import { KernelSmartWallet } from './smart-wallet/KernelSmartWallet';
 
 export class WalletService {
@@ -28,12 +31,16 @@ export class WalletService {
   public generate<TSdkWalletConfig extends SdkWalletConfig & SdkWalletType>(
     config: TSdkWalletConfig
   ): Promise<
-    TSdkWalletConfig extends SdkEoaWalletType ? EoaWallet : KernelSmartWallet
+    TSdkWalletConfig extends SdkEoaWalletType
+      ? EoaWallet
+      : TSdkWalletConfig extends SdkBiconomyWalletType
+        ? BiconomySmartWallet
+        : KernelSmartWallet
   >;
 
   public generate<TSdkWalletConfig extends SdkWalletConfig & SdkWalletType>(
     config: TSdkWalletConfig
-  ): Promise<EoaWallet | KernelSmartWallet> {
+  ): Promise<EoaWallet | KernelSmartWallet | BiconomySmartWallet> {
     if (config.type === 'eoa') {
       return this.createEoaWallet(
         {
@@ -61,39 +68,47 @@ export class WalletService {
     config: TWalletConfig,
     options: TWalletConfig extends ExportedEoaWallet
       ? SdkEoaWalletConfig
-      : SdkKernelWalletConfig
+      : SdkSmartWalletConfig
   ): Promise<
-    TWalletConfig extends ExportedEoaWallet ? EoaWallet : KernelSmartWallet
+    TWalletConfig extends ExportedEoaWallet
+      ? EoaWallet
+      : TWalletConfig extends ExportedKernelWallet
+        ? KernelSmartWallet
+        : BiconomySmartWallet
   >;
 
   public from<TConfig extends ExportedWallet>(
     exportedWallet: TConfig,
     config: SdkWalletConfig
-  ): Promise<EoaWallet | KernelSmartWallet> {
+  ): Promise<EoaWallet | KernelSmartWallet | BiconomySmartWallet> {
     if ('eoa' in exportedWallet) {
       return this.createEoaWallet(exportedWallet, config as SdkEoaWalletConfig);
     }
 
     return this.createSmartWallet(
       exportedWallet,
-      config as SdkKernelWalletConfig
+      config as SdkSmartWalletConfig
     );
   }
 
   private createSmartWallet = async (
-    exportedWallet: ExportedKernelWallet,
-    config: SdkKernelWalletConfig
+    exportedWallet: ExportedKernelWallet | ExportedBiconomyWallet,
+    config: SdkSmartWalletConfig
   ) => {
     const initialRpc = await this.#rpcService.getOrCreate({
       chainId: config.chainId,
     });
 
-    const transientWallet = await KernelSmartWallet.create({
-      kernel: {
-        ...exportedWallet.kernel,
-        rpcUrl: initialRpc.url,
-      },
-    });
+    const transientWallet =
+      'biconomy' in exportedWallet
+        ? await BiconomySmartWallet.create({
+            ...exportedWallet.biconomy,
+            rpcUrl: initialRpc.url,
+          })
+        : await KernelSmartWallet.create({
+            ...exportedWallet.kernel,
+            rpcUrl: initialRpc.url,
+          });
 
     const walletRpc = await this.#rpcService.getOrCreate({
       chainId: config.chainId,
@@ -109,6 +124,16 @@ export class WalletService {
           })
         ).url
       : undefined;
+
+    if ('biconomy' in exportedWallet) {
+      return WalletFactory.from({
+        biconomy: {
+          rpcUrl: walletRpc.url,
+          paymasterUrl,
+          ...exportSource(exportedWallet.biconomy),
+        },
+      });
+    }
 
     return WalletFactory.from({
       kernel: {
@@ -126,6 +151,7 @@ export class WalletService {
     const initialRpc = await this.#rpcService.getOrCreate({
       chainId: config.chainId,
     });
+
     const address = await EoaWallet.computeAddress(
       exportedWallet,
       initialRpc.url

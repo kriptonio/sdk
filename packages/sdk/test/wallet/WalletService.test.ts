@@ -8,6 +8,7 @@ describe('WalletService', () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.generate({
       chainId: ChainId.BaseSepolia,
+      type: 'kernel',
     });
 
     expect(wallet.address).toBeDefined();
