@@ -98,8 +98,8 @@ export abstract class SmartWallet<
     this.publicClient = publicClient;
   }
 
-  public isDeployed = async (): Promise<boolean> => {
-    return isSmartAccountDeployed(this.publicClient, await this.getAddress());
+  public isDeployed = (): Promise<boolean> => {
+    return isSmartAccountDeployed(this.publicClient, this.address);
   };
 
   public getFeeData = async (): Promise<GasData> => {
@@ -192,7 +192,7 @@ export abstract class SmartWallet<
 
       return this.sendTransaction(
         {
-          to: await this.getAddress(),
+          to: this.address,
         },
         options
       );

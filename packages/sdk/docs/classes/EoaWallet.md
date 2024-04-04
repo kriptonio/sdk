@@ -22,6 +22,7 @@
 
 ### Accessors
 
+- [address](EoaWallet.md#address)
 - [client](EoaWallet.md#client)
 - [publicClient](EoaWallet.md#publicclient)
 - [rpcUrl](EoaWallet.md#rpcurl)
@@ -31,7 +32,6 @@
 - [deployContract](EoaWallet.md#deploycontract)
 - [estimateGas](EoaWallet.md#estimategas)
 - [export](EoaWallet.md#export)
-- [getAddress](EoaWallet.md#getaddress)
 - [getFeeData](EoaWallet.md#getfeedata)
 - [getNonce](EoaWallet.md#getnonce)
 - [sendTransaction](EoaWallet.md#sendtransaction)
@@ -95,7 +95,7 @@
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:38](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L38)
+[src/wallet/EoaWallet.ts:38](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L38)
 
 ## Properties
 
@@ -140,7 +140,7 @@
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:35](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L35)
+[src/wallet/EoaWallet.ts:35](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L35)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:36](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L36)
+[src/wallet/EoaWallet.ts:36](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L36)
 
 ___
 
@@ -164,9 +164,27 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:48](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/Wallet.ts#L48)
+[src/wallet/Wallet.ts:48](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L48)
 
 ## Accessors
+
+### address
+
+• `get` **address**(): \`0x$\{string}\`
+
+#### Returns
+
+\`0x$\{string}\`
+
+#### Overrides
+
+Wallet.address
+
+#### Defined in
+
+[src/wallet/EoaWallet.ts:52](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L52)
+
+___
 
 ### client
 
@@ -211,7 +229,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:44](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L44)
+[src/wallet/EoaWallet.ts:44](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L44)
 
 ___
 
@@ -225,7 +243,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:74](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L74)
+[src/wallet/EoaWallet.ts:74](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L74)
 
 ___
 
@@ -243,7 +261,7 @@ Wallet.rpcUrl
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:48](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L48)
+[src/wallet/EoaWallet.ts:48](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L48)
 
 ## Methods
 
@@ -268,7 +286,7 @@ Wallet.rpcUrl
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:92](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L92)
+[src/wallet/EoaWallet.ts:92](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L92)
 
 ___
 
@@ -292,7 +310,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:86](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L86)
+[src/wallet/EoaWallet.ts:86](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L86)
 
 ___
 
@@ -310,25 +328,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:146](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L146)
-
-___
-
-### getAddress
-
-▸ **getAddress**(): `Promise`\<\`0x$\{string}\`\>
-
-#### Returns
-
-`Promise`\<\`0x$\{string}\`\>
-
-#### Overrides
-
-[Wallet](Wallet.md).[getAddress](Wallet.md#getaddress)
-
-#### Defined in
-
-[src/wallet/EoaWallet.ts:52](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L52)
+[src/wallet/EoaWallet.ts:146](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L146)
 
 ___
 
@@ -346,7 +346,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:78](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L78)
+[src/wallet/EoaWallet.ts:78](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L78)
 
 ___
 
@@ -364,7 +364,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:56](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L56)
+[src/wallet/EoaWallet.ts:56](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L56)
 
 ___
 
@@ -389,7 +389,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:131](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L131)
+[src/wallet/EoaWallet.ts:131](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L131)
 
 ___
 
@@ -413,7 +413,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:68](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L68)
+[src/wallet/EoaWallet.ts:68](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L68)
 
 ___
 
@@ -437,7 +437,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:64](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L64)
+[src/wallet/EoaWallet.ts:64](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L64)
 
 ___
 
@@ -461,7 +461,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:122](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L122)
+[src/wallet/EoaWallet.ts:122](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L122)
 
 ___
 
@@ -482,7 +482,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:186](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L186)
+[src/wallet/EoaWallet.ts:186](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L186)
 
 ___
 
@@ -502,7 +502,7 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:153](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L153)
+[src/wallet/EoaWallet.ts:153](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L153)
 
 ___
 
@@ -556,4 +556,4 @@ ___
 
 #### Defined in
 
-[src/wallet/EoaWallet.ts:178](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/EoaWallet.ts#L178)
+[src/wallet/EoaWallet.ts:178](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/EoaWallet.ts#L178)

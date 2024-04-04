@@ -61,9 +61,7 @@ describe('BiconomySmartWallet', () => {
         },
       });
 
-      expect(await wallet.getAddress()).toBe(
-        await referenceWallet.getAddress()
-      );
+      expect(wallet.address).toBe(referenceWallet.address);
     }
   });
 
@@ -136,9 +134,7 @@ describe('BiconomySmartWallet', () => {
 
     const hash = await wallet.deploy();
     console.log('deployed with transaction hash', hash);
-    expect(
-      await isSmartAccountDeployed(client, await wallet.getAddress())
-    ).toBe(true);
+    expect(await isSmartAccountDeployed(client, wallet.address)).toBe(true);
   });
 
   it('can sign message when signing string', async () => {
@@ -162,7 +158,7 @@ describe('BiconomySmartWallet', () => {
     });
 
     const isValidSig = await publicClient.verifyMessage({
-      address: await wallet.getAddress(),
+      address: wallet.address,
       message,
       signature,
     });
@@ -190,7 +186,7 @@ describe('BiconomySmartWallet', () => {
     });
 
     const isValidSig = await publicClient.verifyMessage({
-      address: await wallet.getAddress(),
+      address: wallet.address,
       message: { raw: message },
       signature,
     });
@@ -233,11 +229,11 @@ describe('BiconomySmartWallet', () => {
       message: {
         from: {
           name: 'Alice',
-          wallet: await wallet.getAddress(),
+          wallet: wallet.address,
         },
         to: {
           name: 'Bob',
-          wallet: await wallet.getAddress(),
+          wallet: wallet.address,
         },
         contents: 'Hello, Bob!',
       },
@@ -250,7 +246,7 @@ describe('BiconomySmartWallet', () => {
     });
 
     const isValidSig = await verifyMessage({
-      signer: await wallet.getAddress(),
+      signer: wallet.address,
       typedData,
       signature,
       provider: new ethers.JsonRpcProvider(wallet.rpcUrl) as never,
@@ -548,7 +544,7 @@ describe('BiconomySmartWallet', () => {
       },
       { chainId: testEnv.biconomy.chainId }
     );
-    console.log('wallet address', await wallet.getAddress());
+    console.log('wallet address', wallet.address);
 
     const receiver = '0x13a11CeC9970d58E1170e98d28D2812a23890341';
     const beforeBalance = await createPublicClient({
@@ -603,7 +599,7 @@ describe('BiconomySmartWallet', () => {
     await wallet.deploy();
 
     const estimation = await wallet.estimateGas({
-      to: await wallet.getAddress(),
+      to: wallet.address,
       value: 0n,
       data: '0x',
     });

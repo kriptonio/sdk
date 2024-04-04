@@ -112,7 +112,7 @@ export class WalletService {
 
     const walletRpc = await this.#rpcService.getOrCreate({
       chainId: config.chainId,
-      wallet: await transientWallet.getAddress(),
+      wallet: transientWallet.address,
     });
 
     const paymasterUrl = !config.paymaster?.disabled
@@ -120,7 +120,7 @@ export class WalletService {
           await this.#paymasterService.getOrCreate({
             chainId: config.chainId,
             entryPoint: transientWallet.entryPoint,
-            wallet: await transientWallet.getAddress(),
+            wallet: transientWallet.address,
           })
         ).url
       : undefined;
@@ -151,6 +151,7 @@ export class WalletService {
     const initialRpc = await this.#rpcService.getOrCreate({
       chainId: config.chainId,
     });
+
     const address = await EoaWallet.computeAddress(
       exportedWallet,
       initialRpc.url

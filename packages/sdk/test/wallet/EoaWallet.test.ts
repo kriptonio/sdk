@@ -68,7 +68,7 @@ describe('EoaWallet', () => {
     const message = 'hello world';
     const signature = await wallet.signMessage(message);
     const valid = await verifyMessage({
-      address: await wallet.getAddress(),
+      address: wallet.address,
       message,
       signature,
     });
@@ -111,11 +111,11 @@ describe('EoaWallet', () => {
       message: {
         from: {
           name: 'Alice',
-          wallet: await wallet.getAddress(),
+          wallet: wallet.address,
         },
         to: {
           name: 'Bob',
-          wallet: await wallet.getAddress(),
+          wallet: wallet.address,
         },
         contents: 'Hello, Bob!',
       },
@@ -128,7 +128,7 @@ describe('EoaWallet', () => {
     });
 
     const valid = await verifyTypedData({
-      address: await wallet.getAddress(),
+      address: wallet.address,
       signature,
       message: typedData.message,
       primaryType: 'Mail',
@@ -182,7 +182,7 @@ describe('EoaWallet', () => {
     });
 
     const estimation = await wallet.estimateGas({
-      to: await wallet.getAddress(),
+      to: wallet.address,
       value: 0n,
       data: '0x',
     });
@@ -223,7 +223,7 @@ describe('EoaWallet', () => {
       'sent transaction with hash',
       hash,
       'from',
-      await wallet.getAddress(),
+      wallet.address,
       'to',
       receiver
     );
@@ -257,7 +257,7 @@ describe('EoaWallet', () => {
     });
 
     const hash = await wallet.sendTransaction({
-      to: await wallet.getAddress(),
+      to: wallet.address,
       value: 0n,
       data: '0x',
     });

@@ -49,13 +49,13 @@ export class EoaWallet extends Wallet {
     return this.#config.eoa.rpcUrl;
   }
 
-  public override getAddress(): Promise<Hex> {
-    return Promise.resolve(this.#client.account.address);
+  public override get address(): Hex {
+    return this.#client.account.address;
   }
 
   public override async getNonce(): Promise<bigint> {
     const nonce = await getTransactionCount(this.#client, {
-      address: await this.getAddress(),
+      address: await this.address,
     });
 
     return BigInt(nonce);
@@ -106,7 +106,7 @@ export class EoaWallet extends Wallet {
 
       options?.onStatusChange?.(OperationStatus.GettingContractAddress);
       const address = getContractAddress({
-        from: await this.getAddress(),
+        from: this.address,
         nonce: BigInt(prepared.nonce),
       });
 
@@ -194,6 +194,6 @@ export class EoaWallet extends Wallet {
       },
     });
 
-    return await wallet.getAddress();
+    return wallet.address;
   }
 }

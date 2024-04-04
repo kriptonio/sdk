@@ -63,8 +63,8 @@ export class KernelSmartWallet<
     return this.#kernelClient;
   }
 
-  public override getAddress(): Promise<Hex> {
-    return Promise.resolve(this.#kernelClient.account.address);
+  public override get address(): Hex {
+    return this.#kernelClient.account.address;
   }
 
   public override get entryPoint(): TEntryPoint {
@@ -79,7 +79,7 @@ export class KernelSmartWallet<
     try {
       const contract = getContract({
         abi: KernelAccountAbi,
-        address: await this.getAddress(),
+        address: this.address,
         client: this.publicClient,
       });
 
@@ -269,6 +269,6 @@ export class KernelSmartWallet<
       rpcUrl,
     });
 
-    return await wallet.getAddress();
+    return wallet.address;
   }
 }

@@ -64,7 +64,7 @@ export class BiconomySmartWallet extends SmartWallet<ENTRYPOINT_ADDRESS_V06_TYPE
     try {
       const contract = getContract({
         abi: BiconomyAbi,
-        address: await this.getAddress(),
+        address: this.address,
         client: this.publicClient,
       });
 
@@ -84,8 +84,8 @@ export class BiconomySmartWallet extends SmartWallet<ENTRYPOINT_ADDRESS_V06_TYPE
     return 'Biconomy';
   }
 
-  public getAddress(): Promise<Hex> {
-    return Promise.resolve(this.#biconomyAccount.account.address);
+  public override get address(): Hex {
+    return this.#biconomyAccount.account.address;
   }
 
   public getNonce(): Promise<bigint> {

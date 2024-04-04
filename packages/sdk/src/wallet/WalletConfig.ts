@@ -65,7 +65,7 @@ export type ExportedBiconomyWallet = {
 };
 
 export type SdkKernelWalletType = {
-  type?: 'kernel';
+  type: 'kernel';
 };
 
 export type SdkBiconomyWalletType = {

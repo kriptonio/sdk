@@ -8,9 +8,10 @@ describe('WalletService', () => {
     const sdk = createSdk();
     const wallet = await sdk.wallet.generate({
       chainId: ChainId.BaseSepolia,
+      type: 'kernel',
     });
 
-    expect(await wallet.getAddress()).toBeDefined();
+    expect(wallet.address).toBeDefined();
     expect(wallet).toBeInstanceOf(KernelSmartWallet);
   });
 
@@ -21,7 +22,7 @@ describe('WalletService', () => {
       type: 'eoa',
     });
 
-    expect(await wallet.getAddress()).toBeDefined();
+    expect(wallet.address).toBeDefined();
     expect(wallet).toBeInstanceOf(EoaWallet);
   });
 
@@ -37,7 +38,7 @@ describe('WalletService', () => {
       { chainId: ChainId.BaseSepolia }
     );
 
-    expect(await wallet.getAddress()).toBeDefined();
+    expect(wallet.address).toBeDefined();
     expect(wallet).toBeInstanceOf(KernelSmartWallet);
   });
 
@@ -53,7 +54,7 @@ describe('WalletService', () => {
       { chainId: ChainId.BaseSepolia }
     );
 
-    expect(await wallet.getAddress()).toBeDefined();
+    expect(wallet.address).toBeDefined();
     expect(wallet).toBeInstanceOf(EoaWallet);
   });
 });

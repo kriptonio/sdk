@@ -39,7 +39,7 @@
 
 #### Defined in
 
-[src/wallet/WalletService.ts:26](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/WalletService.ts#L26)
+[src/wallet/WalletService.ts:26](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletService.ts#L26)
 
 ## Properties
 
@@ -49,7 +49,7 @@
 
 #### Defined in
 
-[src/wallet/WalletService.ts:24](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/WalletService.ts#L24)
+[src/wallet/WalletService.ts:24](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletService.ts#L24)
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletService.ts:23](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/WalletService.ts#L23)
+[src/wallet/WalletService.ts:23](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletService.ts#L23)
 
 ## Methods
 
@@ -80,13 +80,13 @@ ___
 
 #### Defined in
 
-[src/wallet/WalletService.ts:147](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/WalletService.ts#L147)
+[src/wallet/WalletService.ts:147](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletService.ts#L147)
 
 ___
 
 ### createSmartWallet
 
-▸ **createSmartWallet**(`exportedWallet`, `config`): `Promise`\<[`KernelSmartWallet`](KernelSmartWallet.md) \| `BiconomySmartWallet`\>
+▸ **createSmartWallet**(`exportedWallet`, `config`): `Promise`\<[`KernelSmartWallet`](KernelSmartWallet.md)\<``"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"``\> \| `BiconomySmartWallet`\>
 
 #### Parameters
 
@@ -97,17 +97,17 @@ ___
 
 #### Returns
 
-`Promise`\<[`KernelSmartWallet`](KernelSmartWallet.md) \| `BiconomySmartWallet`\>
+`Promise`\<[`KernelSmartWallet`](KernelSmartWallet.md)\<``"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"``\> \| `BiconomySmartWallet`\>
 
 #### Defined in
 
-[src/wallet/WalletService.ts:94](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/WalletService.ts#L94)
+[src/wallet/WalletService.ts:94](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletService.ts#L94)
 
 ___
 
 ### from
 
-▸ **from**\<`TWalletConfig`\>(`config`, `options`): `Promise`\<`TWalletConfig` extends [`ExportedEoaWallet`](../README.md#exportedeoawallet) ? [`EoaWallet`](EoaWallet.md) : `TWalletConfig` extends [`ExportedKernelWallet`](../README.md#exportedkernelwallet) ? [`KernelSmartWallet`](KernelSmartWallet.md) : `BiconomySmartWallet`\>
+▸ **from**\<`TWalletConfig`\>(`config`, `options`): `Promise`\<`TWalletConfig` extends [`ExportedEoaWallet`](../README.md#exportedeoawallet) ? [`EoaWallet`](EoaWallet.md) : `TWalletConfig` extends [`ExportedKernelWallet`](../README.md#exportedkernelwallet) ? [`KernelSmartWallet`](KernelSmartWallet.md)\<``"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"``\> : `BiconomySmartWallet`\>
 
 #### Type parameters
 
@@ -124,17 +124,17 @@ ___
 
 #### Returns
 
-`Promise`\<`TWalletConfig` extends [`ExportedEoaWallet`](../README.md#exportedeoawallet) ? [`EoaWallet`](EoaWallet.md) : `TWalletConfig` extends [`ExportedKernelWallet`](../README.md#exportedkernelwallet) ? [`KernelSmartWallet`](KernelSmartWallet.md) : `BiconomySmartWallet`\>
+`Promise`\<`TWalletConfig` extends [`ExportedEoaWallet`](../README.md#exportedeoawallet) ? [`EoaWallet`](EoaWallet.md) : `TWalletConfig` extends [`ExportedKernelWallet`](../README.md#exportedkernelwallet) ? [`KernelSmartWallet`](KernelSmartWallet.md)\<``"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"``\> : `BiconomySmartWallet`\>
 
 #### Defined in
 
-[src/wallet/WalletService.ts:67](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/WalletService.ts#L67)
+[src/wallet/WalletService.ts:67](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletService.ts#L67)
 
 ___
 
 ### generate
 
-▸ **generate**\<`TSdkWalletConfig`\>(`config`): `Promise`\<`TSdkWalletConfig` extends [`SdkEoaWalletType`](../README.md#sdkeoawallettype) ? [`EoaWallet`](EoaWallet.md) : `TSdkWalletConfig` extends [`SdkBiconomyWalletType`](../README.md#sdkbiconomywallettype) ? `BiconomySmartWallet` : [`KernelSmartWallet`](KernelSmartWallet.md)\>
+▸ **generate**\<`TSdkWalletConfig`\>(`config`): `Promise`\<`TSdkWalletConfig` extends [`SdkEoaWalletType`](../README.md#sdkeoawallettype) ? [`EoaWallet`](EoaWallet.md) : `TSdkWalletConfig` extends [`SdkBiconomyWalletType`](../README.md#sdkbiconomywallettype) ? `BiconomySmartWallet` : [`KernelSmartWallet`](KernelSmartWallet.md)\<``"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"``\>\>
 
 #### Type parameters
 
@@ -150,8 +150,8 @@ ___
 
 #### Returns
 
-`Promise`\<`TSdkWalletConfig` extends [`SdkEoaWalletType`](../README.md#sdkeoawallettype) ? [`EoaWallet`](EoaWallet.md) : `TSdkWalletConfig` extends [`SdkBiconomyWalletType`](../README.md#sdkbiconomywallettype) ? `BiconomySmartWallet` : [`KernelSmartWallet`](KernelSmartWallet.md)\>
+`Promise`\<`TSdkWalletConfig` extends [`SdkEoaWalletType`](../README.md#sdkeoawallettype) ? [`EoaWallet`](EoaWallet.md) : `TSdkWalletConfig` extends [`SdkBiconomyWalletType`](../README.md#sdkbiconomywallettype) ? `BiconomySmartWallet` : [`KernelSmartWallet`](KernelSmartWallet.md)\<``"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"``\>\>
 
 #### Defined in
 
-[src/wallet/WalletService.ts:31](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/WalletService.ts#L31)
+[src/wallet/WalletService.ts:31](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/WalletService.ts#L31)

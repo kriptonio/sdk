@@ -37,7 +37,7 @@
 
 #### Defined in
 
-[src/service/PaymasterService.ts:13](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/service/PaymasterService.ts#L13)
+[src/service/PaymasterService.ts:13](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/PaymasterService.ts#L13)
 
 ## Properties
 
@@ -47,7 +47,7 @@
 
 #### Defined in
 
-[src/service/PaymasterService.ts:10](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/service/PaymasterService.ts#L10)
+[src/service/PaymasterService.ts:10](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/PaymasterService.ts#L10)
 
 ___
 
@@ -57,7 +57,7 @@ ___
 
 #### Defined in
 
-[src/service/PaymasterService.ts:11](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/service/PaymasterService.ts#L11)
+[src/service/PaymasterService.ts:11](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/PaymasterService.ts#L11)
 
 ## Methods
 
@@ -77,7 +77,7 @@ ___
 
 #### Defined in
 
-[src/service/PaymasterService.ts:18](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/service/PaymasterService.ts#L18)
+[src/service/PaymasterService.ts:18](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/PaymasterService.ts#L18)
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 #### Defined in
 
-[src/service/PaymasterService.ts:22](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/service/PaymasterService.ts#L22)
+[src/service/PaymasterService.ts:22](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/PaymasterService.ts#L22)
 
 ___
 
@@ -117,4 +117,4 @@ ___
 
 #### Defined in
 
-[src/service/PaymasterService.ts:26](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/service/PaymasterService.ts#L26)
+[src/service/PaymasterService.ts:26](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/service/PaymasterService.ts#L26)

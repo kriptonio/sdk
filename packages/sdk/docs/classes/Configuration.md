@@ -32,7 +32,7 @@
 
 #### Defined in
 
-[src/Configuration.ts:2](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Configuration.ts#L2)
+[src/Configuration.ts:2](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/Configuration.ts#L2)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[src/Configuration.ts:4](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Configuration.ts#L4)
+[src/Configuration.ts:4](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/Configuration.ts#L4)
 
 ___
 
@@ -52,4 +52,4 @@ ___
 
 #### Defined in
 
-[src/Configuration.ts:3](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/Configuration.ts#L3)
+[src/Configuration.ts:3](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/Configuration.ts#L3)

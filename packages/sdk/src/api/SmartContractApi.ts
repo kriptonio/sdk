@@ -43,7 +43,7 @@ export class SmartContractApi {
       const rpc = await this.#rpcApi.getOrCreate({
         organizationId: result.data.organizationId,
         chainId: result.data.chainId,
-        wallet: await props.wallet?.getAddress(),
+        wallet: props.wallet?.address,
       });
 
       return SmartContract.fromDto(result.data, this, rpc.url, props.wallet);

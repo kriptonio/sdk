@@ -20,6 +20,7 @@
 
 ### Accessors
 
+- [address](Wallet.md#address)
 - [rpcUrl](Wallet.md#rpcurl)
 
 ### Methods
@@ -27,7 +28,6 @@
 - [deployContract](Wallet.md#deploycontract)
 - [estimateGas](Wallet.md#estimategas)
 - [export](Wallet.md#export)
-- [getAddress](Wallet.md#getaddress)
 - [getFeeData](Wallet.md#getfeedata)
 - [getNonce](Wallet.md#getnonce)
 - [sendTransaction](Wallet.md#sendtransaction)
@@ -53,7 +53,7 @@
 
 #### Defined in
 
-[src/wallet/Wallet.ts:48](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/Wallet.ts#L48)
+[src/wallet/Wallet.ts:48](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L48)
 
 ## Properties
 
@@ -63,9 +63,23 @@
 
 #### Defined in
 
-[src/wallet/Wallet.ts:48](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/Wallet.ts#L48)
+[src/wallet/Wallet.ts:48](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L48)
 
 ## Accessors
+
+### address
+
+• `get` **address**(): \`0x$\{string}\`
+
+#### Returns
+
+\`0x$\{string}\`
+
+#### Defined in
+
+[src/wallet/Wallet.ts:52](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L52)
+
+___
 
 ### rpcUrl
 
@@ -77,7 +91,7 @@
 
 #### Defined in
 
-[src/wallet/Wallet.ts:50](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/Wallet.ts#L50)
+[src/wallet/Wallet.ts:50](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L50)
 
 ## Methods
 
@@ -98,7 +112,7 @@
 
 #### Defined in
 
-[src/wallet/Wallet.ts:75](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/Wallet.ts#L75)
+[src/wallet/Wallet.ts:75](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L75)
 
 ___
 
@@ -118,7 +132,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:66](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/Wallet.ts#L66)
+[src/wallet/Wallet.ts:66](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L66)
 
 ___
 
@@ -132,21 +146,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:60](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/Wallet.ts#L60)
-
-___
-
-### getAddress
-
-▸ **getAddress**(): `Promise`\<\`0x$\{string}\`\>
-
-#### Returns
-
-`Promise`\<\`0x$\{string}\`\>
-
-#### Defined in
-
-[src/wallet/Wallet.ts:52](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/Wallet.ts#L52)
+[src/wallet/Wallet.ts:60](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L60)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:64](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/Wallet.ts#L64)
+[src/wallet/Wallet.ts:64](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L64)
 
 ___
 
@@ -174,7 +174,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:54](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/Wallet.ts#L54)
+[src/wallet/Wallet.ts:54](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L54)
 
 ___
 
@@ -195,7 +195,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:70](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/Wallet.ts#L70)
+[src/wallet/Wallet.ts:70](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L70)
 
 ___
 
@@ -215,7 +215,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:58](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/Wallet.ts#L58)
+[src/wallet/Wallet.ts:58](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L58)
 
 ___
 
@@ -235,7 +235,7 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:56](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/Wallet.ts#L56)
+[src/wallet/Wallet.ts:56](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L56)
 
 ___
 
@@ -255,4 +255,4 @@ ___
 
 #### Defined in
 
-[src/wallet/Wallet.ts:62](https://github.com/kriptonio/sdk/blob/d5dd03e/packages/sdk/src/wallet/Wallet.ts#L62)
+[src/wallet/Wallet.ts:62](https://github.com/kriptonio/sdk/blob/6bbdedb/packages/sdk/src/wallet/Wallet.ts#L62)

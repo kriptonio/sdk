@@ -49,7 +49,7 @@ export abstract class Wallet {
 
   public abstract get rpcUrl(): string | undefined;
 
-  public abstract getAddress(): Promise<Hex>;
+  public abstract get address(): Hex;
 
   public abstract getNonce(): Promise<bigint>;
 

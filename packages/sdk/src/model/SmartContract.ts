@@ -191,7 +191,7 @@ export class SmartContract {
             id: this.id,
             data: {
               address: deployment.address,
-              deployer: await this.wallet.getAddress(),
+              deployer: this.wallet.address,
               transactionHash: deployment.hash,
             },
           })
